@@ -20,13 +20,13 @@ Chapter 2: Getting Started [@londerson] (https://github.com/londerson)
 
 Chapter 3: Views and URLconfs - aberto
 
-Chapter 4: Templates - aberto
+Chapter 4: Templates - [@marceloboth] (https://github.com/marceloboth)
 
 Chapter 5: Models - aberto
 
 Chapter 6: The Django Admin Site - aberto
 
-Chapter 7: Forms - aberto [@luanfonceca] (https://github.com/luanfonceca)
+Chapter 7: Forms - [@luanfonceca] (https://github.com/luanfonceca)
 
 Chapter 8: Advanced Views and URLconfs - aberto
 
