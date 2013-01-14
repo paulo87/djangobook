@@ -28,7 +28,7 @@ Chapter 6: The Django Admin Site - [@leandrogspr] (http://github.com/nil1)
 
 Chapter 7: Forms - [@luanfonceca] (https://github.com/luanfonceca)
 
-Chapter 8: Advanced Views and URLconfs - aberto
+Chapter 8: Advanced Views and URLconfs - [@lamenezes] (https://github.com/lamenezes)
 
 Chapter 9: Advanced Templates - aberto
 
