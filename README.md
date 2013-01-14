@@ -24,7 +24,7 @@ Chapter 4: Templates - [@marceloboth] (https://github.com/marceloboth)
 
 Chapter 5: Models - [@igocoelho] (https://github.com/igocoelho)
 
-Chapter 6: The Django Admin Site - aberto
+Chapter 6: The Django Admin Site - [@leandrogspr] (http://github.com/nil1)
 
 Chapter 7: Forms - [@luanfonceca] (https://github.com/luanfonceca)
 
