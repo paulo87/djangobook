@@ -26,7 +26,7 @@ Chapter 5: Models - aberto
 
 Chapter 6: The Django Admin Site - aberto
 
-Chapter 7: Forms - aberto
+Chapter 7: Forms - aberto [@luanfonceca] (https://github.com/luanfonceca)
 
 Chapter 8: Advanced Views and URLconfs - aberto
 
