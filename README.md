@@ -18,7 +18,7 @@ Chapter 1: Introduction to Django - [@londerson] (https://github.com/londerson)
 
 Chapter 2: Getting Started - [@londerson] (https://github.com/londerson)
 
-Chapter 3: Views and URLconfs - aberto
+Chapter 3: Views and URLconfs - [@lamenezes] (https://github.com/lamenezes)
 
 Chapter 4: Templates - [@marceloboth] (https://github.com/marceloboth)
 
