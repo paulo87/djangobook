@@ -36,7 +36,7 @@ Chapter 10: Advanced Models - [@igocoelho] (https://github.com/igocoelho)
 
 Chapter 11: Generic Views - aberto
 
-Chapter 12: Deploying Django - aberto
+Chapter 12: Deploying Django - [@annacruz] (https://github.com/annacruz)
 
 Chapter 13: Generating Non-HTML Content - aberto
 
