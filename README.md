@@ -40,7 +40,7 @@ Chapter 12: Deploying Django - aberto
 
 Chapter 13: Generating Non-HTML Content - aberto
 
-Chapter 14: Sessions, Users, and Registration - aberto
+Chapter 14: Sessions, Users, and Registration - [@andersonborges] (https://github.com/andersondborges)
 
 Chapter 15: Caching - aberto
 
