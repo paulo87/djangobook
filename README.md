@@ -12,17 +12,17 @@ STATUS DA TRADUÇÃO
 
 
 About this book @londerson
-Introduction [@londerson] (https://github.com/londerson)
+Introduction - [@londerson] (https://github.com/londerson)
 
-Chapter 1: Introduction to Django [@londerson] (https://github.com/londerson)
+Chapter 1: Introduction to Django - [@londerson] (https://github.com/londerson)
 
-Chapter 2: Getting Started [@londerson] (https://github.com/londerson)
+Chapter 2: Getting Started - [@londerson] (https://github.com/londerson)
 
 Chapter 3: Views and URLconfs - aberto
 
 Chapter 4: Templates - [@marceloboth] (https://github.com/marceloboth)
 
-Chapter 5: Models - aberto
+Chapter 5: Models - [@igocoelho] (https://github.com/igocoelho)
 
 Chapter 6: The Django Admin Site - aberto
 
