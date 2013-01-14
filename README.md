@@ -32,7 +32,7 @@ Chapter 8: Advanced Views and URLconfs - aberto
 
 Chapter 9: Advanced Templates - aberto
 
-Chapter 10: Advanced Models - aberto
+Chapter 10: Advanced Models - [@igocoelho] (https://github.com/igocoelho)
 
 Chapter 11: Generic Views - aberto
 
