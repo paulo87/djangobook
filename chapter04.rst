@@ -1,39 +1,32 @@
 ====================
-Chapter 4: Templates
+Capítulo 4: Templates
 ====================
 
-In the previous chapter, you may have noticed something peculiar in how we
-returned the text in our example views. Namely, the HTML was hard-coded directly
-in our Python code, like this::
+No capítulo anterior, você deve ter notado algo peculiar em como nós retornamos o texto em nossos exemplos de views. Isto é, o HTML foi codificado diretamente em nosso código Python, tal como::
 
     def current_datetime(request):
         now = datetime.datetime.now()
-        html = "<html><body>It is now %s.</body></html>" % now
+        html = "<html><body>Agora é %s.</body></html>" % now
         return HttpResponse(html)
 
-Although this technique was convenient for the purpose of explaining how views
-work, it's not a good idea to hard-code HTML directly in your views. Here's
-why:
+Embora essa técnica ser conveniente para o propósito de demonstrar como as views trabalham, não é uma boa idéia codificar HTML diretamente em suas views. Aqui está o por que:
 
-* Any change to the design of the page requires a change to
-  the Python code. The design of a site tends to change far more frequently
-  than the underlying Python code, so it would be convenient if
-  the design could change without needing to modify the Python code.
+* Qualquer modificação no design da página requer modificação no código Python.
+  O design de   um site tende a mudar com mais freqüência do que o código Python subjacente, por isso seria coveniente se o design pude-se ser modificado sem precisar modificar o código Python.
 
-* Writing Python code and designing HTML are two different disciplines, and
-  most professional Web development environments split these
-  responsibilities between separate people (or even separate departments).
-  Designers and HTML/CSS coders shouldn't be required to edit Python code
-  to get their job done.
+* Escrever código Python e design HTML são duas diciplinas diferentes,
+  e a maioria dos ambientes de desenvolvimento Web professional dividem essas
+  responsabilidades entre pessoas distintas (ou departamentos distintos).
+  Designers e codificadores HTML/CSS não devem necessitar editar código Python
+  para fazer o seu trabalho.
 
-* It's most efficient if programmers can work on Python code and designers
-  can work on templates at the same time, rather than one person waiting
-  for the other to finish editing a single file that contains both Python
-  and HTML.
+* É mais eficiente se programadores trabalharem em código Python e designers
+  em templates, ao mesmo tempo, ao em vez de uma pessoa esperar a outra
+  terminar a edição de um simples arquivo que contém código Python e HTML.
 
-For these reasons, it's much cleaner and more maintainable to separate the
-design of the page from the Python code itself. We can do this with Django's
-*template system*, which we discuss in this chapter.
+Por essas razões, é muito mais limpo e sustentável separar o design da página
+do próprio código Python. Nós podemos fazer isso com o Django *template system*,
+que discutiremos neste capítulo.
 
 Template System Basics
 ======================
