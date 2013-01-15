@@ -9,10 +9,10 @@ No capítulo anterior, você deve ter notado algo peculiar em como nós retornam
         html = "<html><body>Agora é %s.</body></html>" % now
         return HttpResponse(html)
 
-Embora essa técnica ser conveniente para o propósito de demonstrar como as views trabalham, não é uma boa idéia codificar HTML diretamente em suas views. Aqui está o por que:
+Embora essa técnica seja conveniente para o propósito de demonstrar como as views trabalham, não é uma boa idéia codificar HTML diretamente em suas views. Aqui está o por que:
 
 * Qualquer modificação no design da página requer modificação no código Python.
-  O design de   um site tende a mudar com mais freqüência do que o código Python subjacente, por isso seria coveniente se o design pude-se ser modificado sem precisar modificar o código Python.
+  O design de um site tende a mudar com mais freqüência do que o código Python subjacente, por isso seria coveniente se o design pude-se ser modificado sem precisar modificar o código Python.
 
 * Escrever código Python e design HTML são duas diciplinas diferentes,
   e a maioria dos ambientes de desenvolvimento Web professional dividem essas
