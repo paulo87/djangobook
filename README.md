@@ -4,8 +4,13 @@ djangobook
 Projeto de tradução do Django Book,  para portugues. Para contribuir com tradução, revisão dos capítulos basta fazer um fork
 desse repositório e submeter a sua contribuição
 
-site do djangobook:
+Site do djangobook:
+
 http://www.djangobook.com/en/2.0/index.html
+
+Notas para tradutores - Luciano Ramalho
+
+http://turing.com.br/pydoc/2.7/tutorial/NOTAS.html#notas-tradutores
 
 STATUS DA TRADUÇÃO
 ------------------
