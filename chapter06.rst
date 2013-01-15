@@ -1,217 +1,214 @@
-================================
-Chapter 6: The Django Admin Site
-================================
+=================================
+Chapter 6: O Site Admin do Django
+=================================
 
-For a certain class of Web sites, an *admin interface* is an essential part of
-the infrastructure. This is a Web-based interface, limited to trusted site
-administrators, that enables the adding, editing and deletion of site content.
-Some common examples: the interface you use to post to your blog, the backend
-site managers use to moderate user-generated comments, the tool your clients
-use to update the press releases on the Web site you built for them.
+Para alguns tipos de Web sites, uma *interface admin* é parte essencial da
+infraestrutura. Trata-se de uma interface baseada na Web e autorizada a 
+apenas alguns administradores que permite acrescentar, remover e editar conteúdo.
+Alguns exemplos mais comuns pode ser aquela interface que você usa para postar
+conteúdo no seu blog, ou o backend que os administradores do site fazem uso
+quando moderam comentários gerados por usuários.
 
-There's a problem with admin interfaces, though: it's boring to build them.
-Web development is fun when you're developing public-facing functionality, but
-building admin interfaces is always the same. You have to authenticate users,
-display and handle forms, validate input, and so on. It's boring, and it's
-repetitive.
+Mas existe um problema com as interfaces admin: são muito chatas de construir.
+O desenvolvimento Web é mais interessante quando você implementa funcionalidades
+pensadas no público, enquanto que construir interfaces admin é sempre a mesma coisa.
+Você precisa autenticar usuários, exibir e manipular formulários, validar dados de 
+entrada, e por aí vai. É maçante e repetitivo.
 
-So what's Django's approach to these boring, repetitive tasks? It does it all
-for you -- in just a couple of lines of code, no less. With Django, building an
-admin interface is a solved problem.
+E como o Django resolve essas tarefas monótonas para mim? Bem, basicamente ele
+faz tudo por você em apenas algumas linhas de código. Com o Django, construir uma
+interface admin é problema resolvido.
 
-This chapter is about Django's automatic admin interface. The feature works by
-reading metadata in your model to provide a powerful and production-ready
-interface that site administrators can start using immediately. Here, we discuss
-how to activate, use, and customize this feature.
+Este capítulo é sobre a interface admin automática do Django. Ela trabalha lendo
+metadados de um modelo visando fornecer uma interface poderosa que permite um
+administrador de Web site começar a usá-la instantaneamente. Neste capítulo,
+iremos discutir como ativar, utilizar e customizar essa interface.
 
-Note that we recommend reading this chapter even if you don't intend to use the
-Django admin site, because we introduce a few concepts that apply to all of
-Django, regardless of admin-site usage.
+NOTA: Recomendamos a leitura integral deste capítulo mesmo se você não pretende utilizar o 
+site de administrador do Django, porque alguns conceitos-chave apresentados aqui
+se aplicam a todo o Django, independentemente da sua utilização.
 
-The django.contrib packages
+Os pacotes django.contrib 
+==========================
+
+A administração automática do Django é parte de um conjunto de funcionalidades
+chamado ``django.contrib`` --  a parte do código base do Django que contém
+vários add-ons úteios ao framework. Você pode pensar no ``django.contrib`` 
+como o equivalente à biblioteca padrão do Python standard library. O Django traz
+esses pacotes embutidos nele para que você não precise reinventar a roda em suas
+próprias aplicações.
+
+O site admin é a primeira parte do ``django.contrib`` que iremos cobrir neste 
+livro; tecnicamente o nome correto é ``django.contrib.admin``. Além dele, outras
+características disponíveis em ``django.contrib`` incluem um sistema de autenticação
+de usuários (``django.contrib.auth``), suporte para sessões anônimas,
+(``django.contrib.sessions``) e até mesmo um sistema para commentários de usuários
+(``django.contrib.comments``). À medida que você se torna um expert em Django, você
+conhecerá muitas outras capacidades do ``django.contrib``, e depois iremos discutir 
+mais sobre elas no Capítulo 16. Por enquanto, lembre-se que apenas que o Django traz 
+embutido nele muitos add-ons incríveis e ``django.contrib`` é o lar onde vivem.
+
+Ativando a Interface Admin
 ===========================
 
-Django's automatic admin is part of a larger suite of Django functionality
-called ``django.contrib`` -- the part of the Django codebase that contains
-various useful add-ons to the core framework. You can think of
-``django.contrib`` as Django's equivalent of the Python standard library --
-optional, de facto implementations of common patterns. They're bundled with
-Django so that you don't have to reinvent the wheel in your own applications.
+O admin site do Django é inteiramente opcional, porque apenas alguns tipos de sites
+precisam dessa funcionalidade. Isso significa que você deverá seguir alguns passos
+para ativá-lo no seu projeto.
 
-The admin site is the first part of ``django.contrib`` that we're covering in
-this book; technically, it's called ``django.contrib.admin``. Other available
-features in ``django.contrib`` include a user authentication system
-(``django.contrib.auth``), support for anonymous sessions
-(``django.contrib.sessions``) and even a system for user comments
-(``django.contrib.comments``). You'll get to know the various ``django.contrib``
-features as you become a Django expert, and we'll spend some more time
-discussing them in Chapter 16. For now, just know that Django ships with many
-nice add-ons, and ``django.contrib`` is generally where they live.
+Primeiro, faça algumas mudanças no seu arquivo de configuração (setting):
 
-Activating the Admin Interface
-==============================
 
-The Django admin site is entirely optional, because only certain types of sites
-need this functionality. That means you'll need to take a few steps to activate
-it in your project.
+1. Acrescente ``'django.contrib.admin'`` à configuração ``INSTALLED_APPS``. (A
+   ordem de ``INSTALLED_APPS`` não importa, mas gostamos da ordem alfabética
+   porque é fácil para um ser humano compreender.)
 
-First, make a few changes to your settings file:
+2. Certifique-se de que ``INSTALLED_APPS`` contém ``'django.contrib.auth'``,
+   ``'django.contrib.contenttypes'`` e ``'django.contrib.sessions'``. O site
+   admin do Django precisa desses três pacotes. (Se você está acompanhando 
+   nosso projeto``mysite``, observe que as linhas de código das três entradas 
+   `INSTALLED_APPS`` aparecem como comentários no Capítulo 5, desfaça isso agora.)
 
-1. Add ``'django.contrib.admin'`` to the ``INSTALLED_APPS`` setting. (The
-   order of ``INSTALLED_APPS`` doesn't matter, but we like to keep things
-   alphabetical so it's easy for a human to read.)
-
-2. Make sure ``INSTALLED_APPS`` contains ``'django.contrib.auth'``,
-   ``'django.contrib.contenttypes'`` and ``'django.contrib.sessions'``. The
-   Django admin site requires these three packages. (If you're following
-   along with our ongoing ``mysite`` project, note that we commented out
-   these three ``INSTALLED_APPS`` entries in Chapter 5. Uncomment them now.)
-
-3. Make sure ``MIDDLEWARE_CLASSES`` contains
+3. Certifique-se de que ``MIDDLEWARE_CLASSES`` contém
    ``'django.middleware.common.CommonMiddleware'``,
-   ``'django.contrib.sessions.middleware.SessionMiddleware'`` and
-   ``'django.contrib.auth.middleware.AuthenticationMiddleware'``. (Again,
-   if you're following along, note that we commented them out in Chapter 5,
-   so uncomment them.)
+   ``'django.contrib.sessions.middleware.SessionMiddleware'`` e
+   ``'django.contrib.auth.middleware.AuthenticationMiddleware'``. (Novamente,
+   no Capítulo 5, aparecem como comentários, desfaça isso agora.)
 
-Second, run ``python manage.py syncdb``. This step will install the extra
-database tables that the admin interface uses. The first time you run
-``syncdb`` with ``'django.contrib.auth'`` in ``INSTALLED_APPS``, you'll be
-asked about creating a superuser. If you don't do this, you'll need to run
-``python manage.py createsuperuser`` separately to create an admin user
-account; otherwise, you won't be able to log in to the admin site. (Potential
-gotcha: the ``python manage.py createsuperuser`` command is only available if
-``'django.contrib.auth'`` is in your ``INSTALLED_APPS``.)
+Depois, execute ``python manage.py syncdb``. Isso irá instalar as tabelas
+de dados extras que a interface admin usa. Na primeira vez que você executa
+``syncdb`` com ``'django.contrib.auth'`` em ``INSTALLED_APPS``, você será
+solicitado a criar um superusuário. Se você não fizer isso, será necessário
+executar ``python manage.py createsuperuser`` separadamente para criar uma 
+conta de usuário admin; senão, você não será capaz de fazer log in no site admin. 
+(Pegadinha em potencial: o comando ``python manage.py createsuperuser`` está
+disponível apenas se``'django.contrib.auth'`` estiver em sua ``INSTALLED_APPS``.)
 
-Third, add the admin site to your URLconf (in ``urls.py``, remember). By
-default, the ``urls.py`` generated by ``django-admin.py startproject`` contains
-commented-out code for the Django admin, and all you have to do is uncomment
-it. For the record, here are the bits you need to make sure are in there::
+Por fim, acrescente o site admin para o seu URLconf (em ``urls.py``, lembre-se). Por
+default, o ``urls.py`` gerado por ``django-admin.py startproject`` contém
+código em comentário para o admin do Django, e tudo que você precisa fazer é retirá-lo
+do comentário. Abaixo seguem as partes que você precisa garantir estarem lá:
 
-    # Include these import statements...
+    # Incluir estas declarações...
     from django.contrib import admin
     admin.autodiscover()
 
-    # And include this URLpattern...
+    # E inclua este URLpattern...
     urlpatterns = patterns('',
         # ...
         (r'^admin/', include(admin.site.urls)),
         # ...
     )
 
-With that bit of configuration out of the way, now you can see the Django
-admin site in action. Just run the development server
-(``python manage.py runserver``, as in previous chapters) and visit
-``http://127.0.0.1:8000/admin/`` in your Web browser.
+Agora você pode ver o site admin do Django em ação. Simplesmente execute o servidor 
+de desenvolvimento (``python manage.py runserver``, como nos capítulos anteriores) e visite
+``http://127.0.0.1:8000/admin/`` no seu Web browser.
 
-Using the Admin Site
+Usando o Site Admin
 ====================
 
-The admin site is designed to be used by nontechnical users, and as such it
-should be pretty self-explanatory. Nevertheless, we'll give you a quick
-walkthrough of the basic features.
+O site admin foi desenhado para ser utilizado por usuários não-técnicos, e como tal
+é bastante auto-explicativo. Mesmo assim, iremos dar uma rápida olhada pelas características
+básicas.
 
-The first thing you'll see is a login screen, as shown in Figure 6-1.
+A primeira coisa que você verá é uma tela de login, conforme mostra a Figura 6-1.
 
-.. figure:: graphics/chapter06/login.png
-   :alt: Screenshot of Django's login page.
+.. figura:: graphics/chapter06/login.png
+   :alt: Screenshot da tela de login do Django.
 
-   Figure 6-1. Django's login screen
+   Figura 6-1. Django's tela de login
 
-Log in with the username and password you set up when you added your superuser.
-If you're unable to log in, make sure you've actually created a superuser --
-try running ``python manage.py createsuperuser``.
+Faça o log in com o nome de usuário e senha que você definiu quando você adicionou seu
+superusuário. Se você não conseguir fazer o log in, certifique-se que você realmente
+criou um superusuário -- tente exectuar ``python manage.py createsuperuser``.
 
-Once you're logged in, the first thing you'll see will be the admin home page.
-This page lists all the available types of data that can be edited on the admin
-site. At this point, because we haven't activated any of our own models yet,
-the list is sparse: it includes only Groups and Users, which are the two
-default admin-editable models.
+Uma vez logado, a primeira coisa que você verá será a home page do administrador.
+Esta página lista todos os tipos de dados disponíveis que podem ser editados no
+site admin; Neste ponto, como ainda não ativamos nenhum dos nossos próprios 
+modelos, a lista é pequena: ela inclui apenas Grupos e Usuários, que são os 
+dois modelos de admin padrão.
 
-.. DWP The screenshot contains books etc too.
+.. DWP A screenshot contém livros etc.
 
-.. figure:: graphics/chapter06/admin_index.png
-   :alt: Screenshot of the Django admin home page.
+.. figura:: graphics/chapter06/admin_index.png
+   :alt: Screenshot da home page admin no Django.
 
-   Figure 6-2. The Django admin home page
+   Figura 6-2. A home page admin do Django
 
-Each type of data in the Django admin site has a *change list* and an
-*edit form*. Change lists show you all the available objects in the database,
-and edit forms let you add, change or delete particular records in your
-database.
+Cada tipo de dados no admin site do Django possui uma *change list* e um
+*edit form*. Change lists exibe todos os objetos disponíveis no banco de dados,
+e edit forms permite adicionar, alterar ou deletar registros em seu banco de dados.
 
-.. admonition:: Other languages
+.. advertência:: Outros idiomas
 
-    If your primary language is not English and your Web browser is configured
-    to prefer a language other than English, you can make a quick change to
-    see whether the Django admin site has been translated into your language.
-    Just add ``'django.middleware.locale.LocaleMiddleware'`` to your
-    ``MIDDLEWARE_CLASSES`` setting, making sure it appears *after*
+    Caso sua língua materna não seja o Inglês e o seu Web browser estiver
+    configurado para outro idioma, você pode fazer uma mudança rápida para
+    ver se o site admin do Django foi traduzido para a sua língua.
+    Adicione ``'django.middleware.locale.LocaleMiddleware'`` à sua
+    ``MIDDLEWARE_CLASSES``, certificando-se que apareça *depois* de
     ``'django.contrib.sessions.middleware.SessionMiddleware'``.
 
-    When you've done that, reload the admin index page. If a translation for
-    your language is available, then the various parts of the interface -- from
-    the "Change password" and "Log out" links at the top of the page, to the
-    "Groups" and "Users" links in the middle -- will appear in your language
-    instead of English. Django ships with translations for dozens of languages.
+    Apos fazer isso, recarregue a index page do admin. Se alguma tradução para
+    seu idioma estiver disponível, várias partes da interface -- desde os links
+    "Change password" e "Log out" no topo da página, até os links
+    "Groups" e "Users" no meio -- aparecerão em seu idioma ao invés do inglês.
+     O Django já vem com traduções para dezenas de idiomas.
 
-    For much more on Django's internationalization features, see Chapter 19.
+    Para saber mais sobre internacionalização no Django, veja o Capítulo 19.
 
-Click the "Change" link in the "Users" row to load the change list page for
-users.
+Clique no link "Change" na coluna "Users" para carregar a página change list para usuários.
 
-.. figure:: graphics/chapter06/user_changelist.png
-   :alt: Screenshot of the user change list page.
+.. figura:: graphics/chapter06/user_changelist.png
+   :alt: Screenshot da página change list de usuários.
 
-   Figure 6-3. The user change list page
+   Figura 6-3. A página change list
 
-.. DWP This screenshot is actually the list for books.
+.. DWP Esta screenshot é na verdade uma lista para dois livros.
 
-This page displays all users in the database; you can think of it as a
-prettied-up Web version of a ``SELECT * FROM auth_user;`` SQL query. If you're
-following along with our ongoing example, you'll only see one user here,
-assuming you've added only one, but once you have more users, you'll probably
-find the filtering, sorting and searching options useful. Filtering options are
-at right, sorting is available by clicking a column header, and the search box
-at the top lets you search by username.
+Esta página exibe todos os usuários no banco de dados; você pode pensá-la como 
+uma versão Web embelezada de um query SQL ``SELECT * FROM auth_user;``. Se você
+está acompanhando nosso exemplo, você verá apenas um usuário aqui, considerando que
+você adicionou apenas um, mas tendo mais usuários as opções de filtrar, ordenar e
+pesquisar passam a ser mais úteis. As opções de filtragem estão à direita, ordenar 
+torna-se disponível clicando-se no cabeçalho de uma coluna e a caixa de pesquisa no 
+topo permite a você fazer uma busca por nome de usuário.
 
-Click the username of the user you created, and you'll see the edit form for
-that user.
+Clique no nome de usuário do usuário que você criou, e você verá o edit form (formulário de 
+edição) para aquele usuário.
 
-.. figure:: graphics/chapter06/user_editform.png
-   :alt: Screenshot of the user edit form
+.. figura:: graphics/chapter06/user_editform.png
+   :alt: Screenshot do formulário de edição de usuários
 
-   Figure 6-4. The user edit form
+   Figura 6-4.O formulário de edição de usuários
 
-.. DWP The edit form screenshot is for a book.
+.. DWP A screenshot do formulário de edição para um livro.
 
-This page lets you change the attributes of the user, like the
-first/last names and various permissions. (Note that to change a user's
-password, you should click "change password form" under the password field
-rather than editing the hashed code.) Another thing to note here is that fields
-of different types get different widgets -- for example, date/time fields have
-calendar controls, boolean fields have checkboxes, character fields have simple
-text input fields.
+Esta página permite a você alterar os atributos do usuário, como o
+nome/sobrenome e várias permissões. (Observe que para alterar a senha de 
+um usuário,você deve clicar em "change password form" sob o campo password
+ao invés de editar o código hash.) Outra observação aqui é que campos de tipos
+diferentes têm widgets diferentes -- por exemplo, campos date/time possuem 
+controle de calendário, campos booleanos têm checkboxes, campos de caracteres têm
+campos de entrada de texto.
 
-You can delete a record by clicking the delete button at the bottom left of its
-edit form. That'll take you to a confirmation page, which, in some cases, will
-display any dependent objects that will be deleted, too. (For example, if you
-delete a publisher, any book with that publisher will be deleted, too!)
+Você pode deletar um registro clicando no botão delete na parte inferior esquerda
+do seu formulário de edição. Ao fazer isso uma página de confirmação será exbidia, 
+a qual, em alguns casos, exibirá quaisquer objetos dependentes que serão deletados
+também. (Por exemplo, se você deletar uma editora, qualquer livro vinculado a ela
+será deletado também!)
 
-You can add a record by clicking "Add" in the appropriate column of the admin
-home page. This will give you an empty version of the edit page, ready for you
-to fill out.
+Você pode adicionar um registro clicando em "Add" na coluna apropriada da home page admin.
+Isto lhe dará uma versão vazia da página de edição, pronta para que você a preencha.
 
-You'll also notice that the admin interface also handles input validation for
-you. Try leaving a required field blank or putting an invalid date into a date
-field, and you'll see those errors when you try to save, as shown in Figure 6-5.
+Você também irá notar que a interface admin manipula dados de entrada por você. Tente 
+deixar um campo obrigatório em branco ou colocar uma data inválida em um campo de datas e
+você verá estes erros quando for tentar salvar, conforme mostra a Figura 6-5.
 
-.. figure:: graphics/chapter06/user_editform_errors.png
-   :alt: Screenshot of an edit form displaying errors.
+.. figura:: graphics/chapter06/user_editform_errors.png
+   :alt: Screenshot de um formulário de edição exibindo erros.
 
-   Figure 6-5. An edit form displaying errors
+   Figura 6-5. Um formulário de edição exibindo erros
 
-.. DWP The screenshots are still following a book example.
+.. DWP As screenshots ainda acompanham o exemplo de um livro.
 
 When you edit an existing object, you'll notice a History link in the
 upper-right corner of the window. Every change made through the admin interface
