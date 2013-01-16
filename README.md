@@ -53,13 +53,13 @@ Chapter 16: django.contrib - aberto
 
 Chapter 17: Middleware - aberto
 
-Chapter 18: Integrating with Legacy Databases and Applications - aberto
+Chapter 18: Integrating with Legacy Databases and Applications - [@fabricio] (https://github.com/fabrimatt)
 
 Chapter 19: Internationalization - aberto
 
-Chapter 20: Security - aberto
+Chapter 20: Security - [@renato] (http://github.com/renatooliveira)
 
-Appendix A: Model Definition Reference - aberto
+Appendix A: Model Definition Reference - [@igocoelho] (https://github.com/igocoelho)
 
 Appendix B: Database API Reference - aberto
 
