@@ -19,7 +19,7 @@ páginas HTML como simpes arquivos no disco, permitia que você pensasse em suas
 como recursos gerados automáticamente sob demanda. O desenvolvimento do CGI inalgurou 
 a primeira geração de sites dinâmicos.
 
-Contudo, o CGI tem os seus problemas: scripts CGI prescisam contem um monte de códigos
+Contudo, o CGI tem os seus problemas: scripts CGI precisam ter um monte de códigos
 repetitivos, tornando os códigos reusáveis difíceis, dificultando para os desenvolvedores
 escrever e entênde-los.
 
