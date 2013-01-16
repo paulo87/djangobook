@@ -1,81 +1,53 @@
 ===============
-About this book
+Sobre este livro
 ===============
 
-You’re reading The Django Book, first published in December 2007 (and updated in 2009) by Apress as The Definitive Guide to Django: Web Development Done Right.
+Você está lendo o Djangobook, publicado primeiramente em Dezembro de 2007(e atualizado em 2009) pela Apress como The Definitive Guide to Django: Web Development Done Right.
 
-We’ve released this book freely for a couple of reasons. First, we love Django and we want it to be as accessible as possible. Many programmers learn their craft from well-written technical material, so we set out to create a top-notch guide and reference to Django.
+Nós lançamos este livro gratuitamente por vários motivos. Primeiro, nós amamos Django e nós queremos que ele seja o mais acessível possível. Muitos programadores aprendem bem a sua profissão com materiais técnicos bem escritos. Por isso nós propomos escrever uma referência e guia de alta qualidade para o Django.
 
-Second, it turns out that writing books about technology is fundamentally difficult: your words are often outdated before the book even reaches the printer. On the web, however, “the ink is never dry” — we can (and will!) keep the book updated.
+Em segundo lugar, se verifica que escrever livros sobre tecnologia é fundamentalmente difícil: pois as suas palavras muitas vezes são desatualizadas antes mesmo do livro chegar a impressora. Na web, entretanto, "a tinta nunca seca" - nós podemos(e vamos!) manter o livro atualizado.
 
-Acknowledgements
+Agradecimentos
 ================
 
-The most gratifying aspect of working on Django is the community. We've been
-especially lucky that Django has attracted such a smart, motivated, and friendly
-bunch. A segment of that community followed us over to the online "beta" release
-of this book. Their reviews and comments were indispensable; this book wouldn't
-have been possible without all that wonderful peer review. Almost a thousand
-people left comments that helped us improve the clarity, quality, and flow of
-the final book; we'd like to thank each and every one of them.
+O aspecto mais gratificante em trabralhar com Django é a comunidade. Temos sorte que o Django tenha atraido um grupo tão inteligente, motivado, e amigável. Um segmento dessa comunidade tem acompanhado a gente desde o lançamento "beta" online deste livro. As opiniões e comentários são indispensáveis; Este livro não teria sido possível sem toda essa revisão. Cerca de mil pessoas deixaram comentários que nos ajudaram a melhorar a clareza, qualidade e ritmo do livro final. Nós gostaríamos de agradecer a cada um deles.
 
-We're especially grateful to those who took the time to review the book in depth
-and left dozens (sometimes hundreds) of comments apiece: Marty Alchin, Max
-Battcher, Oliver Beat- tie, Rod Begbie, Paul Bissex, Matt Boersma, Robbin
-Bonthond, Peter Bowyer, Nesta Campbell, Jon Colverson, Jeff Croft, Chris Dary,
-Alex Dong, Matt Drew, Robert Dzikowski, Nick Efford, Ludvig Ericson, Eric
-Floehr, Brad Fults, David Grant, Simon Greenhill, Robert Haveman, Kent Johnson,
-Andrew Kember, Marek Kubica, Eduard Kucera, Anand Kumria, Scott Lamb, Fredrik
-Lundh, Vadim Macagon, Markus Majer, Orestis Markou, R. Mason, Yasushi Masuda,
-Kevin Menard, Carlo Miron, James Mulholland, R.D. Nielsen, Michael O'Keefe,
-Lawrence Oluyede, Andreas Pfrengle, Frankie Robertson, Mike Robinson, Armin
-Ronacher, Daniel Roseman, Johan Samyn, Ross Shannon, Carolina F. Silva, Paul
-Smith, Björn Stabell, Bob Stepno, Graeme Stevenson, Justin Stockton, Kevin
-Teague, Daniel Tietze, Brooks Travis, Peter Tripp, Matthias Urlichs, Peter van
-Kampen, Alexandre Vassalotti, Jay Wang, Brian Will, and Joshua Works.
+Nós somos gratos especialmente aqueles que levaram tempo para analizar o livro á fundo, deixando dezenas (as vezes centenas) de comentários. : Marty Alchin, Max Battcher, Oliver Beat- tie, Rod Begbie, Paul Bissex, Matt Boersma, Robbin Bonthond, Peter Bowyer, Nesta Campbell, Jon Colverson, Jeff Croft, Chris Dary, Alex Dong, Matt Drew, Robert Dzikowski, Nick Efford, Ludvig Ericson, Eric Floehr, Brad Fults, David Grant, Simon Greenhill, Robert Haveman, Kent Johnson, Andrew Kember, Marek Kubica, Eduard Kucera, Anand Kumria, Scott Lamb, Fredrik Lundh, Vadim Macagon, Markus Majer, Orestis Markou, R. Mason, Yasushi Masuda, Kevin Menard, Carlo Miron, James Mulholland, R.D. Nielsen, Michael O’Keefe, Lawrence Oluyede, Andreas Pfrengle, Frankie Robertson, Mike Robinson, Armin Ronacher, Daniel Roseman, Johan Samyn, Ross Shannon, Carolina F. Silva, Paul Smith, Björn Stabell, Bob Stepno, Graeme Stevenson, Justin Stockton, Kevin Teague, Daniel Tietze, Brooks Travis, Peter Tripp, Matthias Urlichs, Peter van Kampen, Alexandre Vassalotti, Jay Wang, Brian Will, and Joshua Works.
 
-Many thanks to our technical editor, Jeremy Dunck. Without Jeremy this book
-would be littered with errors, inaccuracies, and broken code. We feel very lucky
-that someone as talented as Jeremy found the time to help us out.
+Muitos agradecimentos ao nosso editor técnico, Jeremy Dunck. Sem Jeremy, este livro estaria cheio de erros, imprecisões e códigos quebrado. Nos sentimos muito sortudos por alguém tão talentoso como Jeremy tenha encontrado tempo para nos ajudar.
 
-Specials thanks go to Simon Willison for writing the chapter on form processing.
-We really appreciate the help, and we're thrilled that Simon's excellent writing
-can be part of this book.
+Agradecemos especialmente a Simon Willison por escrever o capítulo sobre processamento de formulários. Nós realmente apreciamos a ajuda, e estamos muito satisfeitos com uma escrita tão excelente faça parte do livro.
 
-We're grateful for all the hard work the folks at Apress put into this book.
-They've been amazingly supportive and patient; this book wouldn't have come
-together without a lot of work on their part. We're especially happy that Apress
-supported and even encouraged the free release of this book online; it's
-wonderful seeing a publisher so embracing the spirit of open source.
+Nós somos agradecidos por todo trabalho duro que o pessoal da Apress colocou nesse livro. Eles foram incrivelmente solidários e pacientes, este livro não teria sido realizado sem o muito trabalho da parte deles. Estamos felizes que a Apress apoiou e incentivou o lançamento on-line e gratuíto desse livro. É maravilhoso ver um editor abraçar o espiríto open-source.
 
-Finally, of course, thanks to our friends, families, and coworkers who've
-graciously tolerated our mental absence while we finished this work.
+Finalmente é claro, obrigado aos nossos amigos, familiares, e colegas de trabalho que paciêntemente tem tolerado nossa ausência mental enquanto nós terminamos este trabalho.
 
-About the Authors
+Sobre os autores
 =================
 
-**Adrian Holovaty** is a Web developer with a background in journalism. He’s known in journalism circles as one of the pioneers of “journalism via computer programming”, and in technical circles as “the guy who invented Django.”
+**Adrian Holovaty** Adrian Holovaty é um desenvolvedor web, com formação em jornalismo. Ele é conhecido nos círculos jornalísticos como um dos pioneiros do "jornalismo atráves de programas de computadores", e nos círculos técnicos como o cara que inventou o Django.
 
-He was lead developer at World Online for 2.5 years, during which time Django was developed and implemented on World Online’s sites. He’s the founder of EveryBlock__, a “news feed for your block”.
+Ele foi o lider de desenvolvimento do World Online por 2 anos e meio, durante esse tempo o Django foi desenvolvido e implementado nos sites da World Online. Ele é o fundador da EveryBlock__, um "feeds de notícia para o seu bloco".
 
-Adrian lives in Chicago, USA.
+Adrian mora em Chicago, USA.
 
 __ http://everyblock.com/
 
-**Jacob Kaplan-Moss** is a partner at `Revolution Systems`__ which provides support services around Django and related open source technologies. Jacob previously worked at World Online, where Django was invented, where he was the lead developer of Ellington, a commercial Web publishing platform for media companies.
+**Jacob Kaplan-Moss** é o sócio na `Revolution Systems`__ que presta serviços de apoio ao Django e relacionado com as técnologias open-sources. Jacob trabalhou anteriormente na World Online, aonde o Django foi inventado, aonde foi o principal desenvolvedor da Ellington, uma plataforma de publicação comercial da web para empresas de mídia.
 
-Jacob lives in Lawrence, Kansas, USA.
+Jacob vive em Lawrence, Kansas, EUA.
 
 __ http://revsys.com
 
-About the Technical Reviewer
+Sobre o Revisor Técnico
 ============================
 
-**Jeremy Dunck** was rescued from corporate IT drudgery by Free Software and, in part, Django. Many of Jeremy’s interests center around access to information.
+**Jeremy Dunck** foi resgatado do mundo corporativo pelo software livre e em parte pelo Django. Muitos dos interesses de Jeremy gira em torno do acesso à informação.
 
-Jeremy was the lead developer of Pegasus News, one of the first uses of Django outside World Online, and has since joined Votizen, a startup intent on reducing the influence of money in politics.
+Jeremy foi o principal desenvolvedor da Pegasus News, um dos primeiros usos do Django fora da World Online, e desde então tem se juntado a Votizen, uma startup com a intenção de reduzir a influência do dinheiro na política.
 
-He serves as DSF Secretary, organizes and helps organize sprints, cares about the health and equity of the Django community. He has gone an embarrassingly long time without a working blog.
+Ele atua como DSF Secretário, organiza e ajuda a organizar sprints, se preocupa com a saúde e equidade da comunidade Django. Ele passou um embaraçoso tempo sem um blog de trabalho.
 
-Jeremy lives in Mountain View, CA, USA.
+Jeremy vive em Mountain View, CA, EUA.
 
