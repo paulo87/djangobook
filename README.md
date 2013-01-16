@@ -29,7 +29,7 @@ Chapter 4: Templates - [@marceloboth] (https://github.com/marceloboth)
 
 Chapter 5: Models - [@igocoelho] (https://github.com/igocoelho)
 
-Chapter 6: The Django Admin Site - [@leandrogspr] (http://github.com/nil1)
+Chapter 6: The Django Admin Site - [@nil1] (http://github.com/nil1)
 
 Chapter 7: Forms - [@luanfonceca] (https://github.com/luanfonceca)
 
@@ -45,19 +45,19 @@ Chapter 12: Deploying Django - [@annacruz] (https://github.com/annacruz)
 
 Chapter 13: Generating Non-HTML Content - aberto
 
-Chapter 14: Sessions, Users, and Registration - [@andersonborges] (https://github.com/andersondborges)
+Chapter 14: Sessions, Users, and Registration - [@andersondborges] (https://github.com/andersondborges)
 
 Chapter 15: Caching - aberto
 
 Chapter 16: django.contrib - aberto
 
-Chapter 17: Middleware [@danny] (https://github.com/bkcherry)
+Chapter 17: Middleware [@bkcherry] (https://github.com/bkcherry)
 
-Chapter 18: Integrating with Legacy Databases and Applications - [@fabricio] (https://github.com/fabrimatt)
+Chapter 18: Integrating with Legacy Databases and Applications - [@fabrimatt] (https://github.com/fabrimatt)
 
 Chapter 19: Internationalization - aberto
 
-Chapter 20: Security - [@renato] (http://github.com/renatooliveira)
+Chapter 20: Security - [@renatooliveira] (http://github.com/renatooliveira)
 
 Appendix A: Model Definition Reference - [@igocoelho] (https://github.com/igocoelho)
 
@@ -67,11 +67,11 @@ Appendix C: Generic View Reference - aberto
 
 Appendix D: Settings - aberto
 
-Appendix E: Built-in Template Tags and Filters - [@filipe] (https://github.com/crfh0m3r)
+Appendix E: Built-in Template Tags and Filters - [@crfh0m3r] (https://github.com/crfh0m3r)
 
 Appendix F: The django-admin Utility - aberto
 
-Appendix G: Request and Response Objects [@danny] (https://github.com/bkcherry)
+Appendix G: Request and Response Objects [@bkcherry] (https://github.com/bkcherry)
 
 License & Copyright - aberto
 
