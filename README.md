@@ -35,7 +35,7 @@ Chapter 7: Forms - [@luanfonceca] (https://github.com/luanfonceca)
 
 Chapter 8: Advanced Views and URLconfs - [@lamenezes] (https://github.com/lamenezes)
 
-Chapter 9: Advanced Templates - aberto
+Chapter 9: Advanced Templates - [@londerson] (https://github.com/londerson)
 
 Chapter 10: Advanced Models - [@igocoelho] (https://github.com/igocoelho)
 
