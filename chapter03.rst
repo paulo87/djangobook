@@ -1,100 +1,94 @@
-=============================
-Chapter 3: Views and URLconfs
-=============================
+============================
+Capítulo 3: Views e URLconfs
+============================
 
-In the previous chapter, we explained how to set up a Django project and run the
-Django development server. In this chapter, you'll learn the basics of creating
-dynamic Web pages with Django.
+No capítulo anterior foi explicado como montar um projeto Django e executar o
+servidor de desenvolvimento do Django. Neste capítulo serão vistos os conceitos
+básicos de como criar páginas dinâmicas com o Django.
 
-Your First Django-Powered Page: Hello World
-===========================================
+Primeira página em Django: Hello World
+======================================
 
-As our first goal, let's create a Web page that outputs that famous example
-message: "Hello world."
+Como primeiro objetivo iremos criar uma página que tem como saída a
+famosa mensagem de exemplo: "Hello world."
 
-If you were publishing a simple "Hello world" Web page without a Web framework,
-you'd simply type "Hello world" into a text file, call it ``hello.html``,
-and upload it to a directory on a Web server somewhere. Notice, in that
-process, you've specified two key pieces of information about that Web page:
-its contents (the string ``"Hello world"``) and its URL (
-``http://www.example.com/hello.html``, or maybe ``http://www.example.com/files/hello.html``
-if you put it in a subdirectory).
+Se estivesse publicando uma simples página Web sem um framework Web, bastaria digitar
+"Hello World" em um arquivo texto, chamá-lo de ``hello.html`` e fazer upload do mesmo
+para um diretório em um servidor Web em algum lugar. Note que nesse processo foram
+especificadas duas peças chave de informação sobre a página: o conteúdo (a string 
+``"Hello world"``) e sua URL (``http:://www.exemplo.com/hello.html``, ou talvez 
+``http:://www.exemplo.com/files/hello.html`` caso tenha posto em um subdiretório)
 
-With Django, you specify those same two things, but in a different way. The
-contents of the page are produced by a *view function*, and the URL is
-specified in a *URLconf*. First, let's write our "Hello world" view function.
+Com Django, as mesmas coisas são especificadas, porém de modos diferentes. Os
+conteúdos da página são produzidos por uma *função view (visão)*, e a URL é
+especificada em um *URLconf*. Primeiro será escrita a função view "Hello World".
 
-Your First View
----------------
+Primeira view
+-------------
 
-Within the ``mysite`` directory that ``django-admin.py startproject`` made in
-the last chapter, create an empty file called ``views.py``. This Python module
-will contain our views for this chapter. Note that there's nothing special
-about the name ``views.py`` -- Django doesn't care what the file is called, as
-you'll see in a bit -- but it's a good idea to call it ``views.py`` as a
-convention, for the benefit of other developers reading your code.
+Dentro do diretório ``meusite`` que o ``django-admin.py startproject`` criou no
+último capítulo, crie um arquivo vazio chamado ``views.py``. Esse módulo Python conterá
+as views vistas neste capítulo. Note que não há nada especial sobre o nome ``views.py``
+-- o Django não se preocupa como o arquivo é chamado, como será visto mais para
+frente -- mas é uma boa ideia chamá-lo de ``views.py`` por ser uma convenção, para o
+benefício de outros desenvolvedores que irão ler seu código.
 
-Our "Hello world" view is simple. Here's the entire function, plus import
-statements, which you should type into the ``views.py`` file::
+A view "Hello world" é simples. Aqui está toda a função, incluindo os imports, que
+deverá ser digitada no arquivo ``views.py``::
 
     from django.http import HttpResponse
 
     def hello(request):
         return HttpResponse("Hello world")
 
-Let's step through this code one line at a time:
+Vamos analisar esse código linha-por-linha:
 
-* First, we import the class ``HttpResponse``, which lives in the
-  ``django.http`` module. We need to import this class because it's used
-  later in our code.
+* Primeiro, é importada a classe ``HttpResponse``, que está localizada no módulo
+  ``django.http``. É necessário importá-la pois é usada no código.
 
-* Next, we define a function called ``hello`` -- the view function.
+* Depois é definida uma função chamada ``hello`` -- a função view.
 
-  Each view function takes at least one parameter, called ``request`` by
-  convention. This is an object that contains information about the
-  current Web request that has triggered this view, and it's an instance of
-  the class ``django.http.HttpRequest``. In this example, we don't do
-  anything with ``request``, but it must be the first parameter of the view
-  nonetheless.
+  Cada função view tem pelo menos um parametro chamado ``request``, por
+  convenção. Este é um objeto que contém informação sobre a requisição Web 
+  atual que ativou a view, e é uma instância da classe 
+  ``django.http.HttpRequest``. Nesse exemplo não é feito nada com ``request``,
+  mas de qualquer modo deve ser o primeiro parametro da view.
 
-  Note that the name of the view function doesn't matter; it doesn't have
-  to be named in a certain way in order for Django to recognize it. We're
-  calling it ``hello`` here, because that name clearly indicates the gist
-  of the view, but it could just as well be named
-  ``hello_wonderful_beautiful_world``, or something equally revolting. The
-  next section, "Your First URLconf", will shed light on how Django finds
-  this function.
+  Note que o nome da função view não importa, não é necessário nomeá-la de
+  uma maneira específica para que o django a reconheça. É chamanda de
+  ``hello``, pois esse nome indica de forma clara a essência da view, mas nada
+  impede de que fosse chamada de ``hello_wonderful_beautiful_world``, ou algo
+  do tipo. Na próxima seção, "Primeiro URLconf", será explicado como o Django
+  encontra essa função.
 
-* The function is a simple one-liner: it merely returns an ``HttpResponse``
-  object that has been instantiated with the text ``"Hello world"``.
+* A função só contém uma linha: simplesmente retorna um objeto ``HttpResponse``
+  que foi instanciado com o texto ``Hello World``.
 
-The main lesson here is this: a view is just a Python function that takes an
-``HttpRequest`` as its first parameter and returns an instance of
-``HttpResponse``. In order for a Python function to be a Django view, it must
-do these two things. (There are exceptions, but we'll get to those later.)
+A lição principal aqui é a seguinte: a view é somente uma função Python que
+recebe um ``HttpRequest`` como primeiro argumento e retorna uma instância de
+``HttpRequest``. Para que uma função Python seja uma view Django é necessário
+que faça essas duas coisas. (Existem exceções, mas chegaremos nelas depois.)
 
-Your First URLconf
-------------------
+Seu Primeiro URLconf
+--------------------
 
-If, at this point, you ran ``python manage.py runserver`` again, you'd still
-see the "Welcome to Django" message, with no trace of our "Hello world" view
-anywhere. That's because our ``mysite`` project doesn't yet know about the
-``hello`` view; we need to tell Django explicitly that we're activating this
-view at a particular URL. (Continuing our previous analogy of publishing
-static HTML files, at this point we've created the HTML file but haven't
-uploaded it to a directory on the server yet.) To hook a view function to a
-particular URL with Django, use a URLconf.
+Se, neste ponto, for executado ``python manage.py runserver`` de novo, ainda será
+exibida a mensagem "Welcome to Django", sem nenhum traço da view "Hello World".
+Isso acontece, pois o projeto ``meusite`` ainda não sabe da view ``hello``; é
+preciso mostrar explicitamente ao Django que essa view está sendo ativada em uma
+URL particular. (Continuando a analogia anterior de publicar arquivos HTML estáticos,
+neste ponto é criado o arquivo HTML, mas ainda não foi feito upload dele no servidor
+web) Para ligar uma função view para uma URL com o Django, é utilizado um URLconf.
 
-A *URLconf* is like a table of contents for your Django-powered Web site.
-Basically, it's a mapping between URLs and the view functions that
-should be called for those URLs. It's how you tell Django, "For this
-URL, call this code, and for that URL, call that code." For example, "When
-somebody visits the URL ``/foo/``, call the view function ``foo_view()``, which
-lives in the Python module ``views.py``."
+Um *URLconf* é como um índice remissivo para sua página Django. Basicamente é um
+mapeamento entre URLs e funções view que devem ser chamadas para essas URLs. É como
+dizer ao Django: "Para esta URL, chame este código, e para aquela URL, chame aquele
+código". Por exemplo: "Quando alguém visita a URL ``/foo/``, a função view ``foo_view()``
+é chamada, que está no arquivo Python ``views.py``."
 
-When you executed ``django-admin.py startproject`` in the previous chapter, the
-script created a URLconf for you automatically: the file ``urls.py``. By
-default, it looks something like this::
+Quando ``django-admin startproject`` foi executado no capítulo anterior, um URLconf 
+foi criado automaticamente: o arquivo ``urls.py``. Por padrão ele parece com
+algo assim::
 
     from django.conf.urls import patterns, include, url
 
@@ -114,37 +108,36 @@ default, it looks something like this::
         # url(r'^admin/', include(admin.site.urls)),
     )
 
-This default URLconf includes some commonly used Django features commented out,
-so that activating those features is as easy as uncommenting the appropriate
-lines. If we ignore the commented-out code, here's the essence of a URLconf::
+Este URLconf padrão inclui algumas funcionalidades comumente usadas no Django dentro
+de comentários, para que ativá-las seja tão fácil quanto descomentar as linhas certas.
+Se os códigos comentados forem ignorados, aqui está a essência de um URLconf::
 
     from django.conf.urls.defaults import patterns, include, url
 
     urlpatterns = patterns('',
     )
 
-Let's step through this code one line at a time:
+Vamos analisar linha-por-linha deste código:
 
-* The first line imports three functions from the ``django.conf.urls.defaults``
-  module, which is Django's URLconf infrastructure: ``patterns``, ``include``,
-  and ``urls``.
+* A primeira linha importa três funções do módulo ``django.conf.urls.defaults``,
+  que são a infraestrutura do URLconf do Django: ``patterns``, ``include`` e
+  ``urls``.
 
-* The second line calls the function ``patterns`` and saves the result
-  into a variable called ``urlpatterns``. The ``patterns`` function gets
-  passed only a single argument -- the empty string. (The string can be
-  used to supply a common prefix for view functions, which we'll cover in
-  :doc:`chapter08`.)
+* A segunda linha chama a função ``patterns`` e salva o resultado em uma
+  variável chamada ``urlpatterns``. A função ``patterns`` recebe um único
+  argumento: uma string vazia. (A string pode ser usada para prover um
+  prefixo comum para funções view, que será visto no :doc:`chapter08`.)
 
-The main thing to note here is the variable ``urlpatterns``, which Django
-expects to find in your URLconf module. This variable defines the mapping
-between URLs and the code that handles those URLs. By default, as we can see,
-the URLconf is empty -- your Django application is a blank slate. (As a side
-note, that's how Django knew to show you the "Welcome to Django" page in the
-last chapter. If your URLconf is empty, Django assumes you just started a new
-project and, hence, displays that message.)
+O que deve-se notar aqui é a váriavel ``urlpatterns``, que o Django espera encontrar
+em seu módulo URLconf. Essa variável define o mapeamento entre URLs e o código que
+manipula essas URLs. Por padrão, como pode-se ver, o URLconf está vazio -- sua
+aplicação Django está vazia. (Como uma nota, é desse jeito que o Django mostra 
+a página "Welcome to Django" vista no último capítulo. Se um URLconf está vazio,
+o Django assume que um novo projeto foi iniciado e, portanto, mostra essa mensagem.)
 
-To add a URL and view to the URLconf, just add a mapping between a URL
-pattern and the view function. Here's how to hook in our ``hello`` view::
+Para adicionar uma URL e view ao URLconf, só é necessário adicionar um mapeamento
+entre um URLpattern e a função view. Aqui mostra-se como fazer a ligação na nossa
+view ``hello``::
 
     from django.conf.urls.defaults import patterns, include, url
     from mysite.views import hello
@@ -153,106 +146,101 @@ pattern and the view function. Here's how to hook in our ``hello`` view::
         url(r'^hello/$', hello),
     )
 
-(Note that we've removed the commented-out code for brevity. You can choose
-to leave those lines in, if you'd like.)
+(Note que os códigos comentados foram removidos para poupar espaço. É possível
+deixar as linhas se quiser.)
 
-We made two changes here:
+Foram feitas duas mudanças aqui:
 
-* First, we imported the ``hello`` view from its module --
-  ``mysite/views.py``, which translates into ``mysite.views`` in Python
-  import syntax. (This assumes ``mysite/views.py`` is on your Python path;
-  see the sidebar for details.)
+* Primeiro,  a view ``hello`` foi importada de seu módulo ``mysite/views.py``,
+  que é acessado como ``mysite.views`` na sintaxe de importação do Python.
+  (Isso assume que ``mysite/views.py`` está no seu diretório Python; veja a 
+  barra lateral para detalhes.)
 
-* Next, we added the line ``url(r'^hello/$', hello),`` to ``urlpatterns``. This
-  line is referred to as a *URLpattern*. The ``url()`` function tells Django how
-  to handle the url that you are configuring. The first argument is a
-  pattern-matching string (a regular expression; more on this in a bit) and the
-  second argument is the view function to use for that pattern. ``url()`` can
-  take other optional arguments as well, which we'll cover in more depth in
-  :doc:`chapter08`.
+* Depois é adicionada a linha ``url(r'^ĥello/$'),`` à variável ``urlpatterns``. 
+  Essa linha é denominada *URLpattern*. A função ``url()`` avisa ao Django como 
+  lidar com a url que está sendo configurado. O primeiro argumento é uma string
+  de correspondência de padrão (pattern-matching, uma expressão regular; será
+  explicado melhor mais a frente) e o segundo argumento é a função view para 
+  aquele padrão. ``url()`` pode levar outros argumentos, que serão vistos mais
+  profundamente no :doc:`chapter08`.
 
-.. note::
+.. nota::
 
-  One more important detail we've introduced here is that ``r`` character in
-  front of the regular expression string. This tells Python that the string is a
-  "raw string" -- its contents should not interpret backslashes. In normal
-  Python strings, backslashes are used for escaping special characters -- such
-  as in the string ``'\n'``, which is a one-character string containing a
-  newline. When you add the ``r`` to make it a raw string, Python does not apply
-  its backslash escaping -- so, ``r'\n'`` is a two-character string containing a
-  literal backslash and a lowercase "n". There's a natural collision between
-  Python's usage of backslashes and the backslashes that are found in regular
-  expressions, so it's strongly suggested that you use raw strings any time
-  you're defining a regular expression in Python. All of the URLpatterns in this
-  book will be raw strings.
+  Um detalhe importante que foi introduzido é o caracter ``r`` no começo da string
+  de expressão regular. Ele avisa o Python que a string é uma "raw string" -- seu
+  conteúdo não deve interpretar contrabarras -- como na string ``'\n'``, que é uma
+  string com um único caracter contendo uma nova linha. Quando ``r`` é adicionado,
+  o Python não faz a substituição, então ``r'\n'`` é uma string composta de dois
+  caracteres contendo uma contrabarra e um "n". Há uma colisão natural entre o uso
+  de contrabarras pelo Python e as contrabarras utilizadas em expressões regulares,
+  então é fortemente recomendado utilizar raw strings sempre que for definir
+  expressões regulares em Python. Todos os URLpatterns neste livro serão raw strings.
 
-In a nutshell, we just told Django that any request to the URL ``/hello/`` should
-be handled by the ``hello`` view function.
+Em poucas palavras, foi instruído ao Django que qualquer solicitação feita a URL
+``/hello/`` deve ser manuseada pela função view ``hello``.
 
-.. admonition:: Your Python Path
+.. aviso:: Diretório Python
 
-    Your *Python path* is the list of directories on your system where Python
-    looks when you use the Python ``import`` statement.
+    O  *diretório Python* é a lista de diretório do sistema que o Python
+    procura quando a instrução ``import`` é utilizada.
 
-    For example, let's say your Python path is set to ``['',
-    '/usr/lib/python2.7/site-packages', '/home/username/djcode']``. If you
-    execute the Python statement ``from foo import bar``, Python will look for
-    a module called ``foo.py`` in the current directory. (The first entry in the
-    Python path, an empty string, means "the current directory.") If that file
-    doesn't exist, Python will look for the file
-    ``/usr/lib/python2.7/site-packages/foo.py``. If that file doesn't exist, it
-    will try ``/home/username/djcode/foo.py``. Finally, if *that* file doesn't
-    exist, it will raise ``ImportError``.
+    Por exemplo, supondo que o diretório Python está em ``['', '
+    '/usr/lib/python2.7/site-packages', '/home/username/djcode']``. Caso a instrução
+    ``from foo import bar`` seja executada, o Python procurará um módulo chamado
+    ``foo.py`` no diretório atual. (A primeira ocorrência no diretório Python, uma
+    string vazia, significa "o diretório atual.") Se o arquivo não existir, o Python
+    procurará pelo arquivo ``/usr/lib/python2.7/site-packages/foo.py``. Se esse
+    arquivo também não existir, o Python tentará procurar pelo arquivo
+    ``/home/username/djcode/foo.py``. Por fim, se *aquele* arquivo não existir, será
+    levantado um ``ImportError``.
 
-    If you're interested in seeing the value of your Python path, start the
-    Python interactive interpreter and type this::
+    Para descobrir seu diretório Python, inicie o interpretador interativo Python
+    e digite isso::
 
         >>> import sys
         >>> print sys.path
 
-    Generally you don't have to worry about setting your Python path -- Python
-    and Django take care of things for you automatically behind the scenes.
-    (Setting the Python path is one of the things that the ``manage.py`` script
-    does.)
+    Geralmente não é necessário se preocupar com o diretório Python -- o Python e
+    Django tomam conta disso automaticamente nos bastidores. (Configurar o diretório
+    Python é uma das tarefas que o script ``manage.py`` faz.)
 
-It's worth discussing the syntax of this URLpattern, as it may not be
-immediately obvious. Although we want to match the URL ``/hello/``, the pattern
-looks a bit different than that. Here's why:
+Vale a pena discutir a sintaxe desse URLpattern, pois pode não parecer óbvio a 
+primeira vista. Apesar de querer encontrar a URL ``/hello/``, o padrão é um pouco
+diferente disso. Aqui está o por quê:
 
-* Django removes the slash from the front of every incoming URL before it
-  checks the URLpatterns. This means that our URLpattern doesn't include
-  the leading slash in ``/hello/``. (At first, this may seem unintuitive,
-  but this requirement simplifies things -- such as the inclusion of
-  URLconfs within other URLconfs, which we'll cover in Chapter 8.)
+* O Django remove a barra do começo de cada URL antes de checar os 
+  URLpatterns. Isto significa que o URLpattern visto no capítulo não
+  possui uma barra no começo em ``/hello/``. (A princípio isso pode
+  parecer nada intuitivo, mas isso simplifica as coisas, como a inclusão
+  de URLconfs dentro de outros URLconfs, que será visto no Capítulo 8.)
 
-* The pattern includes a caret (``^``) and a dollar sign (``$``). These are
-  regular expression characters that have a special meaning: the caret
-  means "require that the pattern matches the start of the string," and the
-  dollar sign means "require that the pattern matches the end of the
-  string."
+* O padrão inclui um acento circunflexo (``^``) e um sifrão (``$``). Esses
+  são caracteres que possuem signficado especial em expressões regulares:
+  o acento circunflexo signfica "o padrão deve casar com o começo da string"
+  e o sifrão significa "o padrão deve casar com o fim da string."
 
-  This concept is best explained by example. If we had instead used the
-  pattern ``'^hello/'`` (without a dollar sign at the end), then *any* URL
-  starting with ``/hello/`` would match, such as ``/hello/foo`` and
-  ``/hello/bar``, not just ``/hello/``. Similarly, if we had left off the
-  initial caret character (i.e., ``'hello/$'``), Django would match *any*
-  URL that ends with ``hello/``, such as ``/foo/bar/hello/``. If we had
-  simply used ``hello/``, without a caret *or* dollar sign, then any URL
-  containing ``hello/`` would match, such as ``/foo/hello/bar``. Thus, we
-  use both the caret and dollar sign to ensure that only the URL
-  ``/hello/`` matches -- nothing more, nothing less.
+  Esse conceito é melhor explicado através de um exemplo. Se ao invés de
+  usar o padrão ``'^hello/'`` (sem o sifrão no final), então *qualquer* URL
+  começada por ``/hello/`` seria casa, como ``/hello/foo`` e ``/hello/bar``,
+  e não somente ``/hello/``. Semelhantemente, se o acento circunflexo fosse
+  retirado (ou seja, ``'hello/$'``), o Django casaria *qualquer* URL
+  terminada em ``hello/``, como ``/foo/bar/hello/``. Se fosse usado ``hello/``,
+  sem acento circunflexo *ou* sifrão, então qualquer URL que contesse
+  ``hello/`` seria casada, como ``/foo/hello/bar``. Desse modo usamos tanto
+  o acento circunflexo quanto o sifão para garantir que somente a URL
+  ``/hello/`` seja casada -- nada mais, nada menos.
 
-  Most of your URLpatterns will start with carets and end with dollar
-  signs, but it's nice to have the flexibility to perform more
-  sophisticated matches.
+  A maioria dos URLpatterns começarão com acentos circunflexos e terminarão
+  com sifrão, mas é interessante ter a flexibilidade de poder casar de formas
+  mais sofisticadas.
 
-  You may be wondering what happens if someone requests the URL ``/hello``
-  (that is, *without* a trailing slash). Because our URLpattern requires a
-  trailing slash, that URL would *not* match. However, by default, any
-  request to a URL that *doesn't* match a URLpattern and *doesn't* end with
-  a slash will be redirected to the same URL with a trailing slash. (This
-  is regulated by the ``APPEND_SLASH`` Django setting, which is covered in
-  Appendix D.)
+  Pode estar se perguntando o que acontece se a URL ``/hello`` (isto é, *sem*
+  a barra no final) for requisitada. Essa URL *não* casaria, pois o URLpattern
+  exige uma barra no fim. Entretanto, por padrão, qualquer requisição feita a
+  uma URL que *não* casa com a URLpattern e *não* termina com uma barra é
+  redirecionada para a mesma URL com uma barra no final. (Isso é controlado
+  pela configuração ``APPEND_SLASH`` do Django, que é explicada no
+  Apêndice D.)
 
   If you're the type of person who likes all URLs to end with slashes
   (which is the preference of Django's developers), all you'll need to do
