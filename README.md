@@ -67,7 +67,7 @@ Appendix C: Generic View Reference - aberto
 
 Appendix D: Settings - aberto
 
-Appendix E: Built-in Template Tags and Filters - aberto
+Appendix E: Built-in Template Tags and Filters - [@filipe] (https://github.com/crfh0m3r)
 
 Appendix F: The django-admin Utility - aberto
 
