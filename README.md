@@ -51,7 +51,7 @@ Chapter 15: Caching - aberto
 
 Chapter 16: django.contrib - aberto
 
-Chapter 17: Middleware - aberto
+Chapter 17: Middleware [@danny] (https://github.com/bkcherry)
 
 Chapter 18: Integrating with Legacy Databases and Applications - [@fabricio] (https://github.com/fabrimatt)
 
@@ -71,7 +71,7 @@ Appendix E: Built-in Template Tags and Filters - [@filipe] (https://github.com/c
 
 Appendix F: The django-admin Utility - aberto
 
-Appendix G: Request and Response Objects - aberto
+Appendix G: Request and Response Objects [@danny] (https://github.com/bkcherry)
 
 License & Copyright - aberto
 
