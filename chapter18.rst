@@ -1,18 +1,19 @@
 ==============================================================
-Chapter 18: Integrating with Legacy Databases and Applications
+Capítulo 18: Integrando Banco de Dados Legados e Aplicações
 ==============================================================
 
-Django is best suited for so-called green-field development -- that is, starting
-projects from scratch, as if you were constructing a building on a fresh field
-of green grass. But despite the fact that Django favors from-scratch projects,
-it's possible to integrate the framework into legacy databases and
-applications. This chapter explains a few integration strategies.
+Django é mais adequado para o chamado desenvolvimento green-field - isto é, começando
+projetos a partir do zero, como se você estivesse construindo um edifício em um campo fresco
+da grama verde. Mas, apesar do fato do Django favorecer projetos a partir do zero,
+é possível integrar o framework à bancos de dados legados e
+aplicações. Este capítulo explica a algumas estratégias de integração.
 
-Integrating with a Legacy Database
+
+Integrando com banco de dados Legados
 ==================================
 
-Django's database layer generates SQL schemas from Python code -- but with
-a legacy database, you already have the SQL schemas. In such a case,
+A camada de banco de dados do Django gera esquemas SQL a partir do código python -- mas com 
+banco de dados legado, já exite os esquemas SQL. In such a case,
 you'll need to create models for your existing database tables. For this
 purpose, Django comes with a tool that can generate model code by reading your
 database table layouts. This tool is called ``inspectdb``, and you can call it
