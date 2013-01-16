@@ -1,66 +1,58 @@
 ====================
-Chapter 4: Templates
+Capítulo 4: Templates
 ====================
 
-In the previous chapter, you may have noticed something peculiar in how we
-returned the text in our example views. Namely, the HTML was hard-coded directly
-in our Python code, like this::
+No capítulo anterior, você deve ter notado algo peculiar em como nós retornamos o texto em nossos exemplos de views. Isto é, o HTML foi codificado diretamente em nosso código Python, tal como::
 
     def current_datetime(request):
         now = datetime.datetime.now()
-        html = "<html><body>It is now %s.</body></html>" % now
+        html = "<html><body>Agora é %s.</body></html>" % now
         return HttpResponse(html)
 
-Although this technique was convenient for the purpose of explaining how views
-work, it's not a good idea to hard-code HTML directly in your views. Here's
-why:
+Embora essa técnica seja conveniente para o propósito de demonstrar como as views trabalham, não é uma boa idéia codificar HTML diretamente em suas views. Aqui está o por que:
 
-* Any change to the design of the page requires a change to
-  the Python code. The design of a site tends to change far more frequently
-  than the underlying Python code, so it would be convenient if
-  the design could change without needing to modify the Python code.
+* Qualquer modificação no design da página requer modificação no código Python.
+  O design de um site tende a mudar com mais freqüência do que o código Python subjacente, por isso seria coveniente se o design pude-se ser modificado sem precisar modificar o código Python.
 
-* Writing Python code and designing HTML are two different disciplines, and
-  most professional Web development environments split these
-  responsibilities between separate people (or even separate departments).
-  Designers and HTML/CSS coders shouldn't be required to edit Python code
-  to get their job done.
+* Escrever código Python e design HTML são duas diciplinas diferentes,
+  e a maioria dos ambientes de desenvolvimento Web professional dividem essas
+  responsabilidades entre pessoas distintas (ou departamentos distintos).
+  Designers e codificadores HTML/CSS não devem necessitar editar código Python
+  para fazer o seu trabalho.
 
-* It's most efficient if programmers can work on Python code and designers
-  can work on templates at the same time, rather than one person waiting
-  for the other to finish editing a single file that contains both Python
-  and HTML.
+* É mais eficiente se programadores trabalharem em código Python e designers
+  em templates, ao mesmo tempo, ao em vez de uma pessoa esperar a outra
+  terminar a edição de um simples arquivo que contém código Python e HTML.
 
-For these reasons, it's much cleaner and more maintainable to separate the
-design of the page from the Python code itself. We can do this with Django's
-*template system*, which we discuss in this chapter.
+Por essas razões, é muito mais limpo e sustentável separar o design da página
+do próprio código Python. Nós podemos fazer isso com o *sistema de template* do Django,
+que discutiremos neste capítulo.
 
-Template System Basics
-======================
+Sistema básico de template
+==========================
 
-A Django template is a string of text that is intended to separate the
-presentation of a document from its data. A template defines placeholders and
-various bits of basic logic (template tags) that regulate how the document
-should be displayed. Usually, templates are used for producing HTML, but Django
-templates are equally capable of generating any text-based format.
+Um template Django é uma seqüência de texto que se destina a separar a
+apresentação de um documento a partir dos seus dados. Um template define espaços
+reservados e vários pedaços básicos de lógica (template tags) que determinam a forma
+como o documento deve ser exibido. Normalmente, templates são usados para gerar HTML,
+mas os templates do Django são capazes de gerar qualquer formato baseado em texto.
 
-Let's start with a simple example template. This Django template describes an
-HTML page that thanks a person for placing an order with a company. Think of it
-as a form letter::
+Vamos iniciar com um exemplo simples de template. Esse template Django descreve uma
+página HTML que agradece a uma pessoa por realizar um pedido de uma empresa. Imagine
+isso como uma carta formulário::
 
     <html>
-    <head><title>Ordering notice</title></head>
+    <head><title>Ordem</title></head>
 
     <body>
 
-    <h1>Ordering notice</h1>
+    <h1>Ordem</h1>
 
-    <p>Dear {{ person_name }},</p>
+    <p>Prezado {{ person_name }},</p>
 
-    <p>Thanks for placing an order from {{ company }}. It's scheduled to
-    ship on {{ ship_date|date:"F j, Y" }}.</p>
+    <p>Obrigado por fazer o pedido de {{ company }}. Está agendado para enviar em {{ ship_date|date:"F j, Y" }}.</p>
 
-    <p>Here are the items you've ordered:</p>
+    <p>Aqui estão os itens que você encomendou::</p>
 
     <ul>
     {% for item in item_list %}
@@ -69,24 +61,22 @@ as a form letter::
     </ul>
 
     {% if ordered_warranty %}
-        <p>Your warranty information will be included in the packaging.</p>
+        <p>A sua informação de garantia será incluída na embalagem.</p>
     {% else %}
-        <p>You didn't order a warranty, so you're on your own when
-        the products inevitably stop working.</p>
+        <p>Você não solicitou garantia, sendo assim é por sua conta quando o produto parar de funcionar.</p>
     {% endif %}
 
-    <p>Sincerely,<br />{{ company }}</p>
+    <p>Sinceramente,<br />{{ company }}</p>
 
     </body>
     </html>
 
-This template is basic HTML with some variables and template tags thrown in.
-Let's step through it:
+Este template é um HTML básico com algumas variáveis e seus template tags jogado os
+valores para dentro. Vamos análisa-lo:
 
-* Any text surrounded by a pair of braces (e.g., ``{{ person_name }}``) is a
-  *variable*. This means "insert the value of the variable with the given
-  name." (How do we specify the values of the variables? We'll get to that in
-  a moment.)
+* Qualquer texto cercado por um par de chaves (e.g., ``{{ person_name }}``) é
+  uma *váriavel*. Isto significa "insira o valor da váriavel com o nome dado."
+  (Como podemos especificar os valores das váriaveis? Nós vamos chegar nisso em breve.)
 
 * Any text that's surrounded by curly braces and percent signs (e.g., ``{%
   if ordered_warranty %}``) is a *template tag*. The definition of a tag is
