@@ -19,7 +19,7 @@ STATUS DA TRADUÇÃO
 About this book @londerson
 Introduction - [@londerson] (https://github.com/londerson)
 
-Chapter 1: Introduction to Django - [@londerson] (https://github.com/londerson)
+Chapter 1: Introduction to Django - traduzido por: [@londerson] (https://github.com/londerson) - Revisão Aberta
 
 Chapter 2: Getting Started - [@londerson] (https://github.com/londerson)
 
