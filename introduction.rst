@@ -1,39 +1,39 @@
 ============
-Introduction
+Introdução
 ============
 
-In the early days, Web developers wrote every page by hand. Updating a Web site
-meant editing HTML; a "redesign" involved redoing every single page, one at a
-time.
+No início, os desenvolvedores web escreviam todas as páginas na mão. Atualizar um
+website significava editar código HTML; Um "redesenho" envolvendo cada uma das páginas, 
+uma de cada vez.
 
-As Web sites grew and became more ambitious, it quickly became obvious that that
-situation was tedious, time-consuming, and ultimately untenable. A group of
-enterprising hackers at NCSA (the National Center for Supercomputing
-Applications, where Mosaic, the first graphical Web browser, was developed)
-solved this problem by letting the Web server spawn external programs that could
-dynamically generate HTML. They called this protocol the Common Gateway
-Interface, or CGI, and it changed the Web forever.
+Como os websites cresceram e se tornaram mais ambiciosos, o que rapidamente se tornou
+óbvio é que esta situação era tediosa, custosa, e insuportável. Um grupo de 
+hackers empreendedores da NCSA (the National Center for Supercomputing
+Applications, lugar aonde o Mosaic, conhecido como o primeiro web browser gráfico,
+foi desenvolvido) resolveram este problema ao permitir que um servidor web criasse 
+programas externos que poderiam gerar html dinâmicamente. Eles chamaram esse protocolo
+de Common Gateway Interface, ou CGI, e isso mudou a Web para sempre.
 
-It's hard now to imagine what a revelation CGI must have been: instead of
-treating HTML pages as simple files on disk, CGI allows you to think of your
-pages as resources generated dynamically on demand. The development of CGI
-ushered in the first generation of dynamic Web sites.
+É difícil de imaginar agora como deve ter sido a revelação do CGI, que em vez de tratar
+páginas HTML como simpes arquivos no disco, permitia que você pensasse em suas páginas
+como recursos gerados automáticamente sob demanda. O desenvolvimento do CGI inalgurou 
+a primeira geração de sites dinâmicos.
 
-However, CGI has its problems: CGI scripts need to contain a lot of repetitive
-"boilerplate" code, they make code reuse difficult, and they can be difficult
-for first-time developers to write and understand.
+Contudo, o CGI tem os seus problemas: scripts CGI prescisam contem um monte de códigos
+repetitivos, tornando os códigos reusáveis difíceis, dificultando para os desenvolvedores
+escrever e entênde-los.
 
-PHP fixed many of these problems, and it took the world by storm -- it's now by
-far the most popular tool used to create dynamic Web sites, and dozens of
-similar languages and environments (ASP, JSP, etc.) followed PHP's design
-closely. PHP's major innovation is its ease of use: PHP code is simply embedded
-into plain HTML; the learning curve for someone who already knows HTML is
-extremely shallow.
+PHP resolveu muito desses problemas, e isso surpreendeu o mundo-- pois é agora 
+de longe a ferramente mais popular para a criação de sites dinâmicos, e dezenas de
+ambientes e linguagens similares(ASP, JSP, etc), seguem o PHP de perto. A maior 
+inovação do PHP é que ele é fácil de usar, o código pode ser fácilmente incorporado em
+um texto HTML, e a curva de aprendizado para alguém que já conhece HTML é extremamente
+baixa.
 
-But PHP has its own problems; its very ease of use encourages sloppy,
-repetitive, ill-conceived code. Worse, PHP does little to protect programmers
-from security vulnerabilities, and thus many PHP developers found themselves
-learning about security only once it was too late.
+Mas o PHP tem os seus próprios problemas, a sua fácil ultilização incentiva o desleixo,
+repetição, e códigos mal concebidos. E o pior é que o PHP faz pouco para proteger os 
+desenvolvedores de vulnerabilidades de segurança. Sendo assim muitos desenvolvedores PHP
+encontran-se aprendendo sobre segurança somente quando já é tarde demais.
 
 These and similar frustrations led directly to the development of the current
 crop of "third-generation" Web development frameworks. These frameworks --
