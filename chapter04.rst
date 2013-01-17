@@ -129,70 +129,68 @@ Here is the most basic way you can use Django's template system in Python code:
    template as a string, with all of the variables and template tags
    evaluated according to the context.
 
-In code, here's what that looks like::
+Em código, é assim que se parece::
 
     >>> from django import template
-    >>> t = template.Template('My name is {{ name }}.')
+    >>> t = template.Template('Meu nome é {{ name }}.')
     >>> c = template.Context({'name': 'Adrian'})
     >>> print t.render(c)
-    My name is Adrian.
+    Meu nome é Adrian.
     >>> c = template.Context({'name': 'Fred'})
     >>> print t.render(c)
-    My name is Fred.
+    Meu nome é Fred.
 
-The following sections describe each step in much more detail.
+As sessões seguintes descrevem cada etapa com muito mais detalhe.
 
-Creating Template Objects
+Criando objetos Template
 -------------------------
 
-The easiest way to create a ``Template`` object is to instantiate it directly.
-The ``Template`` class lives in the ``django.template`` module, and the
-constructor takes one argument, the raw template code. Let's dip into the Python
-interactive interpreter to see how this works in code.
+O caminho mais fácil para criar um objeto ``Template`` é instância-lo diretamente.
+A classe ``Template`` está no módulo ``django.template``, e o construtor tem um
+argumento, o raw template code. Vamos mergulhar no interpretador interativo do Python
+para ver como isto funciona no código.
 
-From the ``mysite`` project directory created by ``django-admin.py
-startproject`` (as covered in Chapter 2), type ``python manage.py shell`` to
-start the interactive interpreter.
+Apartir do diretorio ``mysite`` criado por ``django-admin.py startproject`` (como
+descrito no capítulo 2), digite ``python manage.py shell`` para iniciar o interpretador
+interativo.
 
-.. admonition:: A special Python prompt
+.. admonition::  Um prompt Python especial
 
-    If you've used Python before, you may be wondering why we're running
-    ``python manage.py shell`` instead of just ``python``. Both commands will
-    start the interactive interpreter, but the ``manage.py shell`` command has
-    one key difference: before starting the interpreter, it tells Django which
-    settings file to use. Many parts of Django, including the template system,
-    rely on your settings, and you won't be able to use them unless the
-    framework knows which settings to use.
+    Se você anteriormente usou Python, você pode estar se perguntando porque
+    estamos executando ``python manage.py shell`` ao invés de apenas``python``.
+    Ambos os comandos iniciam o interpretador interativo, mas o comando ``manage.py shell``
+    possui uma diferença chave: antes de iniciar o interpretador, ele informa ao Django
+    qual arquivo de configuração usar. Muitas partes do Django, incluindo o sistema de
+    template, dependem de suas configurações, e você não conseguirá usá-los, a menos
+    que o framework saiba quais configurações usar.
 
-    If you're curious, here's how it works behind the scenes. Django looks for
-    an environment variable called ``DJANGO_SETTINGS_MODULE``, which should be
-    set to the import path of your ``settings.py``. For example,
-    ``DJANGO_SETTINGS_MODULE`` might be set to ``'mysite.settings'``, assuming
-    ``mysite`` is on your Python path.
+    Se você está curioso, aqui está como funciona por detrás das cenas. O Django
+    procura por uma variável de ambiente chamada ``DJANGO_SETTINGS_MODULE``, que deve
+    ser definido para o caminho de importação do seu ``settings.py``. Por exemplo,
+    ``DJANGO_SETTINGS_MODULE`` deve ser definido como ``'mysite.settings'``, assumindo
+    que ``mysite`` está no seu caminho Python.
 
-    When you run ``python manage.py shell``, the command takes care of setting
-    ``DJANGO_SETTINGS_MODULE`` for you. We're encouraging you to use
-    ``python manage.py shell`` in these examples so as to minimize the amount
-    of tweaking and configuring you have to do.
+    Quando você executa ``python manage.py shell``, o comando se preocupa em definir
+    a variável ``DJANGO_SETTINGS_MODULE`` para você. Nós estamos encorajando você a usar
+    ``python manage.py shell`` nestes exemplos, de modo que minimize a quantidade de ajustes e configurações que você deva fazer.
 
-Let's go through some template system basics::
+Vamos passar por alguns princípios básicos do sistema de template::
 
     >>> from django.template import Template
-    >>> t = Template('My name is {{ name }}.')
+    >>> t = Template('Meu nome é {{ name }}.')
     >>> print t
 
-If you're following along interactively, you'll see something like this::
+Se você está seguindo a forma interativa, você vai ver algo como isso::
 
     <django.template.Template object at 0xb7d5f24c>
 
-That ``0xb7d5f24c`` will be different every time, and it isn't relevant; it's a
-Python thing (the Python "identity" of the ``Template`` object, if you must
-know).
+O ``0xb7d5f24c`` será diferente toda vez, e isso não é relevante; é algo do
+Python (a "identidade" Python do objeto ``Template``, se você precisar saber).
 
-When you create a ``Template`` object, the template system compiles the raw
-template code into an internal, optimized form, ready for rendering. But if your
-template code includes any syntax errors, the call to ``Template()`` will cause
-a ``TemplateSyntaxError`` exception::
+Quando você cria um objeto ``Template``, o sistema de template compila o código
+do template cru em uma forma otimizada, pronta para renderização. Mas se o código
+do seu template possuir qualquer erro de sintaxe, a chamada de ``Template()`` irá
+causar uma exceção ``TemplateSyntaxError``::
 
     >>> from django.template import Template
     >>> t = Template('{% notatag %}')
@@ -201,18 +199,18 @@ a ``TemplateSyntaxError`` exception::
       ...
     django.template.TemplateSyntaxError: Invalid block tag: 'notatag'
 
-The term "block tag" here refers to ``{% notatag %}``. "Block tag" and
-"template tag" are synonymous.
+O termo "block tag" aqui se refere a ``{% notatag %}``. "Block tag" e
+"template tag" são sinônimos.
 
-The system raises a ``TemplateSyntaxError`` exception for any of the following
-cases:
+O sistema gera uma exceção ``TemplateSyntaxError`` para qualquer um dos seguintes
+casos:
 
-* Invalid tags
-* Invalid arguments to valid tags
-* Invalid filters
-* Invalid arguments to valid filters
-* Invalid template syntax
-* Unclosed tags (for tags that require closing tags)
+* Tags inválidas
+* Argumentos inválidos para tags válidas
+* Filtros inválidos
+* Argumentos inválidos para filtros válidos
+* Sintaxe de template inválido
+* Tags não fechadas (para tags que requerem fechamento)
 
 Rendering a Template
 --------------------
