@@ -1,66 +1,58 @@
 ====================
-Chapter 4: Templates
+Capítulo 4: Templates
 ====================
 
-In the previous chapter, you may have noticed something peculiar in how we
-returned the text in our example views. Namely, the HTML was hard-coded directly
-in our Python code, like this::
+No capítulo anterior, você deve ter notado algo peculiar em como nós retornamos o texto em nossos exemplos de views. Isto é, o HTML foi codificado diretamente em nosso código Python, tal como::
 
     def current_datetime(request):
         now = datetime.datetime.now()
-        html = "<html><body>It is now %s.</body></html>" % now
+        html = "<html><body>Agora é %s.</body></html>" % now
         return HttpResponse(html)
 
-Although this technique was convenient for the purpose of explaining how views
-work, it's not a good idea to hard-code HTML directly in your views. Here's
-why:
+Embora essa técnica seja conveniente para o propósito de demonstrar como as views trabalham, não é uma boa idéia codificar HTML diretamente em suas views. Aqui está o por que:
 
-* Any change to the design of the page requires a change to
-  the Python code. The design of a site tends to change far more frequently
-  than the underlying Python code, so it would be convenient if
-  the design could change without needing to modify the Python code.
+* Qualquer modificação no design da página requer modificação no código Python.
+  O design de um site tende a mudar com mais freqüência do que o código Python subjacente, por isso seria coveniente se o design pude-se ser modificado sem precisar modificar o código Python.
 
-* Writing Python code and designing HTML are two different disciplines, and
-  most professional Web development environments split these
-  responsibilities between separate people (or even separate departments).
-  Designers and HTML/CSS coders shouldn't be required to edit Python code
-  to get their job done.
+* Escrever código Python e design HTML são duas diciplinas diferentes,
+  e a maioria dos ambientes de desenvolvimento Web professional dividem essas
+  responsabilidades entre pessoas distintas (ou departamentos distintos).
+  Designers e codificadores HTML/CSS não devem necessitar editar código Python
+  para fazer o seu trabalho.
 
-* It's most efficient if programmers can work on Python code and designers
-  can work on templates at the same time, rather than one person waiting
-  for the other to finish editing a single file that contains both Python
-  and HTML.
+* É mais eficiente se programadores trabalharem em código Python e designers
+  em templates, ao mesmo tempo, ao em vez de uma pessoa esperar a outra
+  terminar a edição de um simples arquivo que contém código Python e HTML.
 
-For these reasons, it's much cleaner and more maintainable to separate the
-design of the page from the Python code itself. We can do this with Django's
-*template system*, which we discuss in this chapter.
+Por essas razões, é muito mais limpo e sustentável separar o design da página
+do próprio código Python. Nós podemos fazer isso com o *sistema de template* do Django,
+que discutiremos neste capítulo.
 
-Template System Basics
-======================
+Sistema básico de template
+==========================
 
-A Django template is a string of text that is intended to separate the
-presentation of a document from its data. A template defines placeholders and
-various bits of basic logic (template tags) that regulate how the document
-should be displayed. Usually, templates are used for producing HTML, but Django
-templates are equally capable of generating any text-based format.
+Um template Django é uma seqüência de texto que se destina a separar a
+apresentação de um documento a partir dos seus dados. Um template define espaços
+reservados e vários pedaços básicos de lógica (template tags) que determinam a forma
+como o documento deve ser exibido. Normalmente, templates são usados para gerar HTML,
+mas os templates do Django são capazes de gerar qualquer formato baseado em texto.
 
-Let's start with a simple example template. This Django template describes an
-HTML page that thanks a person for placing an order with a company. Think of it
-as a form letter::
+Vamos iniciar com um exemplo simples de template. Esse template Django descreve uma
+página HTML que agradece a uma pessoa por realizar um pedido de uma empresa. Imagine
+isso como uma carta formulário::
 
     <html>
-    <head><title>Ordering notice</title></head>
+    <head><title>Ordem</title></head>
 
     <body>
 
-    <h1>Ordering notice</h1>
+    <h1>Ordem</h1>
 
-    <p>Dear {{ person_name }},</p>
+    <p>Prezado {{ person_name }},</p>
 
-    <p>Thanks for placing an order from {{ company }}. It's scheduled to
-    ship on {{ ship_date|date:"F j, Y" }}.</p>
+    <p>Obrigado por fazer o pedido de {{ company }}. Está agendado para enviar em {{ ship_date|date:"F j, Y" }}.</p>
 
-    <p>Here are the items you've ordered:</p>
+    <p>Aqui estão os itens que você encomendou::</p>
 
     <ul>
     {% for item in item_list %}
@@ -69,24 +61,22 @@ as a form letter::
     </ul>
 
     {% if ordered_warranty %}
-        <p>Your warranty information will be included in the packaging.</p>
+        <p>A sua informação de garantia será incluída na embalagem.</p>
     {% else %}
-        <p>You didn't order a warranty, so you're on your own when
-        the products inevitably stop working.</p>
+        <p>Você não solicitou garantia, sendo assim é por sua conta quando o produto parar de funcionar.</p>
     {% endif %}
 
-    <p>Sincerely,<br />{{ company }}</p>
+    <p>Sinceramente,<br />{{ company }}</p>
 
     </body>
     </html>
 
-This template is basic HTML with some variables and template tags thrown in.
-Let's step through it:
+Este template é um HTML básico com algumas variáveis e seus template tags jogado os
+valores para dentro. Vamos análisa-lo:
 
-* Any text surrounded by a pair of braces (e.g., ``{{ person_name }}``) is a
-  *variable*. This means "insert the value of the variable with the given
-  name." (How do we specify the values of the variables? We'll get to that in
-  a moment.)
+* Qualquer texto cercado por um par de chaves (e.g., ``{{ person_name }}``) é
+  uma *váriavel*. Isto significa "insira o valor da váriavel com o nome dado."
+  (Como podemos especificar os valores das váriaveis? Nós vamos chegar nisso em breve.)
 
 * Any text that's surrounded by curly braces and percent signs (e.g., ``{%
   if ordered_warranty %}``) is a *template tag*. The definition of a tag is
@@ -139,70 +129,68 @@ Here is the most basic way you can use Django's template system in Python code:
    template as a string, with all of the variables and template tags
    evaluated according to the context.
 
-In code, here's what that looks like::
+Em código, é assim que se parece::
 
     >>> from django import template
-    >>> t = template.Template('My name is {{ name }}.')
+    >>> t = template.Template('Meu nome é {{ name }}.')
     >>> c = template.Context({'name': 'Adrian'})
     >>> print t.render(c)
-    My name is Adrian.
+    Meu nome é Adrian.
     >>> c = template.Context({'name': 'Fred'})
     >>> print t.render(c)
-    My name is Fred.
+    Meu nome é Fred.
 
-The following sections describe each step in much more detail.
+As sessões seguintes descrevem cada etapa com muito mais detalhe.
 
-Creating Template Objects
+Criando objetos Template
 -------------------------
 
-The easiest way to create a ``Template`` object is to instantiate it directly.
-The ``Template`` class lives in the ``django.template`` module, and the
-constructor takes one argument, the raw template code. Let's dip into the Python
-interactive interpreter to see how this works in code.
+O caminho mais fácil para criar um objeto ``Template`` é instância-lo diretamente.
+A classe ``Template`` está no módulo ``django.template``, e o construtor tem um
+argumento, o raw template code. Vamos mergulhar no interpretador interativo do Python
+para ver como isto funciona no código.
 
-From the ``mysite`` project directory created by ``django-admin.py
-startproject`` (as covered in Chapter 2), type ``python manage.py shell`` to
-start the interactive interpreter.
+Apartir do diretorio ``mysite`` criado por ``django-admin.py startproject`` (como
+descrito no capítulo 2), digite ``python manage.py shell`` para iniciar o interpretador
+interativo.
 
-.. admonition:: A special Python prompt
+.. admonition::  Um prompt Python especial
 
-    If you've used Python before, you may be wondering why we're running
-    ``python manage.py shell`` instead of just ``python``. Both commands will
-    start the interactive interpreter, but the ``manage.py shell`` command has
-    one key difference: before starting the interpreter, it tells Django which
-    settings file to use. Many parts of Django, including the template system,
-    rely on your settings, and you won't be able to use them unless the
-    framework knows which settings to use.
+    Se você anteriormente usou Python, você pode estar se perguntando porque
+    estamos executando ``python manage.py shell`` ao invés de apenas``python``.
+    Ambos os comandos iniciam o interpretador interativo, mas o comando ``manage.py shell``
+    possui uma diferença chave: antes de iniciar o interpretador, ele informa ao Django
+    qual arquivo de configuração usar. Muitas partes do Django, incluindo o sistema de
+    template, dependem de suas configurações, e você não conseguirá usá-los, a menos
+    que o framework saiba quais configurações usar.
 
-    If you're curious, here's how it works behind the scenes. Django looks for
-    an environment variable called ``DJANGO_SETTINGS_MODULE``, which should be
-    set to the import path of your ``settings.py``. For example,
-    ``DJANGO_SETTINGS_MODULE`` might be set to ``'mysite.settings'``, assuming
-    ``mysite`` is on your Python path.
+    Se você está curioso, aqui está como funciona por detrás das cenas. O Django
+    procura por uma variável de ambiente chamada ``DJANGO_SETTINGS_MODULE``, que deve
+    ser definido para o caminho de importação do seu ``settings.py``. Por exemplo,
+    ``DJANGO_SETTINGS_MODULE`` deve ser definido como ``'mysite.settings'``, assumindo
+    que ``mysite`` está no seu caminho Python.
 
-    When you run ``python manage.py shell``, the command takes care of setting
-    ``DJANGO_SETTINGS_MODULE`` for you. We're encouraging you to use
-    ``python manage.py shell`` in these examples so as to minimize the amount
-    of tweaking and configuring you have to do.
+    Quando você executa ``python manage.py shell``, o comando se preocupa em definir
+    a variável ``DJANGO_SETTINGS_MODULE`` para você. Nós estamos encorajando você a usar
+    ``python manage.py shell`` nestes exemplos, de modo que minimize a quantidade de ajustes e configurações que você deva fazer.
 
-Let's go through some template system basics::
+Vamos passar por alguns princípios básicos do sistema de template::
 
     >>> from django.template import Template
-    >>> t = Template('My name is {{ name }}.')
+    >>> t = Template('Meu nome é {{ name }}.')
     >>> print t
 
-If you're following along interactively, you'll see something like this::
+Se você está seguindo a forma interativa, você vai ver algo como isso::
 
     <django.template.Template object at 0xb7d5f24c>
 
-That ``0xb7d5f24c`` will be different every time, and it isn't relevant; it's a
-Python thing (the Python "identity" of the ``Template`` object, if you must
-know).
+O ``0xb7d5f24c`` será diferente toda vez, e isso não é relevante; é algo do
+Python (a "identidade" Python do objeto ``Template``, se você precisar saber).
 
-When you create a ``Template`` object, the template system compiles the raw
-template code into an internal, optimized form, ready for rendering. But if your
-template code includes any syntax errors, the call to ``Template()`` will cause
-a ``TemplateSyntaxError`` exception::
+Quando você cria um objeto ``Template``, o sistema de template compila o código
+do template cru em uma forma otimizada, pronta para renderização. Mas se o código
+do seu template possuir qualquer erro de sintaxe, a chamada de ``Template()`` irá
+causar uma exceção ``TemplateSyntaxError``::
 
     >>> from django.template import Template
     >>> t = Template('{% notatag %}')
@@ -211,18 +199,18 @@ a ``TemplateSyntaxError`` exception::
       ...
     django.template.TemplateSyntaxError: Invalid block tag: 'notatag'
 
-The term "block tag" here refers to ``{% notatag %}``. "Block tag" and
-"template tag" are synonymous.
+O termo "block tag" aqui se refere a ``{% notatag %}``. "Block tag" e
+"template tag" são sinônimos.
 
-The system raises a ``TemplateSyntaxError`` exception for any of the following
-cases:
+O sistema gera uma exceção ``TemplateSyntaxError`` para qualquer um dos seguintes
+casos:
 
-* Invalid tags
-* Invalid arguments to valid tags
-* Invalid filters
-* Invalid arguments to valid filters
-* Invalid template syntax
-* Unclosed tags (for tags that require closing tags)
+* Tags inválidas
+* Argumentos inválidos para tags válidas
+* Filtros inválidos
+* Argumentos inválidos para filtros válidos
+* Sintaxe de template inválido
+* Tags não fechadas (para tags que requerem fechamento)
 
 Rendering a Template
 --------------------
