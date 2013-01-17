@@ -69,7 +69,7 @@ Appendix D: Settings - aberto
 
 Appendix E: Built-in Template Tags and Filters - [@crfh0m3r] (https://github.com/crfh0m3r)
 
-Appendix F: The django-admin Utility - aberto
+Appendix F: The django-admin Utility - [@thiagosaid] (github.com/thiagosaid)
 
 Appendix G: Request and Response Objects [@bkcherry] (https://github.com/bkcherry)
 
