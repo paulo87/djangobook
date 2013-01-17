@@ -1,147 +1,148 @@
-========================================
-Appendix G: Request and Response Objects
-========================================
+======================================
+Apêndice G: Objetos Request e Response
+======================================
 
-Django uses request and response objects to pass state through the system.
+O Django usa os objetos request e response para passar o estado do sistema. 
 
-When a page is requested, Django creates an ``HttpRequest`` object that
-contains metadata about the request. Then Django loads the appropriate view,
-passing the ``HttpRequest`` as the first argument to the view function. Each
-view is responsible for returning an ``HttpResponse`` object.
+Quando uma página é requisitada, o Django cria um objeto ``HttpRequest``, que
+contêm um metadado sobre a requisição. Então o Django executa a view apropriada, 
+passado o ``HttpRequest`` como primeiro argumento para a função view. Cada
+view é responsável por retornar um objeto ``HttpResponse``.
 
-We've used these objects often throughout the book; this appendix explains the
-complete APIs for ``HttpRequest`` and ``HttpResponse`` objects.
+Nós usaremos esses objetos com maior freqüência durante o livro; esse apêndice explica 
+todos as APIs dos objetos ``HttpRequest`` e ``HttpResponse``.
 
 HttpRequest
 ===========
 
-``HttpRequest`` represents a single HTTP request from some user-agent.
+``HttpRequest`` representa uma simples requisição HTTP de algum agente de usuário.
 
-Much of the important information about the request is available as attributes
-on the ``HttpRequest`` instance (see Table G-1). All attributes except
-``session`` should be considered read-only.
+Muitas informações importantes sobre o request está disponível como atributo na
+instância ``HttpRequest`` (olhe a Tabela G-1). Todos os atributos exceto o 
+``session`` devem ser considerados somente leitura.
 
-.. table:: Table G-1. Attributes of HttpRequest Objects
+.. table:: Tabela G-1. Atributos dos Objetos HttpRequest
 
     ==================  =======================================================
-    Attribute           Description
+    Atributo            Descrição
     ==================  =======================================================
-    ``path``            A string representing the full path to the requested
-                        page, not including the domain -- for example,
-                        ``"/music/bands/the_beatles/"``.
+    ``path``            Uma string representando o caminho completo da página 
+                        requisitada, sem incluir o domínio -- por exemplo,
+                        ``"/musica/bandas/the_beatles/"``.
 
-    ``method``          A string representing the HTTP method used in the
-                        request. This is guaranteed to be uppercase. For
-                        example::
+    ``method``          Uma string representando o método HTTP usado pelo request.
+                        Precisa ser garantido que esteja em letras maiúsculas. Por
+                        exemplo::
 
                             if request.method == 'GET':
-                                do_something()
+                                faz_alguma_coisa()
                             elif request.method == 'POST':
-                                do_something_else()
+                                faz_outra_coisa()
 
-    ``encoding``        A string representing the current encoding used to
-                        decode form submission data (or ``None``, which means
-                        the ``DEFAULT_CHARSET`` setting is used).
+    ``encoding``        Uma string representando a codificação atual usada para
+                        decodificar uma submissão de dados do formulário. (ou ``None``, 
+                        significando que o setting ``DEFAULT_CHARSET`` está
+                        sendo usado).
 
-                        You can write to this attribute to change the encoding
-                        used when accessing the form data. Any subsequent
-                        attribute accesses (such as reading from ``GET`` or
-                        ``POST``) will use the new ``encoding`` value.  Useful
-                        if you know the form data is not in the
-                        ``DEFAULT_CHARSET`` encoding.
+                        Você pode escrever esse atributo para mudar a codificação
+                        usada durante o acesso aos dados do formulário. Qualquer acesso   
+                        subseqüente ao atributo (assim como a leitura do ``GET`` ou
+                        ``POST``) serão usados no novo valor do ``encoding``. Útil
+                        se você souber se os dados do formulário não estão na codificação
+                        ``DEFAULT_CHARSET``.
 
-    ``GET``             A dictionary-like object containing all given HTTP GET
-                        parameters. See the upcoming ``QueryDict`` documentation.
+    ``GET``             Um objeto do tipo dicionário que contêm todos os parâmetros
+                        HTTP GET dados. Veja o ``QueryDict`` na documentação posterior.
 
-    ``POST``            A dictionary-like object containing all given HTTP POST
-                        parameters. See the upcoming ``QueryDict`` documentation.
+    ``POST``            Um objeto do tipo dicionário que contêm todos os parâmetros 
+                        HTTP POST. Veja o ``QueryDict`` na documentação posterior.
 
-                        It's possible that a request can come in via POST with
-                        an empty ``POST`` dictionary -- if, say, a form is
-                        requested via the POST HTTP method but does not
-                        include form data. Therefore, you shouldn't use ``if
-                        request.POST`` to check for use of the POST method;
-                        instead, use ``if request.method == "POST"`` (see
-                        the ``method`` entry in this table).
+                        É possível que uma requisição possa vir pelo POST com
+                        um dicionário vazio ``POST`` -- se, digamos, o formulário foi
+                        foi requisitado pelo método POST HTTP mas não inclue os 
+                        dados do formulário. Portanto, não é possível usar o ``if
+                        request.POST`` para checar o método POST;
+                        no lugar, use ``if request.method == "POST"`` (veja
+                        o item ``method`` dessa tabela).
 
-                        Note: ``POST`` does *not* include file-upload
-                        information. See ``FILES``.
+                        Nota: ``POST`` *não* inclui informações de envio de 
+                        arquivos. Veja em ``FILES``.
 
-    ``REQUEST``         For convenience, a dictionary-like object that searches
-                        ``POST`` first, and then ``GET``. Inspired by PHP's
-                        ``$_REQUEST``.
+    ``REQUEST``         Por conveniência, um objeto do tipo dicionário busca
+                        primeiro pelo ``POST``, e então pelo ``GET``. Inspirado
+                        no ``$_REQUEST`` do PHP.
 
-                        For example, if ``GET = {"name": "john"}`` and ``POST
-                        = {"age": '34'}``, ``REQUEST["name"]`` would be
-                        ``"john"``, and ``REQUEST["age"]`` would be ``"34"``.
+                        Por exemplo, se ``GET = {"nome": "john"}`` e ``POST
+                        = {"idade": '34'}``, ``REQUEST["nome"]`` seria
+                        ``"john"``, e ``REQUEST["idade"]`` seria ``"34"``.
 
-                        It's strongly suggested that you use ``GET`` and
-                        ``POST`` instead of ``REQUEST``, because the former
-                        are more explicit.
+                        É fortemente recomendado que você use ``GET`` e
+                        ``POST`` em vez de ``REQUEST``, porque o padrão
+                        é mais explícito.
 
-    ``COOKIES``         A standard Python dictionary containing all cookies.
-                        Keys and values are strings. See Chapter 14 for more
-                        on using cookies.
+    ``COOKIES``         Um dicionário padrão Python contendo todos os cookies.
+                        Chaves e valores são strings. Veja o Capítulo 14 para
+                        maiores informações sobre o uso dos cookies.
 
-    ``FILES``           A dictionary-like object that maps filenames to
-                        ``UploadedFile`` objects. See the Django
-                        documentation for more.
+    ``FILES``           Um objeto do tipo dicionário que mapeia nomes de 
+                        arquivos para os objetos ``UploadedFile``. Veja a
+                        documentação do Django para maiores informações.
 
-    ``META``            A standard Python dictionary containing all available
-                        HTTP headers. Available headers depend on the client
-                        and server, but here are some examples:
+    ``META``            Um dicionário padrão Python contendo todos os cabeçalhos
+                        HTTP disponíveis. Cabeçalhos disponíveis dependem do cliente
+                        e dos servidor, mas aqui estão alguns exemplos:
 
                         * ``CONTENT_LENGTH``
                         * ``CONTENT_TYPE``
-                        * ``QUERY_STRING``: The raw unparsed query string
-                        * ``REMOTE_ADDR``: The IP address of the client
-                        * ``REMOTE_HOST``: The hostname of the client
-                        * ``SERVER_NAME``: The hostname of the server.
-                        * ``SERVER_PORT``: The port of the server
+                        * ``QUERY_STRING``: A query string não analisada
+                        * ``REMOTE_ADDR``: O endereço IP do cliente
+                        * ``REMOTE_HOST``: O hostname do cliente
+                        * ``SERVER_NAME``: O hostname do servidor
+                        * ``SERVER_PORT``: A porta do servidor
 
-                        Any HTTP headers are available in ``META`` as keys
-                        prefixed with ``HTTP_``, converted to uppercase and
-                        substituting underscores for hyphens. For example:
+                        Os cabeçalhos HTTP estão disponíveis no ``META`` como
+                        chaves prefixadas com o ``HTTP_``, convertidos em
+                        letras maiúsculas substituindo sublinhados por hífens.
+                        Por exemplo:
 
                         * ``HTTP_ACCEPT_ENCODING``
                         * ``HTTP_ACCEPT_LANGUAGE``
-                        * ``HTTP_HOST``: The HTTP ``Host`` header sent by
-                          the client
-                        * ``HTTP_REFERER``: The referring page, if any
-                        * ``HTTP_USER_AGENT``: The client's user-agent string
-                        * ``HTTP_X_BENDER``: The value of the ``X-Bender``
-                          header, if set
+                        * ``HTTP_HOST``: O cabeçalho HTTP ``Host`` enviado pelo
+                        cliente
+                        * ``HTTP_REFERER``: A página referida, se existente
+                        * ``HTTP_USER_AGENT``: A string do user-agente do cliente
+                        * ``HTTP_X_BENDER``: O valor do cabeçalho ``X-Bender``,
+                        se definido
 
-    ``user``            A ``django.contrib.auth.models.User`` object
-                        representing the currently logged-in user. If the user
-                        isn't currently logged in, ``user`` will be set to an
-                        instance of
-                        ``django.contrib.auth.models.AnonymousUser``. You can
-                        tell them apart with ``is_authenticated()``, like so::
+    ``user``            O objeto ``django.contrib.auth.models.User`` representando
+                        o atual usuário logado. Se o usuário não estiver atualmente
+                        logado, o ``user`` vai ser definido como instância do
+                        ``django.contrib.auth.models.AnonymousUser``. Você pode
+                        chama-los à parte com o ``is_authenticated()``, assim::
 
                             if request.user.is_authenticated():
-                                # Do something for logged-in users.
+                                # Faça alguma coisa com os usuários logados.
                             else:
-                                # Do something for anonymous users.
+                                # Faça alguma coisa com os usuários anônimos.
 
-                        ``user`` is available only if your Django installation
-                        has the ``AuthenticationMiddleware`` activated.
+                        ``user`` está disponível apenas se sua instalação do
+                        Django tiver o ``AuthenticationMiddleware`` ativado.
 
-                        For the complete details of authentication and users,
-                        see Chapter 14.
+                        Para maiores detalhes sobre autenticação de usuários,
+                        veja o Capítulo 14.
 
-    ``session``         A readable and writable, dictionary-like object that
-                        represents the current session. This is available only
-                        if your Django installation has session support
-                        activated. See Chapter 14.
+    ``session``         Um objeto do tipo dicionário de leitura e escrita,
+                        representa a sessão atual. Está disponível apenas
+                        se a sua instalação do Django ter a sessão support ativada.
+                        Veja no Capítulo 14.
 
-    ``raw_post_data``   The raw HTTP POST data. This is useful for advanced
-                        processing.
+    ``raw_post_data``   O dado bruto do HTTP POST. É útil para processamento avançado.
+
     ==================  =======================================================
 
-Request objects also have a few useful methods, as shown in Table G-2.
+Objetos Request também possuem alguns métodos úteis, como mostra a Tabela G-2.
 
-.. table:: Table G-2. HttpRequest Methods
+.. table:: Tabela G-2. Métodos HttpRequest
 
     ======================  ===================================================
     Method                  Description
