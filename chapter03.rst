@@ -447,7 +447,7 @@ colocar a instrução ``datetime.datetime.now()`` em uma view e retornar um
         html = "<html><body>É agora %s.</body></html>" % now
         return HttpResponse(html)
 
-Como ña função view ``hello``, esse código deve estar em ``views.py``. Note que
+Como na função view ``hello``, esse código deve estar em ``views.py``. Note que
 não mostramos a função ``hello`` neste exemplo por brevidade, mas por completude,
 aqui está como todo o ``views.py`` fica::
 
