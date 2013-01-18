@@ -179,7 +179,7 @@ Foram feitas duas mudanças aqui:
 Em poucas palavras, foi instruído ao Django que qualquer solicitação feita a URL
 ``/hello/`` deve ser manuseada pela função view ``hello``.
 
-.. aviso:: Diretório Python
+.. admonition:: Diretório Python
 
     O  *diretório Python* é a lista de diretório do sistema que o Python
     procura quando a instrução ``import`` é utilizada.
@@ -242,111 +242,108 @@ diferente disso. Aqui está o por quê:
   pela configuração ``APPEND_SLASH`` do Django, que é explicada no
   Apêndice D.)
 
-  If you're the type of person who likes all URLs to end with slashes
-  (which is the preference of Django's developers), all you'll need to do
-  is add a trailing slash to each URLpattern and leave ``APPEND_SLASH`` set
-  to ``True``. If you prefer your URLs *not* to have trailing slashes, or
-  if you want to decide it on a per-URL basis, set ``APPEND_SLASH`` to
-  ``False`` and put trailing slashes in your URLpatterns as you see fit.
+  Se optar por utilizar URLs terminadas por barra, tudo o que precisa fazer
+  é adicionar barras em cada URLpattern e atribuir ``True`` ao
+  ``APPEND_SLASH``. Caso opte por *não* deixar barras no fim das URLs, ou 
+  quiser escolher dependendo da URL, deixe o ``APEEND_SLASH`` como ``False``
+  e colocar barras no fim de cada URLpattern que desejar.
 
-The other thing to note about this URLconf is that we've passed the
-``hello`` view function as an object without calling the function. This is a
-key feature of Python (and other dynamic languages): functions are first-class
-objects, which means you can pass them around just like any other variables.
-Cool stuff, eh?
+Outro ponto importante sobre esse URLconf é que passamos a função view
+``hello`` como um objeto sem chamar a função. Essa é uma das características
+chaves do Python (e outras linguagens dinâmicas): funções são objetos de
+primeira classe, o que quer dizer que é possível utilizá-las como quaisquer
+outras variáveis. Maneiro, não?
 
-To test our changes to the URLconf, start the Django development server, as you
-did in Chapter 2, by running the command ``python manage.py runserver``. (If you
-left it running, that's fine, too. The development server automatically detects
-changes to your Python code and reloads as necessary, so you don't have to
-restart the server between changes.) The server is running at the address
-``http://127.0.0.1:8000/``, so open up a Web browser and go to
-``http://127.0.0.1:8000/hello/``. You should see the text "Hello world" -- the
-output of your Django view.
+Para testar as mudanças feitas no URLconf, inicie o servidor de desenvolvimento
+do Django, como visto Capítulo 2, executando o comando ``python manage.py runserver``.
+(Se já estiver rodando, não tem problema. O servidor detecta mudanças feitas no
+código automaticamente e as recarrega, para não ser preciso reiniciar o servidor quando
+houver mudança.) O servidor está rodando no endereço ``http://127.0.0.1:8000/``, então
+abra o navegador e vá para ``http://127.0.0.1:8000/hello/``. Deve aparecer o texto
+"Hello world" -- a saída da sua view Django.
 
-Hooray! You've made your first Django-powered Web page.
+Eba! Você fez sua primeira página Django.
 
-.. admonition:: Regular Expressions
+.. admonition:: Expressões regulares
 
-    *Regular expressions* (or *regexes*) are a compact way of specifying
-    patterns in text. While Django URLconfs allow arbitrary regexes for
-    powerful URL matching, you'll probably only use a few regex symbols in
-    practice. Here's a selection of common symbols:
+    *Expressões regulares* (ou *regexes*) são uma forma compacta de especificar
+    padrões em um texto. Enquanto URLconfs do Django possibilitam o uso de
+    qualquer regex para casas URLs, só serão utilizados alguns símbolos de
+    regex na prática. Aqui estão alguns símbolos mais utilizados:
 
     ============  ==========================================================
-    Symbol        Matches
+    Símbolo       Casa com
     ============  ==========================================================
-    ``.`` (dot)   Any single character
+    ``.`` (dot)   Qualquer (um) caracter
 
-    ``\d``        Any single digit
+    ``\d``        Qualquer (um) digito
 
-    ``[A-Z]``     Any character between ``A`` and ``Z`` (uppercase)
+    ``[A-Z]``     Qualquer caracter entre ``A`` e ``Z`` (caixa alta)
 
-    ``[a-z]``     Any character between ``a`` and ``z`` (lowercase)
+    ``[a-z]``     Qualquer caracter entre ``a`` e ``z`` (caixa baixa)
 
-    ``[A-Za-z]``  Any character between ``a`` and ``z`` (case-insensitive)
+    ``[A-Za-z]``  Qualquer caracter entre ``a`` e ``z`` (caixa baixa e alta)
 
-    ``+``         One or more of the previous expression (e.g., ``\d+``
-                  matches one or more digits)
+    ``+``         Um ou mais da expressão anterior (por ex., ``\d+`` casa um
+                  ou mais digitos.
 
-    ``[^/]+``     One or more characters until (and not including) a
-                  forward slash
+    ``[^/]+``     Um ou mais caracteres até (e não incluindo) uma barra
 
-    ``?``         Zero or one of the previous expression (e.g., ``\d?``
-                  matches zero or one digits)
+    ``?``         Zero ou um da expressão anterior (por ex., ``\d?`` casa
+                  zero ou mais digitos
 
-    ``*``         Zero or more of the previous expression (e.g., ``\d*``
-                  matches zero, one or more than one digit)
+    ``*``         Zero or mais da expressão anterior (por ex., ``\d*`` casa
+                  zero, um ou mais que um dígito
 
-    ``{1,3}``     Between one and three (inclusive) of the previous
-                  expression (e.g., ``\d{1,3}`` matches one, two or three
-                  digits)
+    ``{1,3}``     Entre um e três (incluso) da expressão anterior (por ex/,
+                  ``\d{1,3}`` casa um, dois ou três digitos)
     ============  ==========================================================
 
-    For more on regular expressions, see http://www.djangoproject.com/r/python/re-module/.
+    Para mais sobre expressões regulares, veja http://turing.com.br/material/regex/python_re.html
 
-A Quick Note About 404 Errors
------------------------------
+Uma nota rápida sobre erros 404
+-------------------------------
 
-At this point, our URLconf defines only a single URLpattern: the one that
-handles requests to the URL ``/hello/``. What happens when you request a
-different URL?
+Neste ponto, o URLconf define somente um URLpattern, o que lida com as
+requisições da URL ``/hello/``. O que acontece quando é feito uma requisição
+para outra URL?
 
-To find out, try running the Django development server and visiting a page such
-as ``http://127.0.0.1:8000/goodbye/`` or
-``http://127.0.0.1:8000/hello/subdirectory/``, or even ``http://127.0.0.1:8000/``
-(the site "root"). You should see a "Page not found" message (see Figure 3-1).
-Django displays this message because you requested a URL that's not defined in
-your URLconf.
+Para descobrir, rode o servidor de desenvolvimento do Django e visite alguma
+página como ``http://127.0.0.1:8000/goodbye/`` ou
+``http://127.0.0.1:8000/hello/subdirectory/``, ou até ``http://127.0.0.1:8000/``
+(a "raiz" do site). Deverá aparecer a mensagem "Page not found" (ver
+Figura 3-1). O Django exibe essa mensagem, pois você requisitou uma URL que
+não está especificada em seu URLconf.
 
 .. figure:: graphics/chapter03/404.png
-   :alt: Screenshot of Django's 404 page.
+   :alt: Screenshot da página 404 do Django.
 
-   Figure 3-1. Django's 404 page
+   Figura 3-1. Página 404 di Django
 
-The utility of this page goes beyond the basic 404 error message. It also tells
-you precisely which URLconf Django used and every pattern in that URLconf. From
-that information, you should be able to tell why the requested URL threw a 404.
+A função dessa página vai além de exibir a mensagem de erro 404. Ela também
+mostra qual URLconf exatamente o Django usou para cada padrão nesse URLconf.
+Com essa informação é possível saber por quê a URL requisitada lançou um
+erro 404.
 
-Naturally, this is sensitive information intended only for you, the Web
-developer. If this were a production site deployed live on the Internet, you
-wouldn't want to expose that information to the public. For that reason, this
-"Page not found" page is only displayed if your Django project is in *debug
-mode*. We'll explain how to deactivate debug mode later. For now, just know
-that every Django project is in debug mode when you first create it, and if the
-project is not in debug mode, Django outputs a different 404 response.
+Naturalmente, essa informação sensível é só para você, o desenvolvedor Web.
+Se esse fosse um site em produção disponível na Internet, não seria bom
+exibir essa informação para o público. Por esse motivo, essa página "Page
+not found" é exibida somente se seu projeto Django está no *modo debug*.
+Mais para frente será explicado como desativar esse modo. Por enquanto, saiba
+que cada projeto Django está no modo debug quando é criado pela primeira vez.
+Se o projeto não esá no modo debug, o Django mostra outra mensagem 404.
 
-A Quick Note About The Site Root
---------------------------------
+Uma nota rápida sobre a raiz do site
+------------------------------------
 
-As explained in the last section, you'll see a 404 error message if you view
-the site root -- ``http://127.0.0.1:8000/``. Django doesn't add magically
-anything to the site root; that URL is not special-cased in any way. It's up to
-you to assign it to a URLpattern, just like every other entry in your URLconf.
+Como explicado na última seção, você verá uma mensagem de erro ao acessar a
+raiz do site -- ``http://127.0.0.1:8000``. O Django não adiciona nada magicamente
+à raiz do site; essa URL não é tratada de modo especial. O desenvolvedor deve
+atribuir um URLpatternt a ela, como todo outro acesso em seu URLconf.
 
-The URLpattern to match the site root is a bit unintuitive, though, so it's
-worth mentioning. When you're ready to implement a view for the site root, use
-the URLpattern ``'^$'``, which matches an empty string. For example::
+O URLpattern que casa com a raiz do site é um pouco não intuitivo, então será
+explicado aqui. Quando for implementar a view da raiz do site, use a URLpattern
+``'^$'``, que casa uma string vazia. Por exemplo::
 
     from mysite.views import hello, my_homepage_view
 
@@ -355,77 +352,76 @@ the URLpattern ``'^$'``, which matches an empty string. For example::
         # ...
     )
 
-How Django Processes a Request
-==============================
+Como o Django processa uma requisição
+=====================================
 
-Before continuing to our second view function, let's pause to learn a little
-more about how Django works. Specifically, when you view your "Hello world"
-message by visiting ``http://127.0.0.1:8000/hello/`` in your Web browser, what
-does Django do behind the scenes?
+Antes de continuar para nossa segunda função view, vamos parar e aprender um
+pouco sobre como o Django funciona. Especificamente, quando é exibida a mensagem
+"Hello world" ao visitar ``http://127.0.0.1:8000/hello/`` no seu navegador, o que
+o Django faz por trás?
 
-It all starts with the *settings file*. When you run ``python manage.py
-runserver``, the script looks for a file called ``settings.py`` in the inner
-``mysite`` directory. This file contains all sorts of configuration for this
-particular Django project, all in uppercase: ``TEMPLATE_DIRS``, ``DATABASES``,
-etc. The most important setting is called ``ROOT_URLCONF``. ``ROOT_URLCONF``
-tells Django which Python module should be used as the URLconf for this Web
-site.
+Tudo começa com o *arquivo de configurações*. Quando é executado ``python
+manage.py runser``, o script procura por um arquivo chamado ``settings.py``,
+dentro do site ``mysite``. Esse arquivo contem todo o tipo de configuração
+para esse projeto Django, como (tudo em caixa alta): ``TEMPLATE_DIRS``,
+``DATABASES`` e etc. A configuração mais importante é chamada de
+``ROOT_URLCONF``. Essa configuração avisa ao Django qual módulo deve ser usado
+como URLconf para esse site.
 
-Remember when ``django-admin.py startproject`` created the files
-``settings.py`` and ``urls.py``? The autogenerated ``settings.py`` contains a
-``ROOT_URLCONF`` setting that points to the autogenerated ``urls.py``. Open the
-``settings.py`` file and see for yourself; it should look like this::
+Lembra quando ``django-admin.py startproject`` criou os arquivos
+``settings.py`` e ``urls.py``? O ``settings.py`` gerado automaticamente contém um
+configuração ``ROOT_URLCONF`` que aponto para o ``urls.py`` gerado automaticamente.
+Abra o arquivo ``settings.py`` e veja por si mesmo; deve parecer com algo assim::
 
     ROOT_URLCONF = 'mysite.urls'
 
-This corresponds to the file ``mysite/urls.py``.
+Isso corresponde ao arquivo ``mysite/urls.py``.
 
-When a request comes in for a particular URL -- say, a request for ``/hello/``
--- Django loads the URLconf pointed to by the ``ROOT_URLCONF`` setting. Then it
-checks each of the URLpatterns in that URLconf, in order, comparing the
-requested URL with the patterns one at a time, until it finds one that matches.
-When it finds one that matches, it calls the view function associated with that
-pattern, passing it an ``HttpRequest`` object as the first parameter. (We'll
-cover the specifics of ``HttpRequest`` later.)
+Quando uma requisição é feita para uma URL em particular, por exemplo uma
+requisição para ``/hello/``, o Django carrega o URLconf apontado pelo
+``ROOT_URLCONF``. Então checa cada URLpattern naquele URLconf, a fim de comparar
+a URL requisitada com os padrões, um por um, até encontrar um que case.
+Quando um padrão é casado, é chamada a função view associada com esse padrão,
+passando-a como um objeto ``HttpRequest`` como primeiro parametro. (O objeto
+``HttpRequest`` será explicado melhor mais para a frente.)
 
-As we saw in our first view example, a view function must return an
-``HttpResponse``. Once it does this, Django does the rest, converting the
-Python object to a proper Web response with the appropriate HTTP headers and
-body (i.e., the content of the Web page).
+Como visto no primeiro exemplo, uma função view deve retornar um
+``HttpResponse``. Uma vez que isso é feito o Django lida com o resto, convertendo
+o objeto Python para uma requisição web com os cabeçalhos HTTP e corpo (ou seja,
+conteúdo da página) apropriados.
 
-In summary:
+Resumindo:
 
-1. A request comes in to ``/hello/``.
-2. Django determines the root URLconf by looking at the ``ROOT_URLCONF``
-   setting.
-3. Django looks at all of the URLpatterns in the URLconf for the first one
-   that matches ``/hello/``.
-4. If it finds a match, it calls the associated view function.
-5. The view function returns an ``HttpResponse``.
-6. Django converts the ``HttpResponse`` to the proper HTTP response, which
-   results in a Web page.
+1. Uma requisição chega a ``/hello/``.
+2. Django determina o URLconf raiz analisando a configuração ``ROOT_URLCONF``.
+3. Django examina todas as URLpatterns no URLconf até encontrar a primeira
+   que case com ``/hello/``.
+4. Se for casado, é chamado a função view associada.
+5. A função view retorna um ``HttpResponse``.
+6. Django converte o ``HttpResponse`` para uma resposta HTTP, que resulta em
+   uma página Web.
 
-You now know the basics of how to make Django-powered pages. It's quite simple,
-really -- just write view functions and map them to URLs via URLconfs.
+Agora você sabe o básico de como fazer páginas em Django. É realmente simples,
+só é necessário escrever funções view e mapeá-las a URLs através de URLconfs.
 
-Your Second View: Dynamic Content
+A segunda view: conteúdo dinânico
 =================================
 
-Our "Hello world" view was instructive in demonstrating the basics of how
-Django works, but it wasn't an example of a *dynamic* Web page, because the
-content of the page are always the same. Every time you view ``/hello/``,
-you'll see the same thing; it might as well be a static HTML file.
+Nossa view "Hello world" serviu para demonstrar o básico de como o Django
+funciona, mas não foi um exemplo de uma página *dinâmica*, pois o conteúdo
+da página é sempre o mesmo. Cada vez que ``/hello`` é exibida, será mostrada
+a mesma coisa; na verdade, poderia ser um arquivo HTML estático.
 
-For our second view, let's create something more dynamic -- a Web page that
-displays the current date and time. This is a nice, simple next step, because
-it doesn't involve a database or any user input -- just the output of your
-server's internal clock. It's only marginally more exciting than "Hello world,"
-but it'll demonstrate a few new concepts.
+Para nossa segunda view, mas criar algo mais dinâmico -- uma página que exibe
+a data e hora atuais. Esse exemplo é um bom e, simples, próximo passo, pois
+não envolve banco de dados ou entrada de usuário, somente a saída do relógio
+interno do servidor. Só é um pouco mais interessante que o "Hello world", mas
+demonstrará alguns conceitos.
 
-This view needs to do two things: calculate the current date and time, and
-return an ``HttpResponse`` containing that value. If you have experience with
-Python, you know that Python includes a ``datetime`` module for calculating
-dates. Here's how to use it::
+Esta view precisa fazer duas coisas: calcular a hora e data atuais, e retornar
+um ``HttpResponse`` contendo esse valor. Se possui experiência com Python,
+deve saber que há um módulo Python chamado ``datetime`` para calcular datas.
+Aqui mostra como usá-lo::
 
     >>> import datetime
     >>> now = datetime.datetime.now()
@@ -434,27 +430,26 @@ dates. Here's how to use it::
     >>> print now
     2008-12-13 14:09:39.002731
 
-That's simple enough, and it has nothing to do with Django. It's just Python
-code. (We want to emphasize that you should be aware of what code is "just
-Python" vs. code that is Django-specific. As you learn Django, we want you to
-be able to apply your knowledge to other Python projects that don't necessarily
-use Django.)
+Isso é simples o bastante e não tem nada a ver com o Django. É só código Python.
+(Queremos enfatizar quais códigos são "só Python" vs código específico do Django.
+Conforme for aprendendo Django, queremos ensiná-lo Python, para que possa usar
+o mesmo para outros projetos que não envolvem Django).
 
-To make a Django view that displays the current date and time, then, we just
-need to hook this ``datetime.datetime.now()`` statement into a view and return
-an ``HttpResponse``. Here's how that looks::
+Para o Django fazer com que a view mostre a data e hora atuais, só é necessário
+colocar a instrução ``datetime.datetime.now()`` em uma view e retornar um
+``HttpResponse``. Fica assim::
 
     from django.http import HttpResponse
     import datetime
 
     def current_datetime(request):
         now = datetime.datetime.now()
-        html = "<html><body>It is now %s.</body></html>" % now
+        html = "<html><body>É agora %s.</body></html>" % now
         return HttpResponse(html)
 
-As with our ``hello`` view function, this should live in ``views.py``. Note
-that we've hidden the ``hello`` function from this example for brevity, but for
-the sake of completeness, here's what the entire ``views.py`` looks like::
+Como na função view ``hello``, esse código deve estar em ``views.py``. Note que
+não mostramos a função ``hello`` neste exemplo por brevidade, mas por completude,
+aqui está como todo o ``views.py`` fica::
 
     from django.http import HttpResponse
     import datetime
@@ -464,38 +459,37 @@ the sake of completeness, here's what the entire ``views.py`` looks like::
 
     def current_datetime(request):
         now = datetime.datetime.now()
-        html = "<html><body>It is now %s.</body></html>" % now
+        html = "<html><body>É agora %s.</body></html>" % now
         return HttpResponse(html)
 
-(From now on, we won't display previous code in code examples, except when
-necessary. You should be able to tell from context which parts of an example
-are new vs. old.)
+(De agora em diante não mostraremos código anterior em exemplos, exceto quando
+necessário. Você deve saber diferenciar a partir do contexto quais partes do
+exemplo são novas das antigas).
 
-Let's step through the changes we've made to ``views.py`` to accommodate
-the ``current_datetime`` view.
+Vamos passar pelas mudanças que fizemos ao ``views.py`` para acomodar a view
+``current_datetime``.
 
-* We've added an ``import datetime`` to the top of the module, so we can
-  calculate dates.
+* Adicionamos um ``import datetime`` na parte superior do módulo, para
+  calcular datas.
 
-* The new ``current_datetime`` function calculates the current date and
-  time, as a ``datetime.datetime`` object, and stores that as the local
-  variable ``now``.
+* O nova função ``current_datetime`` calcula a data e hora atuais, com um
+  objeto ``datetime.datetime``, e a armazena como a variável local ``now``.
 
-* The second line of code within the view constructs an HTML response using
-  Python's "format-string" capability. The ``%s`` within the string is a
-  placeholder, and the percent sign after the string means "Replace the
-  ``%s`` in the preceding string with the value of the variable ``now``."
-  The ``now`` variable is technically a ``datetime.datetime`` object, not
-  a string, but the ``%s`` format character converts it to its string
-  representation, which is something like ``"2008-12-13 14:09:39.002731"``.
-  This will result in an HTML string such as
+* A segunda linha de código dentro da view constrói uma resosta HTML usando
+  funcionalidade do Python de formata strings. O ``%s`` na string é um
+  placeholder, e o símbolo de porcentagem após a string significa
+  "Substitua o ``%s`` da string com o valor da variável ``now``". A variável
+  ``now`` é, tecnicamente, um objeto ``datetime.datetime``, não uma string,
+  mas o caracter de formatação ``%s`` faz a conversão para sua representação
+  em string, que é algo do tipo ``"2008-12-13 14:09:39.002731"``. Isso
+  resultará em uma string HTML como
   ``"<html><body>It is now 2008-12-13 14:09:39.002731.</body></html>"``.
 
-  (Yes, our HTML is invalid, but we're trying to keep the example simple
-  and short.)
+  (Sim, esse código HTML é inválido, pois tentamos manter os exemplos
+  simples e curtos)
 
-* Finally, the view returns an ``HttpResponse`` object that contains the
-  generated response -- just as we did in ``hello``.
+* Por fim, a view retorna um objeto ``HttpResponse`` que contém a resposta,
+  assim como fizemos na view ``hello``.
 
 After adding that to ``views.py``, add the URLpattern to ``urls.py`` to tell
 Django which URL should handle this view. Something like ``/time/`` would make
