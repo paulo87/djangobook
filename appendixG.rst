@@ -107,12 +107,10 @@ instância ``HttpRequest`` (olhe a Tabela G-1). Todos os atributos exceto o
 
                         * ``HTTP_ACCEPT_ENCODING``
                         * ``HTTP_ACCEPT_LANGUAGE``
-                        * ``HTTP_HOST``: O cabeçalho HTTP ``Host`` enviado pelo
-                        cliente
+                        * ``HTTP_HOST``: O cabeçalho HTTP ``Host`` enviado pelo cliente
                         * ``HTTP_REFERER``: A página referida, se existente
                         * ``HTTP_USER_AGENT``: A string do user-agente do cliente
-                        * ``HTTP_X_BENDER``: O valor do cabeçalho ``X-Bender``,
-                        se definido
+                        * ``HTTP_X_BENDER``: O valor do cabeçalho ``X-Bender``, se definido
 
     ``user``            O objeto ``django.contrib.auth.models.User`` representando
                         o atual usuário logado. Se o usuário não estiver atualmente
