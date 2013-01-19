@@ -82,8 +82,8 @@ valores para dentro. Vamos análisa-lo:
   ordered_warranty %}``) é um *template tag*. A definição de tag é bastante
   amplo: uma tag apenas diz ao sistema de template para "fazer alguma coisa".
 
-  Este exemplo de template contem uma tag ``for`` (``{% for item in item_list
-   %}``) e uma tag ``if`` (``{% if ordered_warranty %}``).
+  Este exemplo de template contem uma tag ``for`` (``{% for item in item_list %}``)
+  e uma tag ``if`` (``{% if ordered_warranty %}``).
 
   Uma tag ``for`` trabalha de forma semelhante a declaração ``for`` em Python,
   permitindo você fazer um laço sobre cada item em uma seqüência. Uma tag ``if``,
@@ -158,7 +158,7 @@ interativo.
 .. admonition::  Um prompt Python especial
 
     Se você anteriormente usou Python, você pode estar se perguntando porque
-    estamos executando ``python manage.py shell`` ao invés de apenas``python``.
+    estamos executando ``python manage.py shell`` ao invés de apenas ``python``.
     Ambos os comandos iniciam o interpretador interativo, mas o comando ``manage.py shell``
     possui uma diferença chave: antes de iniciar o interpretador, ele informa ao Django
     qual arquivo de configuração usar. Muitas partes do Django, incluindo o sistema de
@@ -222,7 +222,7 @@ nomes de váriaveis e seus valores associados. Um template usa isto para
 popular as váriaveis e avaliar as tags.
 
 Um contexto é representado no Django pela classe ``Context``, a qual está
-no módulo ``django.template*. Seu construtor tem um argumento optional:
+no módulo ``django.template``. Seu construtor tem um argumento optional:
 ***a dictionary mapping variable names to variable values***. Chame o método
 ``render()`` do objeto ``Template`` com o contexto para "preencher" o template::
 
