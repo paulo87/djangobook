@@ -277,88 +277,88 @@ semelhante ao exemplo no início deste capítulo::
     u"<p>Prezado John Smith,</p>\n\n<p>Obrigado por fazer o pedido naa Outdoor
     Equipment. Está agendado\n para enviar em April 2, 2009.</p>\n\n\n<p>Você não \n
     solicitou garantia, sendo assim é por sua\n conta quando o produto
-    parar de funcionar.</p>\n\n\n<p>Sincerely,<br />Outdoor Equipment
+    parar de funcionar.</p>\n\n\n<p>Sinceramente,<br />Outdoor Equipment
     </p>"
 
-Let's step through this code one statement at a time:
+Vamos passar as instruções de código uma por vez:
 
-* First, we import the classes ``Template`` and ``Context``, which both
-  live in the module ``django.template``.
+* Primeiro, nós importamos as classes ``Template`` e ``Context``, ambas
+  ficam nó módulo ``django.template``.
 
-* We save the raw text of our template into the variable
-  ``raw_template``. Note that we use triple quote marks to designate the
-  string, because it wraps over multiple lines; in contrast, strings
-  within single quote marks cannot be wrapped over multiple lines.
+* Nós salvamos o texto bruto do nosso template na váriavel
+  ``raw_template``. Perceba que usamos aspas triplas para definir a string,
+  porque envolve várias linhas; em contraste, strings com aspas simples não
+  podem ser usadas em multiplas linhas.
 
-* Next, we create a template object, ``t``, by passing ``raw_template`` to
-  the ``Template`` class constructor.
+* Em seguida, nós criamos o objeto template, ``t``, passando ``raw_template``
+  para o construtor da classe ``Template`` .
 
-* We import the ``datetime`` module from Python's standard library,
-  because we'll need it in the following statement.
+* Nós importamos o módulo ``datetime`` da biblioteca padrão do Python,
+  porque vamos precisar dele na declaração seguinte.
 
-* Then, we create a ``Context`` object, ``c``. The ``Context``
-  constructor takes a Python dictionary, which maps variable names to
-  values. Here, for example, we specify that the ``person_name``
-  is ``'John Smith'``, ``company`` is ``'Outdoor Equipment'``, and so forth.
+* Depois, criamos um objeto ``Context``, ``c``. O construtor ``Context``
+  recebe um dicionário Python, que mapeia os nomes das váriaveis para valores.
+  Aqui, por exemplo, nós especificamos que ``person_name`` é  ``'John Smith'``,
+  ``company`` é ``'Outdoor Equipment'``, e assim por diante.
 
-* Finally, we call the ``render()`` method on our template object, passing
-  it the context. This returns the rendered template -- i.e., it replaces
-  template variables with the actual values of the variables, and it
-  executes any template tags.
+* Finalmente, chamamos o método ``render()`` em seu objeto template, passando
+  o contexto. Este retorna o template renderizado, ou seja, ele substitui
+  as váriaveis do template com os valores reais das váriaveis, e executa
+  as tags de template.
 
-  Note that the "You didn't order a warranty" paragraph was displayed
-  because the ``ordered_warranty`` variable evaluated to ``False``. Also
-  note the date, ``April 2, 2009``, which is displayed according to the
-  format string ``'F j, Y'``. (We'll explain format strings for the
-  ``date`` filter in a little while.)
+  Note que o páragrafro "Você não solicitou garantia" é exibido porque
+  a váriavel ``ordered_warranty`` tem seu valor como ``False``. Além
+  disso, observer a data, ``April 2, 2009``, que é exibido de acordo com
+  o formato da string ``'F j, Y'``. (Vamos explicar a formatação de strings
+  para os filtros ``date`` em breve).
 
-  If you're new to Python, you may wonder why this output includes
-  newline characters (``'\n'``) rather than displaying the line breaks.
-  That's happening because of a subtlety in the Python interactive
-  interpreter: the call to ``t.render(c)`` returns a string, and by default
-  the interactive interpreter displays the *representation* of the string,
-  rather than the printed value of the string. If you want to see the
-  string with line breaks displayed as true line breaks rather than ``'\n'``
-  characters, use the ``print`` statement: ``print t.render(c)``.
+  Se você é novo com Python, você deve estar se perguntado porque incluir
+  caracteres de nova linha(``'\n'``) ao invés de exibir as quebras de linhas.
+  Isso está acontecendo por causa de uma detalhe no interpretador interativo
+  do Python: a chamada para ``t.render(c)``, retorna uma string, e por padrão
+  o interpretador interativo exibe a *representação* da string, ao invés do
+  valor impresso na string. Se deseja ver a string com quebras de linha
+  verdadeiramente, ao invés de dos caracteres ``'\n'`` , use a declaração
+  ``print`` : ``print t.render(c)``.
 
-Those are the fundamentals of using the Django template system: just write a
-template string, create a ``Template`` object, create a ``Context``, and call
-the ``render()`` method.
+Esses são os fundamentos para usar o sistema de templates do Django: basta
+escrever um template string, criar um objeto ``Template``, criar um ``Context``,
+e chamar o método ``render()``.
 
-Multiple Contexts, Same Template
+Múltiplos contextos, mesmo template
 --------------------------------
 
-Once you have a ``Template`` object, you can render multiple contexts through
-it. For example::
+Uma vez que você tem um objeto ``Template``, você pode processar múltiplos
+contextos por ele. Por exemplo::
 
     >>> from django.template import Template, Context
-    >>> t = Template('Hello, {{ name }}')
+    >>> t = Template('Olá, {{ name }}')
     >>> print t.render(Context({'name': 'John'}))
-    Hello, John
+    Olá, John
     >>> print t.render(Context({'name': 'Julie'}))
-    Hello, Julie
+    Olá, Julie
     >>> print t.render(Context({'name': 'Pat'}))
-    Hello, Pat
+    Olá, Pat
 
-Whenever you're using the same template source to render multiple
-contexts like this, it's more efficient to create the ``Template``
-object *once*, and then call ``render()`` on it multiple times::
+Sempre que você está usando o mesmo código de template para renderizar
+multiplos contextos como isso, é mais eficiente criar o objeto
+``Template`` *uma vez*, e depois chamar o ``render()`` por várias vezes::
 
-    # Bad
+    # Ruim
     for name in ('John', 'Julie', 'Pat'):
-        t = Template('Hello, {{ name }}')
+        t = Template('Olá, {{ name }}')
         print t.render(Context({'name': name}))
 
-    # Good
-    t = Template('Hello, {{ name }}')
+    # Bom
+    t = Template('Olá, {{ name }}')
     for name in ('John', 'Julie', 'Pat'):
         print t.render(Context({'name': name}))
 
-Django's template parsing is quite fast. Behind the scenes, most of the parsing
-happens via a call to a single regular expression. This is in stark
-contrast to XML-based template engines, which incur the overhead of an XML
-parser and tend to be orders of magnitude slower than Django's template
-rendering engine.
+A análise de templates do Django é bastante rápida. Nos bastidores, a maior
+parte da análise acontece através da chamada a uma única expressão regular.
+Isso é um contraste gritante com as engines de template baseadas em XML, o qual
+provoca uma sobrecarga ao parser XML e tendem a ser na ordem de magnitude mais
+lentos que a engine de renderização de template do Django.
 
 Context Variable Lookup
 -----------------------
