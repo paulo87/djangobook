@@ -491,9 +491,9 @@ Vamos passar pelas mudanças que fizemos ao ``views.py`` para acomodar a view
 * Por fim, a view retorna um objeto ``HttpResponse`` que contém a resposta,
   assim como fizemos na view ``hello``.
 
-After adding that to ``views.py``, add the URLpattern to ``urls.py`` to tell
-Django which URL should handle this view. Something like ``/time/`` would make
-sense::
+Após essa adição ao ``views.py``, adicione o URLpatter ao ``urls.py`` para
+avisar o Django qual URL deve acessar essa view. Algo como ``/time/`` é um
+bom nome::
 
     from django.conf.urls.defaults import patterns, include, url
     from mysite.views import hello, current_datetime
@@ -503,153 +503,148 @@ sense::
         url(r'^time/$', current_datetime),
     )
 
-We've made two changes here. First, we imported the ``current_datetime``
-function at the top. Second, and more importantly, we added a URLpattern
-mapping the URL ``/time/`` to that new view. Getting the hang of this?
+Foram feitas duas mudanças. Primeiro importamos a função ``current_datetime``
+no começo do código. Depois, e mais importante, adicionamos a URLpattern que
+mapeia a URL ``/time/`` àquela view. Está começando a entender como funciona?
 
-With the view written and URLconf updated, fire up the ``runserver`` and visit
-``http://127.0.0.1:8000/time/`` in your browser. You should see the current
-date and time.
+Com a view escrita e o URLconf atualizado, execute o ``runserver`` e visite
+``http://127.0.0.1:8000/time/`` no seu navegador. Deverá ser exibidas a data
+e hora atuais.
 
-.. admonition:: Django's Time Zone
+.. admonition:: Fuso horário do Django
 
-    Depending on your computer, the date and time may be a few hours off.
-    That's because Django is time zone-aware and defaults to the
-    ``America/Chicago`` time zone. (It has to default to *something*, and that's
-    the time zone where the original developers live.) If you live elsewhere,
-    you'll want to change it in ``settings.py``. See the comment in that file
-    for a link to an up-to-date list of worldwide time zone options.
+    Dependendo do seu computador, a data e hora atuais pode estar errado.
+    Isso acontece pois o Django usa o fuso horário ``America/Chicago`` como
+    padrão. (Algum tem de ser o padrão e esse é o fuso horário que os
+    desenvolvedores originais do Django vivem) Se você vive em outro lugar,
+    você pode mudá-lo no arquivo ``settings.py``. Leia os comentários nesse
+    arquivo para um link atualizado contendo a lista de todas os fuso horário
+    do globo.
 
-URLconfs and Loose Coupling
-===========================
+URLconfs e acoplamento fraco
+============================
 
-Now's a good time to highlight a key philosophy behind URLconfs and behind
-Django in general: the principle of *loose coupling*. Simply put, loose coupling
-is a software-development approach that values the importance of making pieces
-interchangeable. If two pieces of code are loosely coupled, then changes made to
-one of the pieces will have little or no effect on the other.
+Agora é uma boa hora para ressaltar a filosofia por trás dos URLconfs e do Django
+em geral: o princípio de *acoplamento fraco*. De for simples, acoplamento fraco
+é uma abordagem em desenvolvimento de software que valoriza a importância de fazer
+partes intercambiáveis. Se duas partes de código são fracamente acopladas, então
+mudanças feitas em uma das partes terá pouco ou nenhum efeito a outra.
 
-Django's URLconfs are a good example of this principle in practice. In a Django
-web application, the URL definitions and the view functions they call are
-loosely coupled; that is, the decision of what the URL should be for a given
-function, and the implementation of the function itself, reside in two separate
-places. This lets you switch out one piece without affecting the other.
+URLconfs do Django são um bom exemplo desse princípio na prática. Em uma aplicação
+web em Django, as definições de URLs e funções views são fracamente acopladas,
+ou seja, a decisão de qual URL chamará qual função e a implementação em si da função,
+ficam em lugares separados. Isso permite mudar uma parte sem afetar a outra.
 
-For example, consider our ``current_datetime`` view. If we wanted to change the
-URL for the application -- say, to move it from ``/time/`` to
-``/current-time/`` -- we could make a quick change to the URLconf, without
-having to worry about the view itself. Similarly, if we wanted to change the
-view function -- altering its logic somehow -- we could do that without
-affecting the URL to which the function is bound.
+Por exemplo, considere a função ``current_datetime`` feita recentemente. Para mudar
+a URL da aplicação de ``/time/`` para ``current-time``, é necessário somente mudar
+o URLconf, sem ter de se preocupar com a view em si. Do mesmo modo, para mudar
+a função view, alterando sua lógico de algum jeito, poderíamos fazer isso sem
+afetar a URL com que a função está ligada.
 
-Furthermore, if we wanted to expose the current-date functionality at
-*several* URLs, we could easily take care of that by editing the URLconf,
-without having to touch the view code. In this example, our
-``current_datetime`` is available at two URLs. It's a contrived example, but
-this technique can come in handy::
+Além disso, para mostrar a funcionalidade de mostrar data e hora locais para
+*várias* URLs, tudo o que levaria seria editar o URLconf, sem ter que alterar
+o código da view. Neste exemplo, nosso ``current_datetime`` está disponível para
+duas URLs. É um exemplo não muito real, mas essa técnica pode ser útil::
 
     urlpatterns = patterns('',
         url(r'^hello/$', hello),
         url(r'^time/$', current_datetime),
-        url(r'^another-time-page/$', current_datetime),
+        url(r'^outra-pagina-de-hora/$', current_datetime),
     )
 
-URLconfs and views are loose coupling in action. We'll continue to point out
-examples of this important philosophy throughout this book.
+URLconfs e view são fracamente acopladas na práticas. Mais exemplos dessa
+importante filosofia serão dados ao longo deste livro.
 
-Your Third View: Dynamic URLs
-=============================
+A terceira view: URLs dinâmicas
+===============================
 
-In our ``current_datetime`` view, the contents of the page -- the current
-date/time -- were dynamic, but the URL (``/time/``) was static. In most dynamic
-Web applications, though, a URL contains parameters that influence the output
-of the page. For example, an online bookstore might give each book its own URL,
-like ``/books/243/`` and ``/books/81196/``.
+Na view ``current_datetime`` o conteúdo da página, a data e hora atuais,
+eram dinâmicos, mas a URL (``/time``) era estática. Entretanto, na maioria das
+aplicações Web dinâmicas, há parâmetros na URL que influenciam na saída da
+página. Por exemplo, uma loja de livros online pode dar a cada livro uma URL,
+como ``/livros/243/`` e ``/livros/81196/``.
 
-Let's create a third view that displays the current date and time offset by a
-certain number of hours. The goal is to craft a site in such a way that the page
-``/time/plus/1/`` displays the date/time one hour into the future, the page
-``/time/plus/2/`` displays the date/time two hours into the future, the page
-``/time/plus/3/`` displays the date/time three hours into the future, and so
-on.
+Criaremos uma terceia view que exibe a data e hora atuais deslocados por um
+certo número de horas. O objeto é fazer um site em que a página ``/hora/mais/1``
+mostre a data/hora de uma hora no futuro, a página ``/hora/mais/2`` mostre a
+data/hora de duas horas no futuro, a página ``/hora/mais/3`` mostre a data/hora
+de três horas no futuro, e assim por diante.
 
-A novice might think to code a separate view function for each hour offset,
-which might result in a URLconf like this::
+Um novato pode pensar em criar uma função view para cada deslocamento de hora,
+que resultaria em um URLconf parecido com este::
 
     urlpatterns = patterns('',
-        url(r'^time/$', current_datetime),
-        url(r'^time/plus/1/$', one_hour_ahead),
-        url(r'^time/plus/2/$', two_hours_ahead),
-        url(r'^time/plus/3/$', three_hours_ahead),
-        url(r'^time/plus/4/$', four_hours_ahead),
+        url(r'^hora/$', current_datetime),
+        url(r'^hora/mais/1/$', uma_hora_a_mais),
+        url(r'^hora/mais/2/$', duas_horas_a_mais),
+        url(r'^hora/mais/3/$', tres_horas_a_mais),
+        url(r'^hora/mais/4/$', quatro_horas_a_mais),
     )
 
-Clearly, this line of thought is flawed. Not only would this result in redundant
-view functions, but also the application is fundamentally limited to supporting
-only the predefined hour ranges -- one, two, three or four hours. If we decided
-to create a page that displayed the time *five* hours into the future, we'd
-have to create a separate view and URLconf line for that, furthering the
-duplication. We need to do some abstraction here.
+Claramente essa linha de pensamento é falha. Não somente isso resultaria em
+funções view redundantes, mas a aplicação seria limitada por um número pré-definido
+de horas -- um, dois, três ou quatro horas. Para criar uma página de *cinco* horas
+no futuro, seria necessário criar uma view separada e adicionar uma linha no
+URLconf, aumentando a duplicação. É necessário abstrair um pouco.
 
-.. admonition:: A Word About Pretty URLs
+.. admonition:: Uma palavra sobre URLs bonitas
 
-    If you're experienced in another Web development platform, such as PHP or
-    Java, you may be thinking, "Hey, let's use a query string parameter!" --
-    something like ``/time/plus?hours=3``, in which the hours would be
-    designated by the ``hours`` parameter in the URL's query string (the part
-    after the ``?``).
+    Se você possui experiência em outra plataforma de desenvolvimento web,
+    como PHP ou Java, você deve estar pensando: "Ei, vamos utilizar um query
+    string parameter!", algo como ``/hora/mais?horas=3``, em que as horas seriam
+    atribuídos a partir do parametro ``horas`` na query string da URL (a parte
+    após o ``?``).
 
-    You *can* do that with Django (and we'll tell you how in Chapter 7), but
-    one of Django's core philosophies is that URLs should be beautiful. The URL
-    ``/time/plus/3/`` is far cleaner, simpler, more readable, easier to recite
-    to somebody aloud and . . . just plain prettier than its query string
-    counterpart. Pretty URLs are a characteristic of a quality Web application.
+    É *possível* fazer isso com Django (é explicado como no Capitulo 7), mas
+    uma das filosofias do Django é que a URL deve ser linda. A URL
+    ``/time/plus/3/`` é muito mais limpa, simples, legível, fácil de dizer alto
+    para alguém e... simplesmente mais bonita que a query string equivalente.
+    URLs bonitas são uma carecterística de aplicações Web de qualidade.
 
-    Django's URLconf system encourages pretty URLs by making it easier to use
-    pretty URLs than *not* to.
+    O sistema URLconf do Django encoraja o uso de URLs bonitas ao fazer mais
+    simples usar URLbonitas do que *não* usar.
 
-How, then do we design our application to handle arbitrary hour offsets? The
-key is to use *wildcard URLpatterns*. As we mentioned previously, a URLpattern
-is a regular expression; hence, we can use the regular expression pattern
-``\d+`` to match one or more digits::
+Então como projetamos nossa aplicação para lidar com deslocamentos de horas
+arbitrários? A chave é utilizar *URLpatterns curingas*. Como citado
+anteriormente, uma URLpatterns é uma expressão regular; por isso, podemos
+utilizar o padrão de expressões regulares ``\d+`` para casar um ou mais digitos::
 
     urlpatterns = patterns('',
         # ...
-        url(r'^time/plus/\d+/$', hours_ahead),
+        url(r'^hora/mais/\d+/$', horas_adiante),
         # ...
     )
 
-(We're using the ``# ...`` to imply there might be other URLpatterns that we
-trimmed from this example.)
+(Estamos utilizando o ``# ...`` para sugerir que podem haver outros URLpatterns
+que foram retirados desde exemplo).
 
-This new URLpattern will match any URL such as ``/time/plus/2/``,
-``/time/plus/25/``, or even ``/time/plus/100000000000/``. Come to think of it,
-let's limit it so that the maximum allowed offset is 99 hours. That means we
-want to allow either one- or two-digit numbers -- and in regular expression
-syntax, that translates into ``\d{1,2}``::
+Esse novo URLpattern casa qualquer URL parecida com ``/hora/mais/2``,
+``/hora/mais/25``, ou até ``/time/mais/100000000000``. Pensando nisso, vamos
+limitar o deslocamento máximo para 99 horas. Isso significa que permitiremos
+números com um ou dois digitos, na sintaxe de expressões regulares isso se
+traduz em ``\d{1,2}``::
 
-    url(r'^time/plus/\d{1,2}/$', hours_ahead),
+    url(r'^hora/mais/\d{1,2}/$', horas_adiante),
 
-.. note::
+.. nota::
 
-    When building Web applications, it's always important to consider the most
-    outlandish data input possible, and decide whether or not the application
-    should support that input. We've curtailed the outlandishness here by
-    limiting the offset to 99 hours.
+    Ao construir aplicações Web, é sempre importante considerar as entradas
+    mais estranhas e decidir se a aplicação deve suportar essa entrada.
+    As entradas estranhas foram removidas ao limitar o deslocamento para 99
+    horas.
 
-Now that we've designated a wildcard for the URL, we need a way of passing that
-wildcard data to the view function, so that we can use a single view function
-for any arbitrary hour offset. We do this by placing parentheses around the
-data in the URLpattern that we want to save. In the case of our example, we
-want to save whatever number was entered in the URL, so let's put parentheses
-around the ``\d{1,2}``, like this::
+Agora que designamos um curinga para a URL, precisamos passar o dado desse
+curinga para qualquer deslocamento de hora. Isso é feito colocando o parênteses
+em volta do dado no URLpattern que queremos salvar. No caso do nosso exemplo,
+queremos salvar qualquer número digitado na URL, então colocamos os parênteses
+em volta do ``\d{1,2}``, assim::
 
-    url(r'^time/plus/(\d{1,2})/$', hours_ahead),
+    url(r'^hora/mais/(\d{1,2})/$', horas_adiante),
 
-If you're familiar with regular expressions, you'll be right at home here;
-we're using parentheses to *capture* data from the matched text.
+Se você conhece expressões regulares, deve estar se sentindo em casa. Estamos
+usando parênteses para *capturar* dados do texto casado.
 
-The final URLconf, including our previous two views, looks like this::
+A URLconf final, incluindo as duas views anteriores, fica assim::
 
     from django.conf.urls.defaults import *
     from mysite.views import hello, current_datetime, hours_ahead
@@ -657,14 +652,14 @@ The final URLconf, including our previous two views, looks like this::
     urlpatterns = patterns('',
         url(r'^hello/$', hello),
         url(r'^time/$', current_datetime),
-        url(r'^time/plus/(\d{1,2})/$', hours_ahead),
+        url(r'^hora/mais/(\d{1,2})/$', hours_ahead),
     )
 
-With that taken care of, let's write the ``hours_ahead`` view.
+Resolvido isso, vamos escrever a view ``hours_ahead``.
 
-``hours_ahead`` is very similar to the ``current_datetime`` view we wrote
-earlier, with a key difference: it takes an extra argument, the number of hours
-of offset. Here's the view code::
+``hours_ahead`` é bastante parecido com a view ``current_datetime`` escrita
+anteriormente, com uma diferença chave: recebe mais um argumento, o número de
+horas do deslocamento. Aqui está o código da view::
 
     from django.http import Http404, HttpResponse
     import datetime
@@ -675,74 +670,74 @@ of offset. Here's the view code::
         except ValueError:
             raise Http404()
         dt = datetime.datetime.now() + datetime.timedelta(hours=offset)
-        html = "<html><body>In %s hour(s), it will be %s.</body></html>" % (offset, dt)
+        html = "<html><body>Em %s hora(s), será %s.</body></html>" % (offset, dt)
         return HttpResponse(html)
 
-Let's step through this code one line at a time:
+Vamos analisar o código passo-a-passo:
 
-* The view function, ``hours_ahead``, takes *two* parameters: ``request``
-  and ``offset``.
+* A função view ``hours_ahead`` possui *dois* parametros: ``request`` e
+  ``offset``.
 
-  * ``request`` is an ``HttpRequest`` object, just as in ``hello`` and
-    ``current_datetime``. We'll say it again: each view *always* takes an
-    ``HttpRequest`` object as its first parameter.
+  * ``request`` é um objeto do tipo ``HttpRequest``, assim como em
+    ``hello`` e ``current_datetime``. Repetindo: cada view *sempre* recebe
+    um ``HttpRequest`` como primeiro parâmetro.
 
-  * ``offset`` is the string captured by the parentheses in the
-    URLpattern. For example, if the requested URL were ``/time/plus/3/``,
-    then ``offset`` would be the string ``'3'``. If the requested URL were
-    ``/time/plus/21/``, then ``offset`` would be the string ``'21'``. Note
-    that captured values will always be *strings*, not integers, even if
-    the string is composed of only digits, such as ``'21'``.
+  * ``offset`` é a string capturada pelo parênteses no URLpattern. Por
+    exemplo, se a URL requisitada for ``/hora/mais/3/``, então a string
+    ``offset`` seria a string ``'3'``. Se a URL fosse ``/time/plus/21/``,
+    ``offset`` seria a string ``'21'``. Note que todos os valores capturados
+    sempre serão *strings* e não inteiros, mesmo se a string for composta
+    somente de dígitos, como ``'21'``.
 
-    (Technically, captured values will always be *Unicode objects*, not
-    plain Python bytestrings, but don't worry about this distinction at
-    the moment.)
+    (Tecnicamente, valores capturados sempre serão *objetos Unicode*,
+    não strings puras do Python, mas não se preocupe com essa
+    diferenciação neste momento.)
 
-    We decided to call the variable ``offset``, but you can call it
-    whatever you'd like, as long as it's a valid Python identifier. The
-    variable name doesn't matter; all that matters is that it's the second
-    argument to the function, after ``request``. (It's also possible to
-    use keyword, rather than positional, arguments in an URLconf. We cover
-    that in Chapter 8.)
+    Decidimos chamar a variável ``offset``, mas pode ser nomeada como
+    prefirir, contanto que seja um identificador Python válido. O nome
+    da variável não importa; o que importa é que seja o segundo argumento,
+    após ``request``. (Também é possível utilizar argumento por
+    palavra-chave, ao invés de posicional, em um URLconf. Isso é explicado
+    no Capítulo 8).
 
-* The first thing we do within the function is call ``int()`` on ``offset``.
-  This converts the string value to an integer.
+* A primeira coisa que fazemos dentro da função é chamar ``int()`` na
+  variável ``offset``. Isso converte o valor da string para um inteiro.
 
-  Note that Python will raise a ``ValueError`` exception if you call
-  ``int()`` on a value that cannot be converted to an integer, such as the
-  string ``'foo'``. In this example, if we encounter the ``ValueError``, we
-  raise the exception ``django.http.Http404``, which, as you can imagine,
-  results in a 404 "Page not found" error.
+  Note que o Python levantará uma exceção ``ValueError`` se a função
+  ``int()`` for chama em um valor que não possa ser converido para
+  inteiro, como a string ``foo``. Neste exemplo, se for encontrado um
+  ``ValueError``, nós levantamos a exceção ``django.http.Http404``, que,
+  como deve estar imaginando, resulta em um erro 404 "Página não
+  encontrada".
 
-  Astute readers will wonder: how could we ever reach the ``ValueError``
-  case, anyway, given that the regular expression in our URLpattern --
-  ``(\d{1,2})`` -- captures only digits, and therefore ``offset`` will only
-  ever be a string composed of digits? The answer is, we won't, because
-  the URLpattern provides a modest but useful level of input validation,
-  *but* we still check for the ``ValueError`` in case this view function
-  ever gets called in some other way. It's good practice to implement view
-  functions such that they don't make any assumptions about their
-  parameters. Loose coupling, remember?
+  Leitores astutos se perguntarão: como chegaríamos ao caso ``ValueError``,
+  já que a expressão regular no nosso URLpattern, ``(\d{1,2})``, captura
+  somente digitos e, portanto, ``offset`` só será uma string composta de
+  digitos? A resposta é, não chegaríamos, pois o URLpattern dá um modesto,
+  porém poderoso, nível de validação de entrada, *mas* ainda checamos pelo
+  ``ValueError``, caso a função view seja chamada de outro modo. É uma boa
+  prática implementar funções view que não façam suposições sobre seus
+  parametros. Acoplamento fraco, lembra-se?
 
-* In the next line of the function, we calculate the current date/time and
-  add the appropriate number of hours. We've already seen
-  ``datetime.datetime.now()`` from the ``current_datetime`` view; the new
-  concept here is that you can perform date/time arithmetic by creating a
-  ``datetime.timedelta`` object and adding to a ``datetime.datetime``
-  object. Our result is stored in the variable ``dt``.
+* Na próxima linha da função calculmaos a data e hora atuais e o número
+  apropiado de horas. Já haviamos visto ``datetime.datetime.now()``, usado
+  na view ``current_datetime``. O novo conceito aqui é o uso de operações
+  aritméticas com data/hora, usando o objeto ``datetime.timedelta`` e somando
+  ao objeto ``datetime.datetime``. O resultado é armazenado na variável
+  ``dt``.
 
-  This line also shows why we called ``int()`` on ``offset`` -- the
-  ``datetime.timedelta`` function requires the ``hours`` parameter to be an
-  integer.
+  Essa linha também mostra o por quê de chamarmos ``int()`` no ``offset``,
+  a função ``datetime.timedelta`` requer que o parametro ``hours`` seja um
+  inteiro.
 
-* Next, we construct the HTML output of this view function, just as we did
-  in ``current_datetime``. A small difference in this line from the previous
-  line is that it uses Python's format-string capability with *two* values,
-  not just one. Hence, there are two ``%s`` symbols in the string and a
-  tuple of values to insert: ``(offset, dt)``.
+* Depois construimos a saída HTML dessa função view, como feito em
+  ``current_datetime``. A pequena diferença desta linha com a anterior é que
+  e utilizado a funcionalidade do Python de formatar strings com *dois*
+  valores, não somente um. Por isso, há dois símbolos ``%s`` na string e
+  uma tupla de valores a serem inseridos: ``(offset, dt)``.
 
-* Finally, we return an ``HttpResponse`` of the HTML. By now, this is old
-  hat.
+* Por fim retornamos um ``HttpResponse`` do código HTML. Por agora esse já
+  é um velho conhecido.
 
 With that view function and URLconf written, start the Django development server
 (if it's not already running), and visit ``http://127.0.0.1:8000/time/plus/3/``
