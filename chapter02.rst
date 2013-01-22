@@ -51,35 +51,34 @@ o Python 2.5, então ultilize a ultima versnao do Python mantendo o leque de opçõ
     a si mesmo, e, como resultado, muita das principais bibliotecas Python e
     frameworks, incluindo Django, ainda não tinha pego.
 
-    Django 1.5 will support Python 2.6, 2.7, and 3.2.  However,
-    support for Python 3.2 is considered a "preview", which means the
-    Django developers are not yet confident enough to promise
-    stability in production.  For that, they suggest you wait until
-    Django 1.6.
+    Django 1.5 dará suporte para o Python 2.6, 2.7, e 3.2. Entretando,
+    suporte para o Python 3.2 é considerado um "preview", o que significa que
+    os desenvolvedores Django não estão confiantes o suficiente para prometer
+    estabilidade da produção. Para isso sugiro que você espere até a versão do Django 1.6 
 
-Installation
-------------
+Instalação
+-----------
 
-If you're on Linux or Mac OS X, you probably have Python already installed.
-Type ``python`` at a command prompt (or in Applications/Utilities/Terminal, in
-OS X). If you see something like this, then Python is installed::
+Se você estiver no Linux ou no Mac OS X, você provavelmente tem o Python instalado.
+Escreva ``python`` no prompt de comando (ou em Applications/Utilities/Terminal, no Mac OS X).
+Se você vê algo como isso, é porque o Python está instalado::
 
     Python 2.7.3rc2 (default, Apr 22 2012, 22:30:17)
     [GCC 4.6.3] on linux2
     Type "help", "copyright", "credits" or "license" for more information.
     >>>
 
-Otherwise, you'll need to download and install Python. It's fast and easy, and
-detailed instructions are available at http://www.python.org/download/
+Caso contrário, você prescisa fazer o download e instalar o Python. Isso é fácil e rápido
+instruções detalhadas poderão ser encontradas em http://www.python.org/download/
 
-Installing Django
+Instalando Django
 =================
 
-At any given time, two distinct versions of Django are available to you: the
-latest official release and the bleeding-edge development version. The version you
-decide to install depends on your priorities. Do you want a stable and tested
-version of Django, or do you want a version containing the latest features,
-perhaps so you can contribute to Django itself, at the expense of stability?
+Em um determinado momento, duas dinstintas versões dinstintas do Django estão disponíveis para você:
+a última versão oficial e a versnao de desenvolvimento. A versão que você decidir instalar 
+depende das suas prioridades. Se você quer uma versão testada e estável, ou se você quer uma
+versão contendo os recursos mais recentes. Talvez você possa contribuir para o Django, á custa de
+estabilidade?
 
 We'd recommend sticking with an official release, but it's important to know
 that the development version exists, because you'll find it mentioned
