@@ -33,58 +33,60 @@ banco de dados legado.
 1. Criar um projeto Django executando ``django-admin.py startproject mysite`` (onde ``mysite`` é o nome do
     seu projeto). Utilizaremos ``mysite`` como o nome do projeto neste exemplo.
 
+
 2. Editar o arquivo de configuração do projeto, ``mysite/settings.py``,
    para dizer ao Django quais os parâmetros de conexão e o nome do banco de dados.
-   Especificamente, fornecer as segyuintes configurações 
+   Especificamente, fornecer as seguintes configurações 
    ``DATABASE_NAME``, ``DATABASE_ENGINE``, ``DATABASE_USER``,
-   ``DATABASE_PASSWORD``, ``DATABASE_HOST``, and ``DATABASE_PORT``.
-   (Note que algumas configurações são opcionais. lea o capítulo 5 para maiores informações)
+   ``DATABASE_PASSWORD``, ``DATABASE_HOST``, and ``DATABASE_PORT``.(Note que algumas configurações são opcionais. Leia o capítulo 5 para maiores informações)
+   
+
 
 3. Criar uma aplicação Django no seu projeto executando ``python mysite/manage.py startapp myapp``
    (onde ``myapp`` é o nome da aplicaçõa). Utilizaremos ``myapp`` como o nome da aplicação neste exemplo.
+   
 
+4. Executar o comando ``python mysite/manage.py inspectdb``. Ele examinará 
+   as tabelas do banco de dados ``DATABASE_NAME`` e e imprimir a classe modelo gerado para cada tabela.
+   Dê uma olhada na saída para ter uma idéia do que `` inspectdb `` pode fazer.
+   
 
-4. Run the command ``python mysite/manage.py inspectdb``. This will
-   examine the tables in the ``DATABASE_NAME`` database and print the
-   generated model class for each table. Take a look at the output to get
-   an idea of what ``inspectdb`` can do.
-
-5. Save the output to the ``models.py`` file within your application by using
-   standard shell output redirection::
+5. Salvar a saída no arquivo ``models.py`` da sua aplicação utilizando o redirecionamento de 
+saída padrão do shell ::
 
        python mysite/manage.py inspectdb > mysite/myapp/models.py
+       
 
-6. Edit the ``mysite/myapp/models.py`` file to clean up the generated
-   models and make any necessary customizations. We'll give
-   some hints for this in the next section.
+6. Editar o arquivo ``mysite/myapp/models.py`` para limpar os modelos gerados e fazer
+   as customizações necessárias. Daremos algumas dicas sobre isso na próxima seção.
+   
 
-Cleaning Up Generated Models
+Limpando os Modelos gerados
 ----------------------------
 
-As you might expect, the database introspection isn't perfect, and you'll need
-to do some light cleanup of the resulting model code. Here are a few pointers
-for dealing with the generated models:
+Como você deve esperar, a instrospecção no banoc de dados não é perfeita, e é necessário fazer alguma limpeza no código 
+resultante do modelo. Aqui estão algumas dicas para lidar com os modelos gerados:
 
-1. Each database table is converted to a model class (i.e., there is a
-   one-to-one mapping between database tables and model classes). This means
-   that you'll need to refactor the models for any many-to-many join tables
-   into ``ManyToManyField`` objects.
+1. Cada tabela do bando de dados é convertida em uma classe do modelo. (isto é, existe um mapeamento um-para-um entre
+   as tabelas do banco de dados e a classe do modelo. Isto quer dizer que será necessário refazer
+   os modelos muitos-para-muitos das tabelas para objetos ``ManyToManyField`` 
+   
 
-2. Each generated model has an attribute for every field, including
-   ``id`` primary key fields. However, recall that Django automatically
-   adds an ``id`` primary key field if a model doesn't have a primary key.
-   Thus, you'll want to remove any lines that look like this::
-
+2. Cada modelo gerado tem um atributo para cada campo, incluindo um campo de chave primária
+   ``id``. No entanto, lembre-se que o Django adiciona automaticamente campo de chave primária
+   ``id``  se um modelo não tiver uma chave primária.
+    Assim, você vai querer remover todas as linhas que se parecem com isso ::
+   
        id = models.IntegerField(primary_key=True)
 
-   Not only are these lines redundant, but also they can cause problems if your
-   application will be adding *new* records to these tables.
+   Não apenas estas linhas redundantes, mas também podem causar problemas se sua 
+   aplicação adicionar *novos* registros a estas tabelas.
+   
 
-3. Each field's type (e.g., ``CharField``, ``DateField``) is determined by
-   looking at the database column type (e.g., ``VARCHAR``, ``DATE``). If
-   ``inspectdb`` cannot map a column's type to a model field type, it will
-   use ``TextField`` and will insert the Python comment
-   ``'This field type is a guess.'`` next to the field in the generated
+3. Cada tipo de (por exemplo, `` CharField ``, `` DateField ``) é determinada 
+   analisando o tipo da coluna no banco de dados (por exemplo, ``VARCHAR``, ``DATE``). Se
+   ``inspectdb`` não puder maperar o tipo da coluna para o um tipo de campo no modelo, então será usado
+   ``TextField`` e será inserido um comentário Python ``O tipo deste campo é uma sugestão.`` next to the field in the generated
    model. Keep an eye out for that, and change the field type accordingly
    if needed.
 
