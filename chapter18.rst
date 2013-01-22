@@ -2,7 +2,7 @@
 Capítulo 18: Integrando Banco de Dados Legados e Aplicações
 ==============================================================
 
-Django é mais adequado para o chamado desenvolvimento green-field - isto é, começando
+Django é mais adequado para o chamado desenvolvimento "green-field" - isto é, começando
 projetos a partir do zero, como se você estivesse construindo um edifício em um campo fresco
 da grama verde. Mas, apesar do fato do Django favorecer projetos a partir do zero,
 é possível integrar o framework à bancos de dados legados e
@@ -13,39 +13,36 @@ Integrando com banco de dados Legados
 ==================================
 
 A camada de banco de dados do Django gera esquemas SQL a partir do código python -- mas com 
-banco de dados legado, já exite os esquemas SQL. In such a case,
-you'll need to create models for your existing database tables. For this
-purpose, Django comes with a tool that can generate model code by reading your
-database table layouts. This tool is called ``inspectdb``, and you can call it
-by executing the command ``manage.py inspectdb``.
+banco de dados legado, já exite os esquemas SQL. Nestes casos, você precisa criar modelos 
+para as tabelas existes no banco de dados. Para este casos, Django vem com ferramentas que podem gerar o código 
+do modelo lendo o layout das tabelas do banco de dados. Esta ferramenta é a "inspectdb", e pode ser utilizada executando
+o comando "manage.py inspectdb".
 
-Using ``inspectdb``
+
+Usando ``inspectdb``
 -------------------
 
-The ``inspectdb`` utility introspects the database pointed to by your settings
-file, determines a Django model representation for each of your tables, and
-prints the Python model code to standard output.
+O utilitário "inspectdb"  examinará o banco de dados apontado pelo arquivo de configurações
+,que determina uma representação do modelo de Django para cada uma das tabelas, e
+imprime o modelo de código Python para a saída padrão.
 
-Here's a walk-through of a typical legacy database integration process from
-scratch. The only assumptions are that Django is installed and that you have a
-legacy database.
+Uma passagem através de um típico processo de integração com o de banco de dados legado.
+As hipóteses são de que apenas o Django está instalado e que você tem um
+banco de dados legado.
 
-1. Create a Django project by running
-   ``django-admin.py startproject mysite`` (where ``mysite`` is your
-   project's name). We'll use ``mysite`` as the project name in this
-   example.
+1. Criar um projeto Django executando ``django-admin.py startproject mysite`` (onde ``mysite`` é o nome do
+    seu projeto). Utilizaremos ``mysite`` como o nome do projeto neste exemplo.
 
-2. Edit the settings file in that project, ``mysite/settings.py``,
-   to tell Django what your database connection parameters are and what
-   the name of the database is. Specifically, provide the
+2. Editar o arquivo de configuração do projeto, ``mysite/settings.py``,
+   para dizer ao Django quais os parâmetros de conexão e o nome do banco de dados.
+   Especificamente, fornecer as segyuintes configurações 
    ``DATABASE_NAME``, ``DATABASE_ENGINE``, ``DATABASE_USER``,
-   ``DATABASE_PASSWORD``, ``DATABASE_HOST``, and ``DATABASE_PORT`` settings.
-   (Note that some of these settings are optional. Refer to Chapter 5 for
-   more information.)
+   ``DATABASE_PASSWORD``, ``DATABASE_HOST``, and ``DATABASE_PORT``.
+   (Note que algumas configurações são opcionais. lea o capítulo 5 para maiores informações)
 
-3. Create a Django application within your project by running
-   ``python mysite/manage.py startapp myapp`` (where ``myapp`` is your
-   application's name). We'll use ``myapp`` as the application name here.
+3. Criar uma aplicação Django no seu projeto executando ``python mysite/manage.py startapp myapp``
+   (onde ``myapp`` é o nome da aplicaçõa). Utilizaremos ``myapp`` como o nome da aplicação neste exemplo.
+
 
 4. Run the command ``python mysite/manage.py inspectdb``. This will
    examine the tables in the ``DATABASE_NAME`` database and print the
