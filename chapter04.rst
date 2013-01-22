@@ -78,56 +78,57 @@ valores para dentro. Vamos análisa-lo:
   uma *váriavel*. Isto significa "insira o valor da váriavel com o nome dado."
   (Como podemos especificar os valores das váriaveis? Nós vamos chegar nisso em breve.)
 
-* Any text that's surrounded by curly braces and percent signs (e.g., ``{%
-  if ordered_warranty %}``) is a *template tag*. The definition of a tag is
-  quite broad: a tag just tells the template system to "do something."
+* Qualquer texto contido entre chaves e sinais de porcento (e.g., ``{% if
+  ordered_warranty %}``) é um *template tag*. A definição de tag é bastante
+  amplo: uma tag apenas diz ao sistema de template para "fazer alguma coisa".
 
-  This example template contains a ``for`` tag (``{% for item in item_list
-  %}``) and an ``if`` tag (``{% if ordered_warranty %}``).
+  Este exemplo de template contem uma tag ``for`` (``{% for item in item_list %}``)
+  e uma tag ``if`` (``{% if ordered_warranty %}``).
 
-  A ``for`` tag works very much like a ``for`` statement in Python, letting
-  you loop over each item in a sequence. An ``if`` tag, as you may expect,
-  acts as a logical "if" statement. In this particular case, the tag checks
-  whether the value of the ``ordered_warranty`` variable evaluates to
-  ``True``. If it does, the template system will display everything between
-  the ``{% if ordered_warranty %}`` and ``{% else %}``. If not, the
-  template system will display everything between ``{% else %}`` and
-  ``{% endif %}``. Note that the ``{% else %}`` is optional.
+  Uma tag ``for`` trabalha de forma semelhante a declaração ``for`` em Python,
+  permitindo você fazer um laço sobre cada item em uma seqüência. Uma tag ``if``,
+  como você pode esperar, age como uma declaração lógica "if". Neste caso
+  particular, a tag verifica se o valor da váriavel ``ordered_warranty`` está
+  ``True``. Se sim, o sistema de template exibirá tudo que está entre ``{% if ordered_warranty %}`` e ``{% else %}``. Se não, o sistema de template exibirá
+  tudo que está entre ``{% else %}`` e ``{% endif %}``. Perceba que o ``{% else
+  %}`` é opcional.
 
-* Finally, the second paragraph of this template contains an example of a
-  *filter*, which is the most convenient way to alter the formatting of a
-  variable. In this example, ``{{ ship_date|date:"F j, Y" }}``, we're passing the
-  ``ship_date`` variable to the ``date`` filter, giving the ``date`` filter
-  the argument ``"F j, Y"``. The ``date`` filter formats dates in a given
-  format, as specified by that argument. Filters are attached using a pipe
-  character (``|``), as a reference to Unix pipes.
+* Finalmente, o segundo parágrafo deste template contém um exemplo de *filtro*,
+  sendo a forma mais conveniente de alterar a formatação de uma váriavel.
+  Neste exemplo, ``{{ ship_date|date:"F j, Y" }}``, nós estamos passando a váriavel
+  ``ship_date`` para o filtro ``date``, dando ao filtro ``date`` os argumentos
+  "F j, Y". O filtro ``date`` formata datas no formato passado, como especificado
+  pelo argumento. Os filtros são anexados usando o character pipe (``|``), como
+  referência aos pipes do Unix.
 
-Each Django template has access to several built-in tags and filters, many of
-which are discussed in the sections that follow. Appendix E contains the full
-list of tags and filters, and it's a good idea to familiarize yourself with that
-list so you know what's possible. It's also possible to create your own filters
-and tags; we'll cover that in Chapter 9.
+Cada template Django tem acesso a vários tags e filtros embutidos, muitos dos
+quais são discutidos nas sessões que seguem. No apêndice F contém a lista completa
+de tags e filtros, e é uma boa idéia você se familiarizar com essa lista, assim
+saberá quais as possíbilidades. Também é possível criar os seus próprios filtros
+e tags; nós vamos cobrir isso no capítulo 9.
 
-Using the Template System
-=========================
 
-Let's dive into Django's template system so you can see how it works -- but
-we're *not* yet going to integrate it with the views that we created in the
-previous chapter. Our goal here is to show you how the system works
-independently of the rest of Django. (Put another way: usually you'll be using
-the template system within a Django view, but we want to make it clear that the
-template system is just a Python library that you can use *anywhere*, not just
-in Django views.)
+Usando o sistema de templates
+=============================
 
-Here is the most basic way you can use Django's template system in Python code:
+Agora vamos mergulhar no sistema de templates do Django para que você veja como
+funciona - mas nós ainda não vamos integrar com as views criadas no capítulo
+anterior. Nosso objetivo aqui é mostrar para você como o sistema funciona de
+forma idependente do restante do Django. (Dito de outra forma: geralmente você
+usará o sistema de template dentro de uma view do Django, mas nós queremos deixar
+claro que o sistema de template é somente uma biblioteca Python que você pode usar
+em *qualquer lugar*, não somente nas views do Django).
 
-1. Create a ``Template`` object by providing the raw template code as a
-   string.
+Aqui está a maneira mais básica que você pode usar o sistema de templates do
+Django em código Python:
 
-2. Call the ``render()`` method of the ``Template`` object with a given
-   set of variables (the *context*). This returns a fully rendered
-   template as a string, with all of the variables and template tags
-   evaluated according to the context.
+1. Crie um objeto ``Template`` fornecendo  *******the raw template code*******
+   como uma string.
+
+2. Chame o método ``render()`` do objeto ``Template`` com um determinado
+   conjunto de váriaveis (o *contexto*). Isto retorna  o template completamente
+   renderizado como uma string, com todas as váriaveis e template tags
+   avaliadas de acordo com o contexto.
 
 Em código, é assim que se parece::
 
@@ -157,7 +158,7 @@ interativo.
 .. admonition::  Um prompt Python especial
 
     Se você anteriormente usou Python, você pode estar se perguntando porque
-    estamos executando ``python manage.py shell`` ao invés de apenas``python``.
+    estamos executando ``python manage.py shell`` ao invés de apenas ``python``.
     Ambos os comandos iniciam o interpretador interativo, mas o comando ``manage.py shell``
     possui uma diferença chave: antes de iniciar o interpretador, ele informa ao Django
     qual arquivo de configuração usar. Muitas partes do Django, incluindo o sistema de
@@ -212,62 +213,60 @@ casos:
 * Sintaxe de template inválido
 * Tags não fechadas (para tags que requerem fechamento)
 
-Rendering a Template
+Processando um template
 --------------------
 
-Once you have a ``Template`` object, you can pass it data by giving it a
-*context*. A context is simply a set of template variable names and their
-associated values. A template uses this to populate its variables and
-evaluate its tags.
+Uma vez que você tenha um objeto de ``Template``, você pode passar os
+dados, dando-lhe um *contexto*. Um contexto é uma simples definição de
+nomes de váriaveis e seus valores associados. Um template usa isto para
+popular as váriaveis e avaliar as tags.
 
-A context is represented in Django by the ``Context`` class, which lives in the
-``django.template`` module. Its constructor takes one optional argument: a
-dictionary mapping variable names to variable values. Call the ``Template``
-object's ``render()`` method with the context to "fill" the template::
+Um contexto é representado no Django pela classe ``Context``, a qual está
+no módulo ``django.template``. Seu construtor tem um argumento optional:
+***a dictionary mapping variable names to variable values***. Chame o método
+``render()`` do objeto ``Template`` com o contexto para "preencher" o template::
 
     >>> from django.template import Context, Template
-    >>> t = Template('My name is {{ name }}.')
+    >>> t = Template('Meu nome é {{ name }}.')
     >>> c = Context({'name': 'Stephane'})
     >>> t.render(c)
-    u'My name is Stephane.'
+    u'Meu nome é Stephane.'
 
-One thing we should point out here is that the return value of ``t.render(c)``
-is a Unicode object -- not a normal Python string. You can tell this by the
-``u`` in front of the string. Django uses Unicode objects instead of normal
-strings throughout the framework. If you understand the repercussions of that,
-be thankful for the sophisticated things Django does behind the scenes to make
-it work. If you don't understand the repercussions of that, don't worry for
-now; just know that Django's Unicode support makes it relatively painless for
-your applications to support a wide variety of character sets beyond the basic
-"A-Z" of the English language.
+Uma coisa que devemos salientar, é que o valor de retorno de ``t.render(c)``
+é um objeto Unicode -- não uma string normal Python. Você pode tratar isto
+pelo uso do ``u`` em frente a string. Django usa objetos Unicode ao invés de
+strings normais em seu framework. Se você entende a repercurssão disso, seja
+grato pelas coisas sofisticadas que o Django faz nos bastidores para isto funcionar.
+Se você não entende a repercussão disso, não se preocupe agora; apenas entenda que
+o Unicode do Django torna simples que os seus aplicativos tenham suporte a uma grande variedade de conjuntos de caracteres além do básico "A-Z" da língua Inglesa.
 
-.. admonition:: Dictionaries and Contexts
+.. admonition:: Dicionários e contextos
 
-   A Python dictionary is a mapping between known keys and variable
-   values. A ``Context`` is similar to a dictionary, but a ``Context``
-   provides additional functionality, as covered in Chapter 9.
+   Um dicionário Python é um mapeamento entre chaves conhecidas
+   e valores váriaveis. Um ``Context`` é similar ao dicionário, mas
+   o ``Context`` possui uma funcionalidade adicional, como descrito
+   no capítulo 9.
 
-Variable names must begin with a letter (A-Z or a-z) and may contain more
-letters, digits, underscores, and dots. (Dots are a special case we'll get to in a moment.)
-Variable names are case sensitive.
+Nomes de váriaveis devem iniciar com letras (A-Z or a-z)  podem contem
+mais letras, digitos, sublinhados e pontos (Pontos são um caso especial, vamos ver em breve). Nomes de váriaves são case sensitive.
 
-Here's an example of template compilation and rendering, using a template
-similar to the example in the beginning of this chapter::
+Aqui está um exemplo de modelo de compilação e renderização, usando um template
+semelhante ao exemplo no início deste capítulo::
 
     >>> from django.template import Template, Context
-    >>> raw_template = """<p>Dear {{ person_name }},</p>
+    >>> raw_template = """<p>Prezado {{ person_name }},</p>
     ...
-    ... <p>Thanks for placing an order from {{ company }}. It's scheduled to
-    ... ship on {{ ship_date|date:"F j, Y" }}.</p>
+    ... <p>Obrigado por fazer o pedido na {{ company }}. Está agendado
+    ... para enviar em {{ ship_date|date:"F j, Y" }}.</p>
     ...
     ... {% if ordered_warranty %}
-    ... <p>Your warranty information will be included in the packaging.</p>
+    ... <p>A sua informação de garantia será incluída na embalagem.</p>
     ... {% else %}
-    ... <p>You didn't order a warranty, so you're on your own when
-    ... the products inevitably stop working.</p>
+    ... <p>Você não solicitou garantia, sendo assim é por sua
+    ... conta quando o produto parar de funcionar.</p>
     ... {% endif %}
     ...
-    ... <p>Sincerely,<br />{{ company }}</p>"""
+    ... <p>Sinceramente,<br />{{ company }}</p>"""
     >>> t = Template(raw_template)
     >>> import datetime
     >>> c = Context({'person_name': 'John Smith',
@@ -275,91 +274,91 @@ similar to the example in the beginning of this chapter::
     ...     'ship_date': datetime.date(2009, 4, 2),
     ...     'ordered_warranty': False})
     >>> t.render(c)
-    u"<p>Dear John Smith,</p>\n\n<p>Thanks for placing an order from Outdoor
-    Equipment. It's scheduled to\nship on April 2, 2009.</p>\n\n\n<p>You
-    didn't order a warranty, so you're on your own when\nthe products
-    inevitably stop working.</p>\n\n\n<p>Sincerely,<br />Outdoor Equipment
+    u"<p>Prezado John Smith,</p>\n\n<p>Obrigado por fazer o pedido naa Outdoor
+    Equipment. Está agendado\n para enviar em April 2, 2009.</p>\n\n\n<p>Você não \n
+    solicitou garantia, sendo assim é por sua\n conta quando o produto
+    parar de funcionar.</p>\n\n\n<p>Sinceramente,<br />Outdoor Equipment
     </p>"
 
-Let's step through this code one statement at a time:
+Vamos passar as instruções de código uma por vez:
 
-* First, we import the classes ``Template`` and ``Context``, which both
-  live in the module ``django.template``.
+* Primeiro, nós importamos as classes ``Template`` e ``Context``, ambas
+  ficam nó módulo ``django.template``.
 
-* We save the raw text of our template into the variable
-  ``raw_template``. Note that we use triple quote marks to designate the
-  string, because it wraps over multiple lines; in contrast, strings
-  within single quote marks cannot be wrapped over multiple lines.
+* Nós salvamos o texto bruto do nosso template na váriavel
+  ``raw_template``. Perceba que usamos aspas triplas para definir a string,
+  porque envolve várias linhas; em contraste, strings com aspas simples não
+  podem ser usadas em multiplas linhas.
 
-* Next, we create a template object, ``t``, by passing ``raw_template`` to
-  the ``Template`` class constructor.
+* Em seguida, nós criamos o objeto template, ``t``, passando ``raw_template``
+  para o construtor da classe ``Template`` .
 
-* We import the ``datetime`` module from Python's standard library,
-  because we'll need it in the following statement.
+* Nós importamos o módulo ``datetime`` da biblioteca padrão do Python,
+  porque vamos precisar dele na declaração seguinte.
 
-* Then, we create a ``Context`` object, ``c``. The ``Context``
-  constructor takes a Python dictionary, which maps variable names to
-  values. Here, for example, we specify that the ``person_name``
-  is ``'John Smith'``, ``company`` is ``'Outdoor Equipment'``, and so forth.
+* Depois, criamos um objeto ``Context``, ``c``. O construtor ``Context``
+  recebe um dicionário Python, que mapeia os nomes das váriaveis para valores.
+  Aqui, por exemplo, nós especificamos que ``person_name`` é  ``'John Smith'``,
+  ``company`` é ``'Outdoor Equipment'``, e assim por diante.
 
-* Finally, we call the ``render()`` method on our template object, passing
-  it the context. This returns the rendered template -- i.e., it replaces
-  template variables with the actual values of the variables, and it
-  executes any template tags.
+* Finalmente, chamamos o método ``render()`` em seu objeto template, passando
+  o contexto. Este retorna o template renderizado, ou seja, ele substitui
+  as váriaveis do template com os valores reais das váriaveis, e executa
+  as tags de template.
 
-  Note that the "You didn't order a warranty" paragraph was displayed
-  because the ``ordered_warranty`` variable evaluated to ``False``. Also
-  note the date, ``April 2, 2009``, which is displayed according to the
-  format string ``'F j, Y'``. (We'll explain format strings for the
-  ``date`` filter in a little while.)
+  Note que o páragrafro "Você não solicitou garantia" é exibido porque
+  a váriavel ``ordered_warranty`` tem seu valor como ``False``. Além
+  disso, observer a data, ``April 2, 2009``, que é exibido de acordo com
+  o formato da string ``'F j, Y'``. (Vamos explicar a formatação de strings
+  para os filtros ``date`` em breve).
 
-  If you're new to Python, you may wonder why this output includes
-  newline characters (``'\n'``) rather than displaying the line breaks.
-  That's happening because of a subtlety in the Python interactive
-  interpreter: the call to ``t.render(c)`` returns a string, and by default
-  the interactive interpreter displays the *representation* of the string,
-  rather than the printed value of the string. If you want to see the
-  string with line breaks displayed as true line breaks rather than ``'\n'``
-  characters, use the ``print`` statement: ``print t.render(c)``.
+  Se você é novo com Python, você deve estar se perguntado porque incluir
+  caracteres de nova linha(``'\n'``) ao invés de exibir as quebras de linhas.
+  Isso está acontecendo por causa de uma detalhe no interpretador interativo
+  do Python: a chamada para ``t.render(c)``, retorna uma string, e por padrão
+  o interpretador interativo exibe a *representação* da string, ao invés do
+  valor impresso na string. Se deseja ver a string com quebras de linha
+  verdadeiramente, ao invés de dos caracteres ``'\n'`` , use a declaração
+  ``print`` : ``print t.render(c)``.
 
-Those are the fundamentals of using the Django template system: just write a
-template string, create a ``Template`` object, create a ``Context``, and call
-the ``render()`` method.
+Esses são os fundamentos para usar o sistema de templates do Django: basta
+escrever um template string, criar um objeto ``Template``, criar um ``Context``,
+e chamar o método ``render()``.
 
-Multiple Contexts, Same Template
+Múltiplos contextos, mesmo template
 --------------------------------
 
-Once you have a ``Template`` object, you can render multiple contexts through
-it. For example::
+Uma vez que você tem um objeto ``Template``, você pode processar múltiplos
+contextos por ele. Por exemplo::
 
     >>> from django.template import Template, Context
-    >>> t = Template('Hello, {{ name }}')
+    >>> t = Template('Olá, {{ name }}')
     >>> print t.render(Context({'name': 'John'}))
-    Hello, John
+    Olá, John
     >>> print t.render(Context({'name': 'Julie'}))
-    Hello, Julie
+    Olá, Julie
     >>> print t.render(Context({'name': 'Pat'}))
-    Hello, Pat
+    Olá, Pat
 
-Whenever you're using the same template source to render multiple
-contexts like this, it's more efficient to create the ``Template``
-object *once*, and then call ``render()`` on it multiple times::
+Sempre que você está usando o mesmo código de template para renderizar
+multiplos contextos como isso, é mais eficiente criar o objeto
+``Template`` *uma vez*, e depois chamar o ``render()`` por várias vezes::
 
-    # Bad
+    # Ruim
     for name in ('John', 'Julie', 'Pat'):
-        t = Template('Hello, {{ name }}')
+        t = Template('Olá, {{ name }}')
         print t.render(Context({'name': name}))
 
-    # Good
-    t = Template('Hello, {{ name }}')
+    # Bom
+    t = Template('Olá, {{ name }}')
     for name in ('John', 'Julie', 'Pat'):
         print t.render(Context({'name': name}))
 
-Django's template parsing is quite fast. Behind the scenes, most of the parsing
-happens via a call to a single regular expression. This is in stark
-contrast to XML-based template engines, which incur the overhead of an XML
-parser and tend to be orders of magnitude slower than Django's template
-rendering engine.
+A análise de templates do Django é bastante rápida. Nos bastidores, a maior
+parte da análise acontece através da chamada a uma única expressão regular.
+Isso é um contraste gritante com as engines de template baseadas em XML, o qual
+provoca uma sobrecarga ao parser XML e tendem a ser na ordem de magnitude mais
+lentos que a engine de renderização de template do Django.
 
 Context Variable Lookup
 -----------------------

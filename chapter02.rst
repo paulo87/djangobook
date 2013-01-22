@@ -1,76 +1,84 @@
-==========================
-Chapter 2: Getting Started
-==========================
+======================
+Capítulo 2: Começando
+======================
 
 Installing Django is a multi-step process, due to the multiple moving parts in
-modern Web development environments. In this chapter, we'll walk you through
+Instalar o Django é um processo de vários passos, em função das múltiplas partes que
+modern Web development environments. In this chapter, vamos leva-los através de 
+envolve os cenárioos de desenvolvimentos web hoje em dia. Neste capítulo, 
 how to install the framework and its few dependencies.
+como se instalar o framework e as suas dependencias.
 
 Because Django is "just" Python code, it runs anywhere Python does -- including
+Como o Django é "apenas" código Python, ele é executado em qualquer lugar que o Python rode -- incluindo
 on some cell phones! But this chapter just covers the common scenarios for
+alguns telefones celulares! Mas este capítulo abrange apenas os cenários comuns para se 
 Django installations. We'll assume you're installing it either on a
+instalar o Django. Vamos assumir que você esteje instalando em uma 
 desktop/laptop machine or a server.
+máquina desktop/laptop ou um servidor.
 
 Later, in Chapter 12, we'll cover how to deploy Django to a production site.
+Depois, no Capítulo 12, nós iremos cobrir como fazer o deploy do Django para um site em produção.
 
-Installing Python
-=================
+Instalando o Django
+====================
 
 Django itself is written purely in Python, so the first step in installing the
+Django é puramente escrito em Python, então o primeiro passo para instalar o 
 framework is to make sure you have Python installed.
+framework é ter certeza que você tem o Pythonn instalado.
 
-Python Versions
----------------
+Versões do Python
+------------------
 
-The core Django framework (version 1.4+) works with any Python version from 2.5
-to 2.7, inclusive. Django's optional GIS (Geographic Information Systems)
-support requires Python 2.5 to 2.7.
+O núcleo do framework Django (versão 1.4) trabalha com qualquer versão do Python da 2.5
+até a 2.7. O GIS(Geographic Information Systems) do Django exige o Python 2.5 até o 2.7.
 
-If you're not sure which version of Python to install and you have complete
-freedom over the decision, pick the latest one in the 2.x series: version 2.7.
-Although Django works equally well with any version from 2.5 to 2.7, the later
-versions of Python have performance improvements and additional language
-features you might like to use in your applications. Plus, certain third-party
-Django add-ons that you might want to use might require a version newer than
-Python 2.5, so using a later version of Python keeps your options open.
+Se você não tem certeza da versão do Python que que tem instalada e você tem
+completa liberdade para tomar essa decisão, escolha a última versão da série 2.x: versnao 2.7
+Embora Django funcione igualmente bem com qualquer versão 2.5 até 2.7, a ultima 
+versão do Python tem boa performace de desempenho e idiomas adicionais
+características que talvez você deseje ultilizar em suas aplicações. Além disso, 
+add-ons de terceiros que você possa querer usar pode prescisr de uma versnao mais recente que 
+o Python 2.5, então ultilize a ultima versnao do Python mantendo o leque de opções aberto.
 
 .. admonition:: Django and Python 3.0
 
-    At the time of writing, Python 3.0 had been released, but Django
-    only supported it experimentally. Python 3.0 introduced a
-    substantial number of backwards-incompatible changes to the
-    language itself, and, as a result, many major Python libraries and
-    frameworks, including Django, had not yet caught up.
+    No momento em que este livro estava sendo escrito, o Python 3.0 estava sendo lançado, mas Django
+    foi testado apenas de experimentalmente. Python 3.0 intrudu a 
+    um número substancial de incompatibilidades com as versões anteriores mundando 
+    a si mesmo, e, como resultado, muita das principais bibliotecas Python e
+    frameworks, incluindo Django, ainda não tinha pego.
 
-    Django 1.5 will support Python 2.6, 2.7, and 3.2.  However,
-    support for Python 3.2 is considered a "preview", which means the
-    Django developers are not yet confident enough to promise
-    stability in production.  For that, they suggest you wait until
-    Django 1.6.
+    Django 1.5 dará suporte para o Python 2.6, 2.7, e 3.2. Entretando,
+    suporte para o Python 3.2 é considerado um "preview", o que significa que
+    os desenvolvedores Django não estão confiantes o suficiente para prometer
+    estabilidade da produção. Para isso sugiro que você espere até a versão do Django 1.6 
 
-Installation
-------------
+Instalação
+-----------
 
-If you're on Linux or Mac OS X, you probably have Python already installed.
-Type ``python`` at a command prompt (or in Applications/Utilities/Terminal, in
-OS X). If you see something like this, then Python is installed::
+Se você estiver no Linux ou no Mac OS X, você provavelmente tem o Python instalado.
+Escreva ``python`` no prompt de comando (ou em Applications/Utilities/Terminal, no Mac OS X).
+Se você vê algo como isso, é porque o Python está instalado::
 
     Python 2.7.3rc2 (default, Apr 22 2012, 22:30:17)
     [GCC 4.6.3] on linux2
     Type "help", "copyright", "credits" or "license" for more information.
     >>>
 
-Otherwise, you'll need to download and install Python. It's fast and easy, and
-detailed instructions are available at http://www.python.org/download/
+Caso contrário, você prescisa fazer o download e instalar o Python. Isso é fácil e rápido
+instruções detalhadas poderão ser encontradas em http://www.python.org/download/
 
-Installing Django
+Instalando Django
 =================
 
-At any given time, two distinct versions of Django are available to you: the
-latest official release and the bleeding-edge development version. The version you
-decide to install depends on your priorities. Do you want a stable and tested
-version of Django, or do you want a version containing the latest features,
-perhaps so you can contribute to Django itself, at the expense of stability?
+Em um determinado momento, duas dinstintas versões dinstintas do Django estão disponíveis para você:
+a última versão oficial e a versnao de desenvolvimento. A versão que você decidir instalar 
+depende das suas prioridades. Se você quer uma versão testada e estável, ou se você quer uma
+versão contendo os recursos mais recentes. Talvez você possa contribuir para o Django, á custa de
+estabilidade?
 
 We'd recommend sticking with an official release, but it's important to know
 that the development version exists, because you'll find it mentioned
