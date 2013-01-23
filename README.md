@@ -39,11 +39,11 @@ Chapter 9: Advanced Templates - [@londerson] (https://github.com/londerson)
 
 Chapter 10: Advanced Models - [@igocoelho] (https://github.com/igocoelho)
 
-Chapter 11: Generic Views - aberto
+Chapter 11: Generic Views - [@embs] (https://github.com/embs)
 
 Chapter 12: Deploying Django - [@annacruz] (https://github.com/annacruz)
 
-Chapter 13: Generating Non-HTML Content - aberto
+Chapter 13: Generating Non-HTML Content - [@brunomachado] (https://github.com/brunomachado)
 
 Chapter 14: Sessions, Users, and Registration - [@andersondborges] (https://github.com/andersondborges)
 

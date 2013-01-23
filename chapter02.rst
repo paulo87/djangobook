@@ -2,32 +2,21 @@
 Capítulo 2: Começando
 ======================
 
-Installing Django is a multi-step process, due to the multiple moving parts in
 Instalar o Django é um processo de vários passos, em função das múltiplas partes que
-modern Web development environments. In this chapter, vamos leva-los através de 
-envolve os cenárioos de desenvolvimentos web hoje em dia. Neste capítulo, 
-how to install the framework and its few dependencies.
+envolve os cenários de desenvolvimento web hoje em dia. Neste capítulo, vamos leva-los através de 
 como se instalar o framework e as suas dependencias.
 
-Because Django is "just" Python code, it runs anywhere Python does -- including
-Como o Django é "apenas" código Python, ele é executado em qualquer lugar que o Python rode -- incluindo
-on some cell phones! But this chapter just covers the common scenarios for
-alguns telefones celulares! Mas este capítulo abrange apenas os cenários comuns para se 
-Django installations. We'll assume you're installing it either on a
-instalar o Django. Vamos assumir que você esteje instalando em uma 
-desktop/laptop machine or a server.
-máquina desktop/laptop ou um servidor.
+Como o Django é "apenas" código Python, ele é executado em qualquer lugar que rode Python -- incluindo
+alguns telefones celulares! Mas este capítulo abrange apenas os cenários comums para se 
+instalar o Django. Vamos assumir que você esteje instalando em uma máquina desktop/laptop ou um servidor.
 
-Later, in Chapter 12, we'll cover how to deploy Django to a production site.
 Depois, no Capítulo 12, nós iremos cobrir como fazer o deploy do Django para um site em produção.
 
 Instalando o Django
 ====================
 
-Django itself is written purely in Python, so the first step in installing the
 Django é puramente escrito em Python, então o primeiro passo para instalar o 
-framework is to make sure you have Python installed.
-framework é ter certeza que você tem o Pythonn instalado.
+framework é ter certeza de que você tem o Python instalado.
 
 Versões do Python
 ------------------
@@ -36,18 +25,18 @@ O núcleo do framework Django (versão 1.4) trabalha com qualquer versão do Python
 até a 2.7. O GIS(Geographic Information Systems) do Django exige o Python 2.5 até o 2.7.
 
 Se você não tem certeza da versão do Python que que tem instalada e você tem
-completa liberdade para tomar essa decisão, escolha a última versão da série 2.x: versnao 2.7
+completa liberdade para tomar essa decisão, escolha a última versão da série 2.x: versão 2.7.
 Embora Django funcione igualmente bem com qualquer versão 2.5 até 2.7, a ultima 
 versão do Python tem boa performace de desempenho e idiomas adicionais
 características que talvez você deseje ultilizar em suas aplicações. Além disso, 
-add-ons de terceiros que você possa querer usar pode prescisr de uma versnao mais recente que 
-o Python 2.5, então ultilize a ultima versnao do Python mantendo o leque de opções aberto.
+add-ons de terceiros que você possa querer ultilizar talvez nescessite da mais recente que 
+o Python 2.5, então ultilize a ultima versnao do Python mantendo o leque de opções em aberto.
 
 .. admonition:: Django and Python 3.0
 
     No momento em que este livro estava sendo escrito, o Python 3.0 estava sendo lançado, mas Django
-    foi testado apenas de experimentalmente. Python 3.0 intrudu a 
-    um número substancial de incompatibilidades com as versões anteriores mundando 
+    foi testado apenas de experimentalmente. Python 3.0 intruduziu a 
+    um número substancial de incompatibilidades com as versões anteriores, mundando 
     a si mesmo, e, como resultado, muita das principais bibliotecas Python e
     frameworks, incluindo Django, ainda não tinha pego.
 
@@ -75,81 +64,79 @@ Instalando Django
 =================
 
 Em um determinado momento, duas dinstintas versões dinstintas do Django estão disponíveis para você:
-a última versão oficial e a versnao de desenvolvimento. A versão que você decidir instalar 
+a última versão oficial e a versão de desenvolvimento. A versão que você decidir instalar 
 depende das suas prioridades. Se você quer uma versão testada e estável, ou se você quer uma
 versão contendo os recursos mais recentes. Talvez você possa contribuir para o Django, á custa de
 estabilidade?
 
-We'd recommend sticking with an official release, but it's important to know
-that the development version exists, because you'll find it mentioned
-in the documentation and by members of the community.
+Nós recomendamos trabalhar com um lançamento oficial, mas é importante saber que a versão 
+de desenvolvimento existe, porque você irá encontrar menções na documentação e pelos 
+membros da comunidade.
 
-Installing an Official Release
+Instalando um lançamento oficial
 ------------------------------
 
-Official releases have a version number, such as 1.4.2, 1.4.1 or 1.4, and the latest
-one is always available at http://www.djangoproject.com/download/.
+Um lançamento oficial tem um número de versão, como 1.4.2, 1.4.1 ou 1.4, 
+um lançamento não oficial tem um número de versão, como 1.4.2, 1.4.1 ou 1.4, e a última 
+estará sempre disponível em http://www.djangoproject.com/download/.
 
-If you're on a Linux distribution that includes a package of Django, it's a
-good idea to use the distributor's version. That way, you'll get security
-updates along with the rest of your system packages.
+Se você está em uma distribuição Linux que inclui um pacote do Django, é uma boa ideia
+usar a versão do distribuidor. Dessa forma você terá atualizações de segurança juntamente com
+o resto dos pacotes do seu sistema.
 
-If you don't have access to a prepackaged version, you can download and install
-the framework manually. To do so, first download the tarball, which will be
-named something like ``Django-1.4.2.tar.gz``. (It doesn't matter which
-local directory you download this file into; the installation process will put
-Django's files in the right place.) Then, unzip it and run ``setup.py install``,
-as you do with most Python libraries.
+Se você não tem acesso a uma versão pré-empacotada, você pode fazer o download e instalar
+o framework manualmente. Para isso, primeiramente faça o do tarball, que será chamado
+de algo como ``Django-1.4.2.tar.gz``. (Não importa em qual diretório local você tenha baixado
+este arquivo inicial; O processo de instalação colocará os arquivos do Django no lugar correto.) 
+Então, descompacte-o e e execute ``setup.py install``, como você faz com a maioria das bibliotecas
+do Python.
 
-Here's how that process looks on Unix systems:
+Veja como esse processo se parece em sistemas Unix:
 
 #. ``tar xzvf Django-1.4.2.tar.gz``
 #. ``cd Django-*``
 #. ``sudo python setup.py install``
 
-On Windows, we recommend using 7-Zip (http://www.djangoproject.com/r/7zip/)
-to unzip ``.tar.gz`` files. Once you've unzipped the file, start up a DOS
-shell (the "Command Prompt") with administrator privileges and run the
-following command from within the directory whose name starts with ``Django-``::
+No Windows, nós recomendamos o uso do 7-Zip (http://www.djangoproject.com/r/7zip/)
+para descomprimir os arquivos ``.tar.gz``. Uma vez com os arquivos descompactados, inicie o DOS
+shell (o "Prompt de Comando") com os privilégios de administrador e execute o comando seguinte 
+dentro do diretório cujo nome começa com ``Django-``::
 
     python setup.py install
 
-In case you're curious: Django's files will be installed into your Python
-installation's ``site-packages`` directory -- a directory where Python looks
-for third-party libraries. Usually it's in a place like
-``/usr/lib/python2.7/site-packages``.
+No caso de você estiver curioso: os arquivos do Django serão instalados no local da
+instalação do seu Python no ``site-packages`` diretório -- um diretório aonde o o Python
+procura por biblioteca de terceiros. Normalmente é um lugar como ``/usr/lib/python2.7/site-packages``.
 
-Installing the "Development" Version
-------------------------------------
+Instalando a versão de "Desenvolvimento"
+----------------------------------------
 
-Django uses Git (http://git-scm.com) for its source control. The latest and
-greatest Django development version available from Django's official Git
-repository (https://github.com/django/django). You should consider installing
-this version if you want to work on the bleeding edge, or if you want to
-contribute code to Django itself.
+Django ultiliza o Git (http://git-scm.com) para o controle de versão. A mais
+recente e maior versão de desenvolvimento do Django se encontra no seu oficial 
+repositório do Git (https://github.com/django/django). Você deve considerar a 
+instalação dessa versão se você quer trabalhar on the bleeding edge, ou se você quiser 
+contribuir com o código do Django.
 
-Git is a free, open source distributed revision-control system, and the Django
-team uses it to manage changes to the Django codebase. You can download and
-install Git from http://git-scm.com/download but it is easier to install with
-your operating system's package manager. You can use Git to grab the very latest
-Django source code and, at any given time, you can update your local version of
-the Django code to get the latest changes and improvements made by Django
-developers.
+Git é gratuíto, um uma distribuição de código live de revisão de controle de sistema, e o
+time do Django usa ele para controlar as mudanças no código fonte do Django. Você pode fazer
+o download e instalar o Git no http://git-scm.com/download, mas é mas fácil instalar com
+o controlador de pacots do seu sistema operacional. Você pode usar o Git para pegar a mais 
+recente versão dos códigos do Django e, a qualquer momento, você pode atualizar os códigos 
+da sua versão local do Django para obter as últimas alterações feitas pelos os desenvolvedores
+Django.
 
-When using the development version, keep in mind there's no guarantee things
-won't be broken at any given moment. With that said, though, some members of the
-Django team run production sites on the development version, so they have an
-incentive to keep it stable.
+Ao usar a versão de desenvolvimento, tenha em mente que não há coisas como garantias de que
+não será quebrada a qualquer momento. Como dito, alguns membros do time do Django executa sites
+de produção em versões de desenvolvimento, para que eles tenham um incentivo de mantê-los estáveis.
 
-To grab the latest Django, follow these steps:
+Para pegar a última versão do Django, siga esses passos:
 
-#. Make sure you have Git installed. You can get the
-   software free from http://git-scm.com/, and you can find
-   excellent documentation at http://git-scm.com/documentation.
+#. Tenha certeza que você tenha o Git instalado. Você pode pegá-lo gratuitamente em http://git-scm.com/,
+e você pode achar a excelente documentação em http://git-scm.com/documentation.
 
-#. Clone the repository using the command ``git clone https://github.com/django/django djmaster``
+#. Clone o repositório usando o seguinte comando ``git clone https://github.com/django/django djmaster``
 
-#. Locate your Python installation's ``site-packages`` directory. Usually
+#. Localize na instalação do Python o diretório ``site-packages``. Normalmente
    it's in a place like ``/usr/lib/python2.7/site-packages``. If you have
    no idea, type this command from a command prompt::
 
