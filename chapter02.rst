@@ -181,30 +181,23 @@ Testando a instalação do Django
 
 Para um feedback positivo de pós instalação, pare um instante para ver se a instalação
 está funcionando. Em um shell de comando, mude para outro diretório (ex., *não* o diretório que que
-contém o diretório ``django``) e come
-For some post-installation positive feedback, take a moment to test whether the
-installation worked. In a command shell, change into another directory (e.g.,
-*not* the directory that contains the ``django`` directory) and start the
-Python interactive interpreter by typing ``python``. If the installation was
-successful, you should be able to import the module ``django``:
+contém o diretório ``django``) e inicie o interpretador interativo Python digitando ``python``. Se a 
+instalação obteve exito, você podera importar o módulo ``django``:
 
     >>> import django
     >>> django.VERSION
     (1, 4, 2, 'final', 0)
 
-.. admonition:: Interactive Interpreter Examples
+.. admonition:: Exemplos do Interpretador Interativo
 
-    The Python interactive interpreter is a command-line program that lets you
-    write a Python program interactively. To start it, run the command
-    ``python`` at the command line.
+    O interpretador interativo do Python é um programa de linha de comando que permite que você escreva
+    um programa Python interativamente. Para inicializa-lo, execute o comando ``python`` na linha de comando.
 
-    Throughout this book, we feature example Python interactive interpreter
-    sessions. You can recognize these examples by the triple
-    greater-than signs (``>>>``), which designate the interpreter's prompt. If
-    you're copying examples from this book, don't copy those greater-than signs.
+    Ao longo desse livro, apresentamos exemplos em sessões no interpretador interativo do Python. Você poderá
+    reconhecer esses exemplos pelos três sinais de maior quê (``>>>``), que designam o interpretador no prompt. Se
+    você está copiando exemplos deste livro, não copie estes sinais de maio-quê.
 
-    Multiline statements in the interactive interpreter are padded with three
-    dots (``...``). For example::
+    Declarações de várias linhas nesse interpretador interativo são preenchidos com três pontos (``...``). Por exemplo::
 
         >>> print """This is a
         ... string that spans
@@ -217,18 +210,17 @@ successful, you should be able to import the module ``django``:
         >>> my_function('hello')
         hello
 
-    Those three dots at the start of the additional lines are inserted by the
-    Python shell -- they're not part of our input. We include them here to be
-    faithful to the actual output of the interpreter. If you copy our examples
-    to follow along, don't copy those dots.
+    Esses três pontos no inicio de linhas adicionais são inseridas pelo shell do Python -- eles não são parte
+    daquilo que está sendo inserido. Nós incluimos aqui para ser fiel a saída real do interpretador. Se você copiar
+    estes exemplos para acompanhar, não copie estes pontos.
 
-Setting Up a Database
-=====================
+Configurando um Banco de Dados
+===============================
 
-At this point, you could very well begin writing a Web application with Django,
-because Django's only hard-and-fast prerequisite is a working Python
-installation. However, odds are you'll be developing a *database-driven* Web
-site, in which case you'll need to configure a database server.
+Neste ponto, você pode muito bem começar a escrever uma aplicação web com o Django, 
+porque os pré-requisitos rápidos do Django é apenas estar trabalhando com uma instalação do Python.
+No entanto, as probabilidades de que você irá desenvolver um Web site com um *banco de dados dirigido*, 
+neste caso, você nescessitará de configurar um servidor de banco de dados.
 
 If you just want to start playing with Django, skip ahead to the
 "Starting a Project" section -- but keep in mind that all the examples in this
