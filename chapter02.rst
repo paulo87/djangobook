@@ -137,51 +137,51 @@ e você pode achar a excelente documentação em http://git-scm.com/documentation.
 #. Clone o repositório usando o seguinte comando ``git clone https://github.com/django/django djmaster``
 
 #. Localize na instalação do Python o diretório ``site-packages``. Normalmente
-   it's in a place like ``/usr/lib/python2.7/site-packages``. If you have
-   no idea, type this command from a command prompt::
+   fica localizada em um lugar como ``/usr/lib/python2.7/site-packages``. Se você não faz idéia,
+   escreva isso no prompt de comando::
 
        python -c 'import sys, pprint; pprint.pprint(sys.path)'
 
-   The resulting output should include your ``site-packages`` directory.
+    A saída resultante deverá incluir o diretório do seu ``site-packages``.
 
-#. Within the ``site-packages`` directory, create a file called
-   ``djmaster.pth`` and edit it to contain the full path to your ``djmaster``
-   directory to it. For example, the file could just contain this line::
+#. Dentro do diretório ``site-packages``, crie um arquivo chamado ``djmaster.pth``
+  e edite ele para conter o caminho completo para o seu diretório ``djmaster``.
+  Por exemplo, o arquivo poderia conter essa linha::
 
        /path/to/djmaster
 
-#. Place ``djmaster/django/bin`` on your system PATH. This directory
-   includes management utilities such as ``django-admin.py``.
+#. Coloque ``djmaster/django/bin`` em seu PATH do sistema. Este diretório inclui
+   inclui utilitários de administração, tais como o ``django-admin.py``.
 
-.. admonition:: Tip:
+.. admonition:: Dica:
 
-    If ``.pth`` files are new to you, you can learn more about them at
+    Se arquivos ``.pth`` são novos para você, você pode aprender mais sobre eles em
     http://www.djangoproject.com/r/python/site-module/.
 
-After downloading from Git and following the preceding steps, there's no
-need to run ``python setup.py install``-- you've just done the work by hand!
+Depois de baixar pelo Git e seguir os passos anteriores, não há nescessidade de 
+executar ``python setup.py install``-- você acabou de fazer o trabalho manualmente!
 
-Because the Django code changes often with bug fixes and feature additions,
-you'll probably want to update it every once in a while. To update the code,
-just run the command ``git pull origin master`` from within the ``djmaster``
-directory. When you run that command, Git will contact
-https://github.com/django/django, determine whether any of Django's code has
-changed, and update your local version of the code with any changes that have
-been made since you last updated. It's quite slick.
+Como o código do Django muda frequentemente com correção de bugs e adção de recurso,
+você provavelmente queira atualiza-lo de vez em quando. Para atualizar o código, 
+apenas execute o comando ``git pull origin master`` dentro do diretório ``djmaster``.
+Quando você executar o comando, o Git entrará em contato com https://github.com/django/django,
+determinando se algo código fonte foi mudado, e atualizando a sua versão local com as alterações
+que tem sido feitas desde o último update. It's quite slick.
 
-Finally, if you use Django development version, you should know how to figure
-out which version of Django you're running. Knowing your version number is
-important if you ever need to reach out to the community for help, or if you
-submit improvements to the framework. In these cases, you should tell people the
-revision, also known as a "commit," that you're using. To find out your current
-commit, type "git log -1" from within the ``django`` directory, and look for the
-identifier after "commit". This number changes each time Django is changed,
-whether through a bug fix, feature addition, documentation improvement or
-anything else.
+Finalmente, se você usa a versão de desenvolvimento do Django, você deve saber como 
+qual a versão do Django está sendo executada. Conhecer o número da sua versão será importante
+se você nescessitar correr até a comunidade para ajuda, ou se você apresentar melhorias 
+para o framework. Nestes casos, você deverá dizer as pessoas que revisionam, também conhecido como "commit", 
+o que você está usando. Para saber o seu atual "commit", digite "git log -1" de dentro de um diretório ``django``, e 
+olhe para os identificadores depois de "commit". Este número muda toda vez que o Django é alterado,
+seja por meio de uma correção de bug, adição de funcionalidade, documentação ou melhoria de qualquer coisa.
 
-Testing the Django installation
-===============================
+Testando a instalação do Django
+================================
 
+Para um feedback positivo de pós instalação, pare um instante para ver se a instalação
+está funcionando. Em um shell de comando, mude para outro diretório (ex., *não* o diretório que que
+contém o diretório ``django``) e come
 For some post-installation positive feedback, take a moment to test whether the
 installation worked. In a command shell, change into another directory (e.g.,
 *not* the directory that contains the ``django`` directory) and start the
