@@ -222,64 +222,57 @@ porque os pré-requisitos rápidos do Django é apenas estar trabalhando com uma in
 No entanto, as probabilidades de que você irá desenvolver um Web site com um *banco de dados dirigido*, 
 neste caso, você nescessitará de configurar um servidor de banco de dados.
 
-If you just want to start playing with Django, skip ahead to the
-"Starting a Project" section -- but keep in mind that all the examples in this
-book assume you have a working database set up.
+Se você apenas quer começar a jogar com o Django, pule para a seção "Começando um Projeto" --
+mas tenha em mente que todos os exemplos desse livro asumme que você tenha trabalhado configurado
+um banco de dados.
 
-Django supports four database engines:
+Django suporta quatro tipo de banco de dados
 
 * PostgreSQL (http://www.postgresql.org/)
 * SQLite 3 (http://www.sqlite.org/)
 * MySQL (http://www.mysql.com/)
 * Oracle (http://www.oracle.com/)
 
-For the most part, all the engines here work equally well with the core Django
-framework. (A notable exception is Django's optional GIS support, which is much
-more powerful with PostgreSQL than with other databases.) If you're not tied to
-any legacy system and have the freedom to choose a database backend, we
-recommend PostgreSQL, which achieves a fine balance between cost, features,
-speed and stability.
+Para a maior parte, todos esses bancos de dados trabalham igualmente bem com o núcleo do Django framework.
+(Uma notável excessão é o opcional GIS suporte ao Django, que é muito mais poderoso que o PostgreSQL do que 
+com outros bancos de dados.) Se você não estiver amarrado a nenhum sistema legado e tem a liberdade para 
+escolher o banco de dados, nós recomendamos PostgreSQL, que alcança um bom equilibrio entre custo, recurso, 
+velocidade e estabilidade.
 
-Setting up the database is a two-step process:
+Configurar o banco de dados é um processo de duas etapas:
 
-* First, you'll need to install and configure the database server itself.
-  This process is beyond the scope of this book, but each of the four
-  database backends has rich documentation on its Web site. (If you're on
-  a shared hosting provider, odds are that they've set this up for you
-  already.)
+* Primeiro, você prescisa instalar e configurar servidor de banco de dados em si.
+  Este processo está além do escopo desse livro, mas cada um dos quatro banco de dados
+  tem uma rica documentação em seus próprios websites. (Se, você está em um servidor
+  de hospedagem compartilhado, provavelmente eles irão definiram isso para você.)
 
-* Second, you'll need to install the Python library for your particular
-  database backend. This is a third-party bit of code that allows Python to
-  interface with the database. We outline the specific, per-database
-  requirements in the following sections.
+* Segundo, você prescisa instalar a biblioteca Python para o seu banco de dados em particular. 
+  Isso é um pouco de código de terceiros que permite ao Python se comunicar com o banco de dados.
+  Nós delineamos especificamente, por requerimentos de banco de dados nas seções seguintes.
 
-If you're just playing around with Django and don't want to install a database
-server, consider using SQLite. SQLite is unique in the list of supported
-databases in that it doesn't require either of the above steps. It merely reads
-and writes its data to a single file on your filesystem, and Python versions 2.5
-and higher include built-in support for it.
+Se você está apenas brincando um pouco com o Django e não quer instalar um servidor de 
+banco de dados, considere então usar o SQLite. SQLite é o unico na lista de banco de dados suportados
+é o único que não requere nenhum dos passos citados acima. Ele se limita em ler e escrever informações
+em um único arquivo em seu sistema, e a versão 2.5 do Python ou superior inclui um suporte nativo para ele.
 
-On Windows, obtaining database driver binaries can be frustrating. If you're
-eager to jump in, we recommend using Python 2.7 and its built-in support for
-SQLite.
+No Windows, a obtenção de drives binários do banco de dados pode ser algo frustante. Se você está ansioso para
+saltar, nós recomendamos o uso do Python 2.7 e seu suporte nativo para o SQLite.
 
-Using Django with PostgreSQL
-----------------------------
+Usando Django com o PostgresSQL
+--------------------------------
 
-If you're using PostgreSQL, you'll need to install either the ``psycopg`` or
-``psycopg2`` package from http://www.djangoproject.com/r/python-pgsql/. We
-recommend ``psycopg2``, as it's newer, more actively developed and can be
-easier to install. Either way, take note of whether you're using version 1 or
-2; you'll need this information later.
+Se você esta usando o PostgreSQL, você nescessita instalar o pacote ``psycopg`` ou o ``psycopg2`` 
+pelo endereço http://www.djangoproject.com/r/python-pgsql/. Nós recomendamos ``psycopg2``, como é mais novo, 
+mais ativamente desenvolvido e pode ser fácilmente instalado. De qualquer forma, tome nota da versão que 
+você está ultilizando, a versão 1 ou a 2; você irá nescessitar dessa informação posteriormente.
 
-If you're using PostgreSQL on Windows, you can find precompiled binaries of
-``psycopg`` at http://www.djangoproject.com/r/python-pgsql/windows/.
+Se você está usando o PostgreSQL no Windows, se pode achar um precompilador de binários do ``psycopg``
+no http://www.djangoproject.com/r/python-pgsql/windows/.
 
-If you're on Linux, check whether your distribution's package-management
-system offers a package called "python-psycopg2", "psycopg2-python",
-"python-postgresql" or something similar.
+Se você estiver no Linux, verifique se a sua distribuição de gerenciamento de pacotes sistemas ofereçe
+um pacote chamado "python-psycopg2", "psycopg2-python", "python-postgresql" ou alguma coisa similar.
 
-Using Django with SQLite 3
+Usando Django com o SQLite 3
 --------------------------
 
 You're in luck: no database-specific installation is required, because Python
