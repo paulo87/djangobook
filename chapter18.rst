@@ -1,92 +1,92 @@
 ==============================================================
-Chapter 18: Integrating with Legacy Databases and Applications
+Capítulo 18: Integrando Banco de Dados Legados e Aplicações
 ==============================================================
 
-Django is best suited for so-called green-field development -- that is, starting
-projects from scratch, as if you were constructing a building on a fresh field
-of green grass. But despite the fact that Django favors from-scratch projects,
-it's possible to integrate the framework into legacy databases and
-applications. This chapter explains a few integration strategies.
+Django é mais adequado para o chamado desenvolvimento "green-field" - isto é, começando
+projetos a partir do zero, como se você estivesse construindo um edifício em um campo fresco
+da grama verde. Mas, apesar do fato do Django favorecer projetos a partir do zero,
+é possível integrar o framework à bancos de dados legados e
+aplicações. Este capítulo explica a algumas estratégias de integração.
 
-Integrating with a Legacy Database
+
+Integrando com banco de dados Legados
 ==================================
 
-Django's database layer generates SQL schemas from Python code -- but with
-a legacy database, you already have the SQL schemas. In such a case,
-you'll need to create models for your existing database tables. For this
-purpose, Django comes with a tool that can generate model code by reading your
-database table layouts. This tool is called ``inspectdb``, and you can call it
-by executing the command ``manage.py inspectdb``.
+A camada de banco de dados do Django gera esquemas SQL a partir do código python -- mas com 
+banco de dados legado, já exite os esquemas SQL. Nestes casos, você precisa criar modelos 
+para as tabelas existes no banco de dados. Para este casos, Django vem com ferramentas que podem gerar o código 
+do modelo lendo o layout das tabelas do banco de dados. Esta ferramenta é a "inspectdb", e pode ser utilizada executando
+o comando "manage.py inspectdb".
 
-Using ``inspectdb``
+
+Usando ``inspectdb``
 -------------------
 
-The ``inspectdb`` utility introspects the database pointed to by your settings
-file, determines a Django model representation for each of your tables, and
-prints the Python model code to standard output.
+O utilitário "inspectdb"  examinará o banco de dados apontado pelo arquivo de configurações
+,que determina uma representação do modelo de Django para cada uma das tabelas, e
+imprime o modelo de código Python para a saída padrão.
 
-Here's a walk-through of a typical legacy database integration process from
-scratch. The only assumptions are that Django is installed and that you have a
-legacy database.
+Uma passagem através de um típico processo de integração com o de banco de dados legado.
+As hipóteses são de que apenas o Django está instalado e que você tem um
+banco de dados legado.
 
-1. Create a Django project by running
-   ``django-admin.py startproject mysite`` (where ``mysite`` is your
-   project's name). We'll use ``mysite`` as the project name in this
-   example.
+1. Criar um projeto Django executando ``django-admin.py startproject mysite`` (onde ``mysite`` é o nome do
+    seu projeto). Utilizaremos ``mysite`` como o nome do projeto neste exemplo.
 
-2. Edit the settings file in that project, ``mysite/settings.py``,
-   to tell Django what your database connection parameters are and what
-   the name of the database is. Specifically, provide the
+
+2. Editar o arquivo de configuração do projeto, ``mysite/settings.py``,
+   para dizer ao Django quais os parâmetros de conexão e o nome do banco de dados.
+   Especificamente, fornecer as seguintes configurações 
    ``DATABASE_NAME``, ``DATABASE_ENGINE``, ``DATABASE_USER``,
-   ``DATABASE_PASSWORD``, ``DATABASE_HOST``, and ``DATABASE_PORT`` settings.
-   (Note that some of these settings are optional. Refer to Chapter 5 for
-   more information.)
+   ``DATABASE_PASSWORD``, ``DATABASE_HOST``, and ``DATABASE_PORT``.(Note que algumas configurações são opcionais. Leia o capítulo 5 para maiores informações)
+   
 
-3. Create a Django application within your project by running
-   ``python mysite/manage.py startapp myapp`` (where ``myapp`` is your
-   application's name). We'll use ``myapp`` as the application name here.
 
-4. Run the command ``python mysite/manage.py inspectdb``. This will
-   examine the tables in the ``DATABASE_NAME`` database and print the
-   generated model class for each table. Take a look at the output to get
-   an idea of what ``inspectdb`` can do.
+3. Criar uma aplicação Django no seu projeto executando ``python mysite/manage.py startapp myapp``
+   (onde ``myapp`` é o nome da aplicaçõa). Utilizaremos ``myapp`` como o nome da aplicação neste exemplo.
+   
 
-5. Save the output to the ``models.py`` file within your application by using
-   standard shell output redirection::
+4. Executar o comando ``python mysite/manage.py inspectdb``. Ele examinará 
+   as tabelas do banco de dados ``DATABASE_NAME`` e e imprimir a classe modelo gerado para cada tabela.
+   Dê uma olhada na saída para ter uma idéia do que `` inspectdb `` pode fazer.
+   
+
+5. Salvar a saída no arquivo ``models.py`` da sua aplicação utilizando o redirecionamento de 
+saída padrão do shell ::
 
        python mysite/manage.py inspectdb > mysite/myapp/models.py
+       
 
-6. Edit the ``mysite/myapp/models.py`` file to clean up the generated
-   models and make any necessary customizations. We'll give
-   some hints for this in the next section.
+6. Editar o arquivo ``mysite/myapp/models.py`` para limpar os modelos gerados e fazer
+   as customizações necessárias. Daremos algumas dicas sobre isso na próxima seção.
+   
 
-Cleaning Up Generated Models
+Limpando os Modelos gerados
 ----------------------------
 
-As you might expect, the database introspection isn't perfect, and you'll need
-to do some light cleanup of the resulting model code. Here are a few pointers
-for dealing with the generated models:
+Como você deve esperar, a instrospecção no banoc de dados não é perfeita, e é necessário fazer alguma limpeza no código 
+resultante do modelo. Aqui estão algumas dicas para lidar com os modelos gerados:
 
-1. Each database table is converted to a model class (i.e., there is a
-   one-to-one mapping between database tables and model classes). This means
-   that you'll need to refactor the models for any many-to-many join tables
-   into ``ManyToManyField`` objects.
+1. Cada tabela do bando de dados é convertida em uma classe do modelo. (isto é, existe um mapeamento um-para-um entre
+   as tabelas do banco de dados e a classe do modelo. Isto quer dizer que será necessário refazer
+   os modelos muitos-para-muitos das tabelas para objetos ``ManyToManyField`` 
+   
 
-2. Each generated model has an attribute for every field, including
-   ``id`` primary key fields. However, recall that Django automatically
-   adds an ``id`` primary key field if a model doesn't have a primary key.
-   Thus, you'll want to remove any lines that look like this::
-
+2. Cada modelo gerado tem um atributo para cada campo, incluindo um campo de chave primária
+   ``id``. No entanto, lembre-se que o Django adiciona automaticamente campo de chave primária
+   ``id``  se um modelo não tiver uma chave primária.
+    Assim, você vai querer remover todas as linhas que se parecem com isso ::
+   
        id = models.IntegerField(primary_key=True)
 
-   Not only are these lines redundant, but also they can cause problems if your
-   application will be adding *new* records to these tables.
+   Não apenas estas linhas redundantes, mas também podem causar problemas se sua 
+   aplicação adicionar *novos* registros a estas tabelas.
+   
 
-3. Each field's type (e.g., ``CharField``, ``DateField``) is determined by
-   looking at the database column type (e.g., ``VARCHAR``, ``DATE``). If
-   ``inspectdb`` cannot map a column's type to a model field type, it will
-   use ``TextField`` and will insert the Python comment
-   ``'This field type is a guess.'`` next to the field in the generated
+3. Cada tipo de (por exemplo, `` CharField ``, `` DateField ``) é determinada 
+   analisando o tipo da coluna no banco de dados (por exemplo, ``VARCHAR``, ``DATE``). Se
+   ``inspectdb`` não puder maperar o tipo da coluna para o um tipo de campo no modelo, então será usado
+   ``TextField`` e será inserido um comentário Python ``O tipo deste campo é uma sugestão.`` next to the field in the generated
    model. Keep an eye out for that, and change the field type accordingly
    if needed.
 
