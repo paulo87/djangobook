@@ -49,7 +49,7 @@ Chapter 14: Sessions, Users, and Registration - [@andersondborges] (https://gith
 
 Chapter 15: Caching - [@arturfelipe] (https://github.com/arturfelipe)
 
-Chapter 16: django.contrib - aberto
+Chapter 16: django.contrib [@pauloborges] (https://github.com/pauloborges)
 
 Chapter 17: Middleware [@bkcherry] (https://github.com/bkcherry)
 
