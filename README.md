@@ -73,7 +73,7 @@ Appendix F: The django-admin Utility - [@thiagosaid] (github.com/thiagosaid)
 
 Appendix G: Request and Response Objects [@bkcherry] (https://github.com/bkcherry)
 
-License & Copyright - aberto
+License & Copyright - aberto [@londerson] (https://github.com/londerson)
 
 
 
