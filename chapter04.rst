@@ -341,7 +341,7 @@ contextos por ele. Por exemplo::
     Olá, Pat
 
 Sempre que você está usando o mesmo código de template para renderizar
-multiplos contextos como isso, é mais eficiente criar o objeto
+multiplos contextos, como isso, é mais eficiente criar o objeto
 ``Template`` *uma vez*, e depois chamar o ``render()`` por várias vezes::
 
     # Ruim
@@ -360,21 +360,21 @@ Isso é um contraste gritante com as engines de template baseadas em XML, o qual
 provoca uma sobrecarga ao parser XML e tendem a ser na ordem de magnitude mais
 lentos que a engine de renderização de template do Django.
 
-Context Variable Lookup
------------------------
+Pesquisa váriavel de contexto
+-----------------------------
 
-In the examples so far, we've passed simple values in the contexts -- mostly
-strings, plus a ``datetime.date`` example. However, the template system
-elegantly handles more complex data structures, such as lists, dictionaries, and
-custom objects.
+Nos exemplos até agora, passamos valores simples nos contextos -- na maior parte
+strings, álem de um exemplo com ```datetime.date``. No entanto, o sistema de
+template manipula de forma elegante estruturas de dados mais complexas, como
+listas, dicionários e objetos personalizados.
 
-The key to traversing complex data structures in Django templates is the dot
-character (``.``). Use a dot to access dictionary keys, attributes, methods,
-or indices of an object.
+A chave para percorer estruturas complexas de dados nos templates Django é
+o caracter ponto (``.``). Use o ponto para acessar as chaves do dicionário,
+atributos, métodos ou índices em um objeto.
 
-This is best illustrated with a few examples. For instance, suppose
-you're passing a Python dictionary to a template. To access the values
-of that dictionary by dictionary key, use a dot::
+Isso é melhor ilustrado com alguns exemplos. Por exemplo, suponha que
+você está passando um dicionário Python a um template. Para acessar o
+valor desse dicionário por chave de dicionário, use o ponto::
 
     >>> from django.template import Template, Context
     >>> person = {'name': 'Sally', 'age': '43'}
@@ -383,9 +383,10 @@ of that dictionary by dictionary key, use a dot::
     >>> t.render(c)
     u'Sally is 43 years old.'
 
-Similarly, dots also allow access of object attributes. For example, a Python
-``datetime.date`` object has ``year``, ``month``, and ``day`` attributes, and
-you can use a dot to access those attributes in a Django template::
+Da mesma forma, pontos também permitem o acesso a atributos de objetos. Por
+exemplo, um objeto Python ``datetime.date`` possui atributos ``year``, ``month``
+e ``day``, e você pode usar o ponto para acessar esses atributos em um template
+Django::
 
     >>> from django.template import Template, Context
     >>> import datetime
@@ -401,8 +402,8 @@ you can use a dot to access those attributes in a Django template::
     >>> t.render(c)
     u'The month is 5 and the year is 1993.'
 
-This example uses a custom class, demonstrating that variable dots also allow
-attribute access on arbitrary objects::
+Esse exemplo usa uma classe customizada, demonstrando que pontos váriaveis
+também permitem o acesso a objetos arbitrários::
 
     >>> from django.template import Template, Context
     >>> class Person(object):
@@ -413,9 +414,9 @@ attribute access on arbitrary objects::
     >>> t.render(c)
     u'Hello, John Smith.'
 
-Dots can also refer to *methods* on objects. For example, each Python string
-has the methods ``upper()`` and ``isdigit()``, and you can call those in Django
-templates using the same dot syntax::
+Pontos também podem remeter a *métodos* em objetos. Por exemplo, cada string
+Python tem os métodos ``upper()`` e ``isdigit()``, e você pode chama-los
+nos templates Django usando a mesma sintaxe do ponto::
 
     >>> from django.template import Template, Context
     >>> t = Template('{{ var }} -- {{ var.upper }} -- {{ var.isdigit }}')
@@ -424,11 +425,12 @@ templates using the same dot syntax::
     >>> t.render(Context({'var': '123'}))
     u'123 -- 123 -- True'
 
-Note that you do *not* include parentheses in the method calls. Also, it's not
-possible to pass arguments to the methods; you can only call methods that have
-no required arguments. (We explain this philosophy later in this chapter.)
+Perceba que você *não* incluiu parenteses na chamada do método. Além disso,
+não é possível passar argumentos para os métodos, você só pode chamar
+métodos que não tem argumentos requeridos (Nós explicáremos essa filosofia
+adiante nesse cápitulo).
 
-Finally, dots are also used to access list indices, for example::
+Finalizando, pontos são usados também para acessar índices de listas, por exemplo::
 
     >>> from django.template import Template, Context
     >>> t = Template('Item 2 is {{ items.2 }}.')
@@ -436,28 +438,30 @@ Finally, dots are also used to access list indices, for example::
     >>> t.render(c)
     u'Item 2 is carrots.'
 
-Negative list indices are not allowed. For example, the template variable
-``{{ items.-1 }}`` would cause a ``TemplateSyntaxError``.
+Índices negativos em listas não são permitidos. Por exemplo, a váriavel
+de template ``{{ items.-1 }}`` causará um ``TemplateSyntaxError``.
 
-.. admonition:: Python Lists
+.. admonition:: Listas Python
 
-   A reminder: Python lists have 0-based indices. The first item is at index 0,
-   the second is at index 1, and so on.
+   Um lembrete: listas Python possuem índices baseados em 0. O primeiro item é
+   o índice 0, o segundo é o índice 1 e assim por diante.
 
-Dot lookups can be summarized like this: when the template system
-encounters a dot in a variable name, it tries the following lookups, in this
-order:
+Pesquisa por ponto pode ser resumida assim: quando o sistema de template
+encontra um ponto em nome de váriavel, ele tenta as pesquisas a seguir, nesta
+ordem:
 
-* Dictionary lookup (e.g., ``foo["bar"]``)
-* Attribute lookup (e.g., ``foo.bar``)
-* Method call (e.g., ``foo.bar()``)
-* List-index lookup (e.g., ``foo[2]``)
+* Pesquisa de dicionário (ex. ``foo["bar"]``)
+* Pesquisa de atributo (ex. ``foo.bar``)
+* Chamada de método  (ex. ``foo.bar()``)
+* Pesquisa em índice de lista (ex. ``foo[2]``)
 
-The system uses the first lookup type that works. It's short-circuit logic.
+O sistema usa o primeiro tipo de pesquisa que funcionar. É um circuito lógico
+curto.
 
-Dot lookups can be nested multiple levels deep. For instance, the following
-example uses ``{{ person.name.upper }}``, which translates into a dictionary
-lookup (``person['name']``) and then a method call (``upper()``)::
+Pesquisa por ponto podem ser aninhados em vários níveis de profundidade. Por
+exemplo, o exemplo a seguir usa ``{{ person.name.upper }}``, que se traduz
+em uma pesquisa de dicionário (``person['name']``) e depois em uma chamada
+de método (``upper()``)::
 
     >>> from django.template import Template, Context
     >>> person = {'name': 'Sally', 'age': '43'}
@@ -466,17 +470,16 @@ lookup (``person['name']``) and then a method call (``upper()``)::
     >>> t.render(c)
     u'SALLY is 43 years old.'
 
-Method Call Behavior
-~~~~~~~~~~~~~~~~~~~~
+Comportamento para chamada de método
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Method calls are slightly more complex than the other lookup types. Here are
-some things to keep in mind:
+Chamada de métodos são levemente mais complexa do que outros tipos de pesquisa.
+Aqui estão algumas coisas que devemos ter em mente:
 
-* If, during the method lookup, a method raises an exception, the exception
-  will be propagated, unless the exception has an attribute
-  ``silent_variable_failure`` whose value is ``True``. If the exception
-  *does* have a ``silent_variable_failure`` attribute, the variable will
-  render as an empty string, for example::
+* Se, durante a pesquisa de método, o método escapar uma exceção, a exceção
+  será propagada, a não ser que a exceção tenha um atributo ``silent_variable_failure``
+  cujo o valor seja ``True``. Se a exceção naõ tem um atributo ``silent_variable_failure``,
+  a váriavel vai renderizar uma string vazia, por exemplo::
 
         >>> t = Template("My name is {{ person.first_name }}.")
         >>> class PersonClass3:
@@ -497,37 +500,36 @@ some things to keep in mind:
         >>> t.render(Context({"person": p}))
         u'My name is .'
 
-* A method call will only work if the method has no required arguments.
-  Otherwise, the system will move to the next lookup type (list-index
-  lookup).
+* Uma chamada de métodos funcionará se o método não tenha argumentos
+  requeridos. Caso contrário, o sistema irá para o próximo tipo de pesquisa
+  (pesquisa em índice de lista).
 
-* Obviously, some methods have side effects, and it would be foolish at
-  best, and possibly even a security hole, to allow the template system to
-  access them.
+* Obviamente, alguns métodos tem efeitos colaterais, e seria insensato e
+  uma possível falha de segurança, permitir que o sistema de template pudesse
+  acessá-los.
 
-  Say, for instance, you have a ``BankAccount`` object that has a
-  ``delete()`` method. If a template includes something like
-  ``{{ account.delete }}``, where ``account`` is a ``BankAccount`` object,
-  the object would be deleted when the template is rendered!
+  Digamos, por exemplo, você tem um objeto ``BankAccount`` que tem um método
+  ``delete()``. Se o template inclui algo como ``{{ account.delete }}``,
+  onde ``account`` é um objeto ``BankAccount``, o objeto seria excluído
+  quando o template for renderizado!
 
-  To prevent this, set the function attribute ``alters_data`` on the
-  method::
+  Para previnir isso, defina o atributo ``alters_data`` no método::
 
       def delete(self):
-          # Delete the account
+          # Excluí um conta
       delete.alters_data = True
 
-  The template system won't execute any method marked in this way.
-  Continuing the above example, if a template includes
-  ``{{ account.delete }}`` and the ``delete()`` method has the
-  ``alters_data=True``, then the ``delete()`` method will not be executed
-  when the template is rendered. Instead, it will fail silently.
+  O sistema de template não irá executar metodos marcados dessa maneira.
+  Continuando exemplo acima, se o template incluir ``{{ account.delete }}``
+  e o método ``delete()`` tem o ``alters_data=True``, então o método
+  ``delete()` não será executado quando o template é renderizado. Ao invés
+  disso, ele irá falhar silenciosamente.
 
-How Invalid Variables Are Handled
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Como váriaveis inválidas são tratadas
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-By default, if a variable doesn't exist, the template system renders it as an
-empty string, failing silently. For example::
+Por padrão, se uma váriavel não existe, o sistema de templates mostra ela como
+uma string vazia, falhando silenciosamente. Por exemplo::
 
     >>> from django.template import Template, Context
     >>> t = Template('Your name is {{ name }}.')
@@ -540,19 +542,19 @@ empty string, failing silently. For example::
     >>> t.render(Context({'Name': 'hello'}))
     u'Your name is .'
 
-The system fails silently rather than raising an exception because it's
-intended to be resilient to human error. In this case, all of the
-lookups failed because variable names have the wrong case or name. In the real
-world, it's unacceptable for a Web site to become inaccessible due to a
-small template syntax error.
+O sistema falha silenciosamente, ao invés de levantar uma exceção porque
+ele entende ser resiliente a um erro humano. Nesse caso, todas as pesquisas
+falharam porque os nomes das váriaveis foram escritas com o tamanho ou nome
+na forma errada. No mundo real, é inaceitaǘel para um web site tornar-se
+inacessível devido a um pequeno erro de sintaxe em template.
 
-Playing with Context Objects
-----------------------------
+Jogando com objetos de contexto
+-------------------------------
 
-Most of the time, you'll instantiate ``Context`` objects by passing in a
-fully populated dictionary to ``Context()``. But you can add and delete items
-from a ``Context`` object once it's been instantiated, too, using standard
-Python dictionary syntax::
+Na maioria das vezes, você vai instanciar objetos ``Context`` passando um
+dicionário totalmente preenchido para ``Context()``. Mas você pode adicionar
+e excluir items de um objeto ``Context`` uma vez que estanciado, também, usando
+a sintaxe padrão de dicionários Python::
 
     >>> from django.template import Context
     >>> c = Context({"foo": "bar"})
@@ -567,12 +569,12 @@ Python dictionary syntax::
     >>> c['newvariable']
     'hello'
 
-Basic Template Tags and Filters
-===============================
+Básico de Template Tags e Filtros
+=================================
 
-As we've mentioned already, the template system ships with built-in tags and
-filters. The sections that follow provide a rundown of the most common tags and
-filters.
+Como já mencionado, the template system ships with built-in tags and
+filters. As seções seguintes fornecem um resumo das tags e filtros mais
+comuns.
 
 Tags
 ----
@@ -580,15 +582,15 @@ Tags
 if/else
 ~~~~~~~
 
-The ``{% if %}`` tag evaluates a variable, and if that variable is "True"
-(i.e., it exists, is not empty, and is not a false Boolean value), the system
-will display everything between ``{% if %}`` and ``{% endif %}``, for example::
+A tag ``{% if %}`` avalia uma váriavel e se a váriavel é "True" (ou seja,
+ela existe, não está vazia e não é um valor booleano falso), o sistema
+irá exibir tudo entre ``{% if %}`` e ``{% endif %}``, por example::
 
     {% if today_is_weekend %}
         <p>Welcome to the weekend!</p>
     {% endif %}
 
-An ``{% else %}`` tag is optional::
+E a tag ``{% else %}`` é opcional::
 
     {% if today_is_weekend %}
         <p>Welcome to the weekend!</p>
@@ -598,20 +600,20 @@ An ``{% else %}`` tag is optional::
 
 .. admonition:: Python "Truthiness"
 
-   In Python and in the Django template system, these objects evaluate to
-   ``False`` in a Boolean context:
+   Em Python e no sistema de template do Django, estes objetos apresentam
+   valor ``False`` em um contexto booleano::
 
-   * An empty list (``[]``)
-   * An empty tuple (``()``)
-   * An empty dictionary (``{}``)
-   * An empty string (``''``)
+   * Uma lista vazia (``[]``)
+   * Uma tupla vazia (``()``)
+   * Um dicionário vazio (``{}``)
+   * Uma string vazia (``''``)
    * Zero (``0``)
-   * The special object ``None``
-   * The object ``False`` (obviously)
-   * Custom objects that define their own Boolean context behavior
-     (this is advanced Python usage)
+   * O objeto especial ``None``
+   * O objeto ``False`` (obviamente)
+   * Objetos customizados que definem seu próprio contexto de comportamento
+   booleano (isso é um uso avançado do Python)
 
-   Everything else evaluates to ``True``.
+   Todo o resto é avaliado com ``True``.
 
 The ``{% if %}`` tag accepts ``and``, ``or``, or ``not`` for testing multiple
 variables, or to negate a given variable. For example::
