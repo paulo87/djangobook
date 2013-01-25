@@ -739,43 +739,45 @@ Vamos analisar o código passo-a-passo:
 * Por fim retornamos um ``HttpResponse`` do código HTML. Por agora esse já
   é um velho conhecido.
 
-With that view function and URLconf written, start the Django development server
-(if it's not already running), and visit ``http://127.0.0.1:8000/time/plus/3/``
-to verify it works. Then try ``http://127.0.0.1:8000/time/plus/5/``. Then
-``http://127.0.0.1:8000/time/plus/24/``. Finally, visit
-``http://127.0.0.1:8000/time/plus/100/`` to verify that the pattern in your
-URLconf only accepts one- or two-digit numbers; Django should display a "Page
-not found" error in this case, just as we saw in the section "A Quick Note
-About 404 Errors" earlier. The URL ``http://127.0.0.1:8000/time/plus/`` (with
-*no* hour designation) should also throw a 404.
+Após escrever esse URLconf e função view, inicie o servidor de desenvolvimneto
+do Django (caso ainda não esteja sendo executado) e visite
+``http://127.0.0.1:8000/time/plus/3/`` para verificar que funcione. Então tente
+``http://127.0.0.1:8000/time/plus/5``. Então ``http://127.0.0.1:8000/time/plus/24``.
+Por fim, visite ``http://127.0.0.1:8000/time/plus/100/`` para verificar que o
+padrão em seu URLconf só aceita números com um ou dois digitos; Django deverá
+mostrar um erro "Página não encontrada" nesse caso, assim como visto anteriormente
+na seção "Uma nota rápida sobre erros 404". A URL
+``http://127.0.0.1:8000/time/plus/`` (*sem* deslocamento de hora) também deverá
+lançar um erro 404.
 
-.. admonition:: Coding Order
+.. admonition:: Ordem do código
 
-    In this example, we wrote the URLpattern first and the view second, but in
-    the previous examples, we wrote the view first, then the URLpattern. Which
-    technique is better?
+    Neste exemplo escrevemos primeiro o URLpattern e depois a view, mas nos
+    exemplos anteriores escrevemos primeiro a view e então o URLpattern. Qual
+    técnica é melhor?
 
-    Well, every developer is different.
+    Bem, cada desenvolvedor é diferente.
 
-    If you're a big-picture type of person, it may make the most sense to you
-    to write all of the URLpatterns for your application at the same time, at
-    the start of your project, and then code up the views. This has the
-    advantage of giving you a clear to-do list, and it essentially defines the
-    parameter requirements for the view functions you'll need to write.
+    Se você é uma pessoa com uma boa visão de todo o problema, pode fazer
+    sentido escrever todos os URLpatterns de uma só vez, no começo do projeto
+    para então codificar as views. Isso tem a vantagem de fornecer uma lista
+    de afazeres, e essencialmente define os requerimentos de parâmetros para
+    as funções views a serem escritas.
 
-    If you're more of a bottom-up developer, you might prefer to write the
-    views first, and then anchor them to URLs afterward. That's OK, too.
+    Se você é o tipo de desenvolvedor que começa as coisas por baixo, talvez
+    prefira escrever as views primeiro e depois ligá-las a URLs. Essa forma
+    também está certa.
 
-    In the end, it comes down to which technique fits your brain the best. Both
-    approaches are valid.
+    No fim a técnica utilizada é aquela seu cérebro melhor se adapta. Ambos
+    métodos são válidos.
 
-Django's Pretty Error Pages
-===========================
+As páginas bonitas de erro do Django
+====================================
 
-Take a moment to admire the fine Web application we've made so far . . . now
-let's break it! Let's deliberately introduce a Python error into our
-``views.py`` file by commenting out the ``offset = int(offset)`` lines in the
-``hours_ahead`` view::
+Leve um tempo para admirar as boas aplicações Web que criamos até agora...
+Agora vamos quebrá-las! Vamos intencionalmente colocar um erro Python em
+nosso arquivo ``views.py`` comentando as linhas ``offset = int(offset)``
+na view ``hours_ahead``::
 
     def hours_ahead(request, offset):
         # try:
@@ -786,22 +788,22 @@ let's break it! Let's deliberately introduce a Python error into our
         html = "<html><body>In %s hour(s), it will be %s.</body></html>" % (offset, dt)
         return HttpResponse(html)
 
-Load up the development server and navigate to ``/time/plus/3/``. You'll see an
-error page with a significant amount of information, including a ``TypeError``
-message displayed at the very top: ``"unsupported type for timedelta hours
-component: unicode"``.
+Carregue o servidor de desenvolvimento e navegue para ``/time/plus/3/``. Você
+verá uma página de erro com bastante informações, encluindo uma mensagem
+``TypeError`` no topo da p\agina: ``"unsupported type for timedelta hours
+compontent: unicode"``.
 
-What happened? Well, the ``datetime.timedelta`` function expects the ``hours``
-parameter to be an integer, and we commented out the bit of code that converted
-``offset`` to an integer. That caused ``datetime.timedelta`` to raise the
-``TypeError``. It's the typical kind of small bug that every programmer runs
-into at some point.
+O que aconteceu? Bem, a função ``datetime.timedelta`` expera que o parametro
+``horas`` seja um inteiro, e comentamos a parte de código que converte
+``offset`` para inteiro. Isso fez com que ``datetime.timedelta`` levantasse o
+``TypeError``. É o típico tipo de bug pequeno que todo programador acaba
+passando por em alguma hora.
 
-The point of this example was to demonstrate Django's error pages. Take some
-time to explore the error page and get to know the various bits of information
-it gives you.
+A motivação desse exmplo era demonstrar as páginas de erro do Django. Leve
+algum tempo explorando a página de erro e preste atenção nas informações que
+a página fornece.
 
-Here are some things to notice:
+Aqui estão alguns pontos para se saber:
 
 * At the top of the page, you get the key information about the exception:
   the type of exception, any parameters to the exception (the ``"unsupported
