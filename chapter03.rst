@@ -739,43 +739,45 @@ Vamos analisar o código passo-a-passo:
 * Por fim retornamos um ``HttpResponse`` do código HTML. Por agora esse já
   é um velho conhecido.
 
-With that view function and URLconf written, start the Django development server
-(if it's not already running), and visit ``http://127.0.0.1:8000/time/plus/3/``
-to verify it works. Then try ``http://127.0.0.1:8000/time/plus/5/``. Then
-``http://127.0.0.1:8000/time/plus/24/``. Finally, visit
-``http://127.0.0.1:8000/time/plus/100/`` to verify that the pattern in your
-URLconf only accepts one- or two-digit numbers; Django should display a "Page
-not found" error in this case, just as we saw in the section "A Quick Note
-About 404 Errors" earlier. The URL ``http://127.0.0.1:8000/time/plus/`` (with
-*no* hour designation) should also throw a 404.
+Após escrever esse URLconf e função view, inicie o servidor de desenvolvimneto
+do Django (caso ainda não esteja sendo executado) e visite
+``http://127.0.0.1:8000/time/plus/3/`` para verificar que funcione. Então tente
+``http://127.0.0.1:8000/time/plus/5``. Então ``http://127.0.0.1:8000/time/plus/24``.
+Por fim, visite ``http://127.0.0.1:8000/time/plus/100/`` para verificar que o
+padrão em seu URLconf só aceita números com um ou dois digitos; Django deverá
+mostrar um erro "Página não encontrada" nesse caso, assim como visto anteriormente
+na seção "Uma nota rápida sobre erros 404". A URL
+``http://127.0.0.1:8000/time/plus/`` (*sem* deslocamento de hora) também deverá
+lançar um erro 404.
 
-.. admonition:: Coding Order
+.. admonition:: Ordem do código
 
-    In this example, we wrote the URLpattern first and the view second, but in
-    the previous examples, we wrote the view first, then the URLpattern. Which
-    technique is better?
+    Neste exemplo escrevemos primeiro o URLpattern e depois a view, mas nos
+    exemplos anteriores escrevemos primeiro a view e então o URLpattern. Qual
+    técnica é melhor?
 
-    Well, every developer is different.
+    Bem, cada desenvolvedor é diferente.
 
-    If you're a big-picture type of person, it may make the most sense to you
-    to write all of the URLpatterns for your application at the same time, at
-    the start of your project, and then code up the views. This has the
-    advantage of giving you a clear to-do list, and it essentially defines the
-    parameter requirements for the view functions you'll need to write.
+    Se você é uma pessoa com uma boa visão de todo o problema, pode fazer
+    sentido escrever todos os URLpatterns de uma só vez, no começo do projeto
+    para então codificar as views. Isso tem a vantagem de fornecer uma lista
+    de afazeres, e essencialmente define os requerimentos de parâmetros para
+    as funções views a serem escritas.
 
-    If you're more of a bottom-up developer, you might prefer to write the
-    views first, and then anchor them to URLs afterward. That's OK, too.
+    Se você é o tipo de desenvolvedor que começa as coisas por baixo, talvez
+    prefira escrever as views primeiro e depois ligá-las a URLs. Essa forma
+    também está certa.
 
-    In the end, it comes down to which technique fits your brain the best. Both
-    approaches are valid.
+    No fim a técnica utilizada é aquela seu cérebro melhor se adapta. Ambos
+    métodos são válidos.
 
-Django's Pretty Error Pages
-===========================
+As páginas bonitas de erro do Django
+====================================
 
-Take a moment to admire the fine Web application we've made so far . . . now
-let's break it! Let's deliberately introduce a Python error into our
-``views.py`` file by commenting out the ``offset = int(offset)`` lines in the
-``hours_ahead`` view::
+Leve um tempo para admirar as boas aplicações Web que criamos até agora...
+Agora vamos quebrá-las! Vamos intencionalmente colocar um erro Python em
+nosso arquivo ``views.py`` comentando as linhas ``offset = int(offset)``
+na view ``hours_ahead``::
 
     def hours_ahead(request, offset):
         # try:
@@ -786,78 +788,77 @@ let's break it! Let's deliberately introduce a Python error into our
         html = "<html><body>In %s hour(s), it will be %s.</body></html>" % (offset, dt)
         return HttpResponse(html)
 
-Load up the development server and navigate to ``/time/plus/3/``. You'll see an
-error page with a significant amount of information, including a ``TypeError``
-message displayed at the very top: ``"unsupported type for timedelta hours
-component: unicode"``.
+Carregue o servidor de desenvolvimento e navegue para ``/time/plus/3/``. Você
+verá uma página de erro com bastante informações, encluindo uma mensagem
+``TypeError`` no topo da p\agina: ``"unsupported type for timedelta hours
+compontent: unicode"``.
 
-What happened? Well, the ``datetime.timedelta`` function expects the ``hours``
-parameter to be an integer, and we commented out the bit of code that converted
-``offset`` to an integer. That caused ``datetime.timedelta`` to raise the
-``TypeError``. It's the typical kind of small bug that every programmer runs
-into at some point.
+O que aconteceu? Bem, a função ``datetime.timedelta`` expera que o parametro
+``horas`` seja um inteiro, e comentamos a parte de código que converte
+``offset`` para inteiro. Isso fez com que ``datetime.timedelta`` levantasse o
+``TypeError``. É o típico tipo de bug pequeno que todo programador acaba
+passando por em alguma hora.
 
-The point of this example was to demonstrate Django's error pages. Take some
-time to explore the error page and get to know the various bits of information
-it gives you.
+A motivação desse exmplo era demonstrar as páginas de erro do Django. Leve
+algum tempo explorando a página de erro e preste atenção nas informações que
+a página fornece.
 
-Here are some things to notice:
+Aqui estão alguns pontos para se saber:
 
-* At the top of the page, you get the key information about the exception:
-  the type of exception, any parameters to the exception (the ``"unsupported
-  type"`` message in this case), the file in which the exception was raised,
-  and the offending line number.
+* No topo da página, há informações importantes sobre a exceção: o tipo,
+  quaisquer parâmetros para a exceção (a mensagem ``"unsupported type"``,
+  neste caso), o arquivo em que a exceção foi levantada, e o número da
+  linha em que ocorreu.
 
-* Under the key exception information, the page displays the full Python
-  traceback for this exception. This is similar to the standard traceback
-  you get in Python's command-line interpreter, except it's more
-  interactive. For each level ("frame") in the stack, Django displays the
-  name of the file, the function/method name, the line number, and the
-  source code of that line.
+* Abaixo disso, a página exibe o traceback Python completo para a exceção.
+  O traceback é parecido com o padrão, que é exibido no interpetrador Python
+  em linha de comando, exceto que é mais interativo. Para cada nível
+  ("frame") na pilha, o Django mostra o nome do arquivo, o nome da função ou
+  método, o número da linha e o código-fonte da linha.
 
-  Click the line of source code (in dark gray), and you'll see several
-  lines from before and after the erroneous line, to give you context.
+  Ao clicar na linha do código-fonte (em cinza escuro) você verá várias
+  linhas antes e depois da linha com erro, para dar contexto.
 
-  Click "Local vars" under any frame in the stack to view a table of all
-  local variables and their values, in that frame, at the exact point in the
-  code at which the exception was raised. This debugging information can be
-  a great help.
+  Clique "Local vars" em qualquer "frame" na pilha para ver uma tabela de
+  todas variáveis locais e seus valores, nesse "frame", na exata hora em
+  que a exceção foi levantada. Essa informação de debug pode ser de grande
+  ajuda.
 
-* Note the "Switch to copy-and-paste view" text under the "Traceback"
-  header. Click those words, and the traceback will switch to a alternate
-  version that can be easily copied and pasted. Use this when you want to
-  share your exception traceback with others to get technical support --
-  such as the kind folks in the Django IRC chat room or on the Django users
-  mailing list.
+* Observe o texto "Switch to copy-and-paste-view" embaixo do cabeçalho
+  "Traceback". Clique nessa palavras e o traceback mudará para uma versão
+  alternativa que pode ser facilmente copiada e colada. Use essa opção
+  quando quiser compartilhar o traceback da exceção com outras pessoas
+  para receber apoio técnico -- do pessoal da sala de chat do Django no
+  IRC ou na lista de emails de usuários do Django.
 
-  Underneath, the "Share this traceback on a public Web site" button will
-  do this work for you in just one click. Click it to post the traceback to
-  http://www.dpaste.com/, where you'll get a distinct URL that you can
-  share with other people.
+  Embaixo, o botão "Share this traceback on a public Web site" fará esse
+  trabalho em somente um clique. Clique para postar o traceback no
+  http://www.dpaste.com/, aonde será gerada uma URL única que pode ser
+  compartilhada com outras pessoas.
 
-* Next, the "Request information" section includes a wealth of information
-  about the incoming Web request that spawned the error: GET and POST
-  information, cookie values, and meta information, such as CGI headers.
-  Appendix G has a complete reference of all the information a request
-  object contains.
+* Após isso, a seção "Request information" inclui uma gama de informação
+  sbore a requisição Web que gerou o erro: informação GET e POST, valor dos
+  cookies, e meta informação, como cabeçalhos CGI. O Apêndice G possui uma
+  referência completa sobre toda a informação que um objeto de requisição
+  contém.
 
-  Below the "Request information" section, the "Settings" section lists all
-  of the settings for this particular Django installation. (We've already
-  mentioned ``ROOT_URLCONF``, and we'll show you various Django settings
-  throughout the book. All the available settings are covered in detail in
-  Appendix D.)
+  Abaixo da seção "Request information", a seção "Settings" lista todas as
+  configurações dessa instalação particular do Django. (Já mencionamos o
+  ``ROOT_URLCONF``, e mostraremos várias configurações do Django no decorrer
+  do livro. Todas as configurações são cobertas em detalhes no Apêndice D).
 
-The Django error page is capable of displaying more information in certain
-special cases, such as the case of template syntax errors. We'll get to those
-later, when we discuss the Django template system. For now, uncomment the
-``offset = int(offset)`` lines to get the view function working properly again.
+A página de erro do Django é capaz de exibir mais informação em alguns casos
+especiais, como no caso de ocorrer um erro com a sintaxe de template. Esses
+serão explicados mais tarde, ao explicar o sistema de templates do Django.
+Por agora, retire os comentários da linha ``offset = inf(offset)`` para que
+a view volte a funcionar corretamente.
 
-Are you the type of programmer who likes to debug with the help of carefully
-placed ``print`` statements? You can use the Django error page to do so -- just
-without the ``print`` statements. At any point in your view, temporarily insert
-an ``assert False`` to trigger the error page. Then, you can view the local
-variables and state of the program. Here's an example, using the
-``hours_ahead`` view::
+Você é do tipo de programar que gosta de fazer debug com a ajuda de instruções
+``print`` bem localizadas? Você pode utilizar a página do Django para fazer isso,
+mas sem as instruções ``print``. A qualquer ponto na sua view, insira
+temporariamente um ``assert False`` para ativar a página de erro. Então será
+possível visualizar as variáveis locais e o estado do programa. Aqui está um
+exemplo usando a view ``hours_ahead``::
 
     def hours_ahead(request, offset):
         try:
@@ -869,23 +870,24 @@ variables and state of the program. Here's an example, using the
         html = "<html><body>In %s hour(s), it will be %s.</body></html>" % (offset, dt)
         return HttpResponse(html)
 
-Finally, it's obvious that much of this information is sensitive -- it exposes
-the innards of your Python code and Django configuration -- and it would be
-foolish to show this information on the public Internet. A malicious person
-could use it to attempt to reverse-engineer your Web application and do nasty
-things. For that reason, the Django error page is only displayed when your
-Django project is in debug mode. We'll explain how to deactivate debug mode
-in Chapter 12. For now, just know that every Django project is in debug mode
-automatically when you start it. (Sound familiar? The "Page not found" errors,
-described earlier in this chapter, work the same way.)
+Por fim, é óbvio que muitas dessas informações são sensíveis, pois mostram o
+conteúdo do código Python e configuração do Django, e seria burrice mostrar
+essa informação a qualquer um na Internet. Uma pessoa maliciosa poderia usar
+para fazer engenharia reversa da sua aplicação Web e fazer coisas más. Por
+esse motivo a página de erro do Django só é exibida quando seu projeto está em
+modo debug. Como desativar o modo debug é explicado no Capítulo 12. Por
+enquanto, fique atento que todo projeto django está em modo debug quando
+iniciado. (Soa familiar? Os erros "Página não encontrada", descritos no
+começo do capítulo, funcionam da mesma maneira).
 
-What's next?
-============
+O que vem depois?
+=================
 
-So far, we've been writing our view functions with HTML hard-coded directly
-in the Python code. We've done that to keep things simple while we demonstrated
-core concepts, but in the real world, this is nearly always a bad idea.
+Até agora estivemos escrevendo nossas funções view com HTML codificado
+diretamento no código Python. Fizemos isso para manter tudo simples para
+demonstrar os conceitos mais importantes, mas no mundo real essa é, quase
+sempre, uma má ideia.
 
-Django ships with a simple yet powerful template engine that allows you to
-separate the design of the page from the underlying code. We'll dive into
-Django's template engine in the :doc:`next chapter <chapter04>`.
+Django vem com uma simples, porém poderosa engine de template que permite
+separar o design da página do código por debaixo. A engine de templates do
+Django será explicada no :doc:`next chapter <chapter04>`.
