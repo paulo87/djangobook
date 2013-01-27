@@ -2,7 +2,7 @@
 Chapter 19: Internationalization
 ================================
 
-Django foi originalmente desenvolvido na região central dos Estados Unidos -- mais precisamente, em Lawrence, Kansas, sendo menos do que 64km do centro geográfico do continente norte americano. Como a maioria dos projetos de código aberto, a comunidade também cresceu e incluiu pessoas de todo o globo. Como a comunidade do Django esta cada vez mais diversificada, a "internacionalização" e a "localização" se tornou cada vez mais relevante. Como muitos desenvolvedores tem um conhecimento impreciso desses termos, nós iremos defini-los rapidamente.
+Django foi originalmente desenvolvido na região central dos Estados Unidos -- mais precisamente, em Lawrence, Kansas, sendo menos do que 64km do centro geográfico do continente norte americano. E como a maioria dos projetos de código aberto, a comunidade também cresceu e incluiu pessoas de todo o globo. Como a comunidade do Django esta cada vez mais diversificada, a "internacionalização" e a "localização" se tornou cada vez mais relevante. Como muitos desenvolvedores tem um conhecimento impreciso desses termos, nós iremos introduzi-los rapidamente.
 
 "Internacionalização" se refere ao processo de designação de programas para o uso em potencial em qualquer lugar. Isso inclui trechos de textos destacados (como elementos UI e mensagens de erro) para futuras traduções, dando a a idéia de data e hora para que as diferenças entre os padrões locais possam ser observadas, providenciando assim suporte para diferentes fuso horários,
 
