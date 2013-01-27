@@ -65,7 +65,7 @@ Appendix B: Database API Reference - aberto
 
 Appendix C: Generic View Reference - [@fernandovalente] (https://github.com/fernandovalente)
 
-Appendix D: Settings - aberto
+Appendix D: Settings - [@douglasmiranda] (https://github.com/douglasmiranda)
 
 Appendix E: Built-in Template Tags and Filters - [@crfh0m3r] (https://github.com/crfh0m3r)
 
