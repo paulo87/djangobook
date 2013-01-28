@@ -55,7 +55,7 @@ Chapter 17: Middleware [@bkcherry] (https://github.com/bkcherry)
 
 Chapter 18: Integrating with Legacy Databases and Applications - [@fabrimatt] (https://github.com/fabrimatt)
 
-Chapter 19: Internationalization - aberto
+Chapter 19: Internationalization - [@abnerpc] (https://github.com/abnerpc)
 
 Chapter 20: Security - [@renatooliveira] (http://github.com/renatooliveira)
 
