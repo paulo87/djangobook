@@ -83,50 +83,44 @@ resultante do modelo. Aqui estão algumas dicas para lidar com os modelos gerado
    aplicação adicionar *novos* registros a estas tabelas.
    
 
-3. Cada tipo de (por exemplo, `` CharField ``, `` DateField ``) é determinada 
-   analisando o tipo da coluna no banco de dados (por exemplo, ``VARCHAR``, ``DATE``). Se
-   ``inspectdb`` não puder maperar o tipo da coluna para o um tipo de campo no modelo, então será usado
-   ``TextField`` e será inserido um comentário Python ``O tipo deste campo é uma sugestão.`` next to the field in the generated
-   model. Keep an eye out for that, and change the field type accordingly
-   if needed.
+3. Cada tipo (por exemplo, `` CharField ``, `` DateField ``) é determinado 
+   analisando o tipo da coluna no banco de dados (por exemplo, ``VARCHAR``, ``DATE``). Se o
+   ``inspectdb`` não puder mapear o tipo da coluna para um tipo de campo no modelo, então será usado
+   ``TextField`` e será inserido um comentário Python ``O tipo deste campo é uma sugestão.`` próximo ao campo do modelo gerado.
+   . Fique atento a isso e mude o campo de acordo com suas necessidades.
 
-   If a field in your database has no good Django equivalent, you can
-   safely leave it off. The Django model layer is not required to include
-   every field in your table(s).
+   Se o campo no seu banco de dados não tiver nenhum equivalente no Django
+   você pode deixa-lo desabilitado. Não é obrigatório incluir todos os campos da sua tabela
+   na camada do modelo do Django.
 
-4. If a database column name is a Python reserved word (such as ``pass``,
-   ``class``, or ``for``), ``inspectdb`` will append ``'_field'`` to the
-   attribute name and set the ``db_column`` attribute to the real field
-   name (e.g., ``pass``, ``class``, or ``for``).
+4. Se o nome da coluna no banco de dados é uma palavra reservada em Python (como ``pass``,
+   ``class``, ou ``for``), o ``inspectdb`` irá inserir ``'_field'`` ao nome do atributo e colocar  e e to the
+   ``db_coluna`` no nome do campo (por exemplo, ``pass``, ``class``, or ``for``).
 
-   For example, if a table has an ``INT`` column called ``for``, the generated
-   model will have a field like this::
+   Por exemplo, se a tabela tem uma coluna chamada do tipo ``INT`` chamada ``for``,o modelo gerado terá um
+   campo desta maneira::
 
        for_field = models.IntegerField(db_column='for')
 
-   ``inspectdb`` will insert the Python comment
-   ``'Field renamed because it was a Python reserved word.'`` next to the
-   field.
+   ``inspectdb`` irá inserir um comentário em Python
+   ``'Campo renomeado pois esa é uma plavra reservada em Python.'`` próximo ao campo.
 
-5. If your database contains tables that refer to other tables (as most
-   databases do), you might need to rearrange the order of the generated
-   models so that models that refer to other models are ordered properly.
-   For example, if model ``Book`` has a ``ForeignKey`` to model ``Author``,
-   model ``Author`` should be defined before model ``Book``.  If you need
-   to create a relationship on a model that has not yet been defined, you
-   can use a string containing the name of the model, rather than the model
-   object itself.
+5. Se o banco de dados tiver tabelas que referenciam outras tabelas (como a maioria
+   dos banco de dados fazem), talvez seja necessário reorganizar a ordem dos modelos gerados,
+   de modo que os modelos que remetem a outros modelos sejam ordenados corretamente.
+   Por exemplo, se o modelo ``Book`` tem uma ``ForeignKey`` para o modelo ``Author``, o
+   modelo ``Author`` deve ser definido antes do modelo ``Book``. Se você precisa 
+   criar um relacionamento em um modelo que ainda não foi definido, você pode usar um texto contendo 
+   o nome do modelo ao invés do obejto modelo propriamente dito.
 
-6. ``inspectdb`` detects primary keys for PostgreSQL, MySQL, and SQLite.
-   That is, it inserts ``primary_key=True`` where appropriate. For other
-   databases, you'll need to insert ``primary_key=True`` for at least one
-   field in each model, because Django models are required to have a
-   ``primary_key=True`` field.
+6. ``inspectdb`` detecta as chaves primárias do PostgreSQL, MySQL, and SQLite.
+   Ou seja, ele insere ``primary_key=True`` onde é apropriado. Para os outros banco de dados
+   ,você precisa inserir ``primary_key=True`` para pelo menos um campo em cada modelo
+   , porque no modelo do Django são obrigatório ter campos ``primary_key=True``.
 
-7. Foreign-key detection only works with PostgreSQL and with certain types
-   of MySQL tables. In other cases, foreign-key fields will be generated as
-   ``IntegerField``s, assuming the foreign-key column was an ``INT``
-   column.
+7. Detecção de chave estrangeira "Foreign-key" só funciona com o PostgreSQL e com certos tipos de 
+  tabelas do MySQL. Em outros casos, a chave estrangeira será gerada como 
+   ``IntegerField``s, assumindo a coluna da chave estrangeira como uma coluna ``INT``.
 
 Integrating with an Authentication System
 =========================================
