@@ -1,7 +1,7 @@
 djangobook
 ==========
 
-Projeto de tradução do Django Book,  para portugues. Para contribuir com tradução, revisão dos capítulos basta fazer um fork
+Projeto de tradução do Django Book,  para português. Para contribuir com tradução, revisão dos capítulos basta fazer um fork
 desse repositório e submeter a sua contribuição
 
 Site do djangobook:
