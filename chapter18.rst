@@ -83,8 +83,8 @@ resultante do modelo. Aqui estão algumas dicas para lidar com os modelos gerado
    aplicação adicionar *novos* registros a estas tabelas.
    
 
-3. Cada tipo (por exemplo, `` CharField`` , `` DateField`` ) é determinado 
-   analisando o tipo da coluna no banco de dados (por exemplo, `` VARCHAR`` , `` DATE`` ). Se o
+3. Cada tipo (por exemplo, ``CharField`` , ``DateField`` ) é determinado 
+   analisando o tipo da coluna no banco de dados (por exemplo, ``VARCHAR`` , ``DATE`` ). Se o
    ``inspectdb`` não puder mapear o tipo da coluna para um tipo de campo no modelo, então será usado
    ``TextField`` e será inserido um comentário Python ``O tipo deste campo é uma sugestão.`` ,próximo ao campo do modelo gerado.
    . Fique atento a isso e mude o campo de acordo com suas necessidades.
@@ -103,7 +103,7 @@ resultante do modelo. Aqui estão algumas dicas para lidar com os modelos gerado
        for_field = models.IntegerField(db_column='for')
 
    ``inspectdb`` irá inserir um comentário em Python
-   ``'Campo renomeado pois esa é uma plavra reservada em Python.'`` próximo ao campo.
+   ``'Campo renomeado pois essa é uma palavra reservada em Python.'`` próximo ao campo.
 
 5. Se o banco de dados tiver tabelas que referenciam outras tabelas (como a maioria
    dos banco de dados fazem), talvez seja necessário reorganizar a ordem dos modelos gerados,
@@ -118,9 +118,8 @@ resultante do modelo. Aqui estão algumas dicas para lidar com os modelos gerado
    ,você precisa inserir ``primary_key=True`` para pelo menos um campo em cada modelo
    , porque no modelo do Django são obrigatório ter campos ``primary_key=True``.
 
-7. Detecção de chave estrangeira "Foreign-key" só funciona com o PostgreSQL e com certos tipos de 
-  tabelas do MySQL. Em outros casos, a chave estrangeira será gerada como 
-   ``IntegerField``s, assumindo a coluna da chave estrangeira como uma coluna ``INT``.
+7. Detecção de chave estrangeira "Foreign-key" só funciona com o PostgreSQL e com certos tipos de tabelas do MySQL.
+   Em outros casos, a chave estrangeira será gerada como ``IntegerField``s, assumindo a coluna da chave estrangeira como uma coluna ``INT``.
 
 Integrating with an Authentication System
 =========================================
