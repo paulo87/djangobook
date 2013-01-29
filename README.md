@@ -61,7 +61,7 @@ Chapter 20: Security - [@renatooliveira] (http://github.com/renatooliveira)
 
 Appendix A: Model Definition Reference - [@igocoelho] (https://github.com/igocoelho)
 
-Appendix B: Database API Reference - aberto
+Appendix B: Database API Reference - [@embs] (https://github.com/embs)
 
 Appendix C: Generic View Reference - [@fernandovalente] (https://github.com/fernandovalente)
 
