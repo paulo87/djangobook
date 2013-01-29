@@ -83,10 +83,10 @@ resultante do modelo. Aqui estão algumas dicas para lidar com os modelos gerado
    aplicação adicionar *novos* registros a estas tabelas.
    
 
-3. Cada tipo (por exemplo, `` CharField ``, `` DateField ``) é determinado 
-   analisando o tipo da coluna no banco de dados (por exemplo, ``VARCHAR``, ``DATE``). Se o
+3. Cada tipo (por exemplo, `` CharField`` , `` DateField`` ) é determinado 
+   analisando o tipo da coluna no banco de dados (por exemplo, `` VARCHAR`` , `` DATE`` ). Se o
    ``inspectdb`` não puder mapear o tipo da coluna para um tipo de campo no modelo, então será usado
-   ``TextField`` e será inserido um comentário Python ``O tipo deste campo é uma sugestão.`` próximo ao campo do modelo gerado.
+   ``TextField`` e será inserido um comentário Python ``O tipo deste campo é uma sugestão.`` ,próximo ao campo do modelo gerado.
    . Fique atento a isso e mude o campo de acordo com suas necessidades.
 
    Se o campo no seu banco de dados não tiver nenhum equivalente no Django
@@ -94,7 +94,7 @@ resultante do modelo. Aqui estão algumas dicas para lidar com os modelos gerado
    na camada do modelo do Django.
 
 4. Se o nome da coluna no banco de dados é uma palavra reservada em Python (como ``pass``,
-   ``class``, ou ``for``), o ``inspectdb`` irá inserir ``'_field'`` ao nome do atributo e colocar  e e to the
+   ``class``, ou ``for``), o ``inspectdb`` irá inserir ``'_field'`` ao nome do atributo e irá colocar
    ``db_coluna`` no nome do campo (por exemplo, ``pass``, ``class``, or ``for``).
 
    Por exemplo, se a tabela tem uma coluna chamada do tipo ``INT`` chamada ``for``,o modelo gerado terá um
@@ -111,7 +111,7 @@ resultante do modelo. Aqui estão algumas dicas para lidar com os modelos gerado
    Por exemplo, se o modelo ``Book`` tem uma ``ForeignKey`` para o modelo ``Author``, o
    modelo ``Author`` deve ser definido antes do modelo ``Book``. Se você precisa 
    criar um relacionamento em um modelo que ainda não foi definido, você pode usar um texto contendo 
-   o nome do modelo ao invés do obejto modelo propriamente dito.
+   o nome do modelo ao invés do objeto modelo propriamente dito.
 
 6. ``inspectdb`` detecta as chaves primárias do PostgreSQL, MySQL, and SQLite.
    Ou seja, ele insere ``primary_key=True`` onde é apropriado. Para os outros banco de dados
