@@ -118,8 +118,8 @@ As vantages da abordagem de objeto de função são:
 Ambas abordagens são válidas, sendo possível até combiná-las em um mesmo
 URLconf. A escolha é sua.
 
-Usandoo múltiplos prefixos de views
------------------------------------
+Usando múltiplos prefixos de views
+----------------------------------
 
 Na prática, se você usa a técnica de string, acabará misturando views até
 o ponto que as views no URLconf não possuam um prefixo em comum. Entretanto,
@@ -127,7 +127,7 @@ o ponto que as views no URLconf não possuam um prefixo em comum. Entretanto,
 repetições. Para isso é só adicionar múltiplos objetos ``patterns()``,
 assim:
 
-Old::
+Antigo::
 
     from django.conf.urls.defaults import *
 
@@ -138,7 +138,7 @@ Old::
         (r'^tag/(\w+)/$', 'weblog.views.tag'),
     )
 
-New::
+Novo::
 
     from django.conf.urls.defaults import *
 
@@ -230,11 +230,11 @@ argumentos de *keyword* para a view.
         sell('Socks', price='$2.50', quantity=6)
         sell('Socks', quantity=6, price='$2.50')
 
-In Python regular expressions, the syntax for named regular expression groups
-is ``(?P<name>pattern)``, where ``name`` is the name of the group and
-``pattern`` is some pattern to match.
+A sintaxe para grupos de expressões regulares, nas expressões regulares do
+Python, é ``(?P<name>pattern)``, aonde ``name`` é o nome do grupo e
+``pattern`` o padrão para casar.
 
-Here's an example URLconf that uses non-named groups::
+Segue um exemplo de URLconf que usa grupos não-nomeados::
 
     from django.conf.urls.defaults import *
     from mysite import views
@@ -244,7 +244,7 @@ Here's an example URLconf that uses non-named groups::
         (r'^articles/(\d{4})/(\d{2})/$', views.month_archive),
     )
 
-Here's the same URLconf, rewritten to use named groups::
+Aqui está o mesmo URLconf, reescrito para usar grupos nomeados::
 
     from django.conf.urls.defaults import *
     from mysite import views
@@ -254,50 +254,54 @@ Here's the same URLconf, rewritten to use named groups::
         (r'^articles/(?P<year>\d{4})/(?P<month>\d{2})/$', views.month_archive),
     )
 
-This accomplishes exactly the same thing as the previous example, with one
-subtle difference: the captured values are passed to view functions as keyword
-arguments rather than positional arguments.
+Isso faz exatamente o mesmo que o exemplo anterior, com uma pequena diferença:
+os valores capturados são passados para as funções view como argumentos keyword
+ao invés de argumentos posicionais.
 
-For example, with non-named groups, a request to ``/articles/2006/03/`` would
-result in a function call equivalent to this::
+Por exemplo, com grupos não nomeados, uma requisição a ``/articles/2006/03/``
+resultaria em uma invocoção de função equivalente a isso::
 
     month_archive(request, '2006', '03')
 
-With named groups, though, the same request would result in this function call::
+Com grupos nomeados a mesma requisição resultaria na seguinte invocação de
+função::
 
     month_archive(request, year='2006', month='03')
 
-In practice, using named groups makes your URLconfs slightly more explicit and
-less prone to argument-order bugs -- and you can reorder the arguments in your
-views' function definitions. Following the preceding example, if we wanted to
-change the URLs to include the month *before* the year, and we were using
-non-named groups, we'd have to remember to change the order of arguments in the
-``month_archive`` view. If we were using named groups, changing the order of
-the captured parameters in the URL would have no effect on the view.
+Na prática, usar grupos nomeados faz com que seus URLconfs sejam mais
+explícitos e menos inclinados a bugs relacionados a ordem dos argumentos,
+além de ser possível reordenar os arumentos nas definições das funções view.
+Seguindo o exemplo anterior, se quiséssemos mudar as URLs para incluir o mês
+*antes* do ano, e estivéssemos usando grupos não-nomeados, seria necessário
+mudar a ordem dos argumentos da view ``month_archive``. Já, se fossem usados
+grupos nomeados, mudar a ordem dos parametros capturados pela view na URL
+não teria efeito na view.
 
-Of course, the benefits of named groups come at the cost of brevity; some
-developers find the named-group syntax ugly and too verbose. Still, another
-advantage of named groups is readability, especially by those who aren't
-intimately familiar with regular expressions or your particular Django
-application. It's easier to see what's happening, at a glance, in a
-URLconf that uses named groups.
+É claro que os benefícios de grupos nomeados vem ao preço da brevidade,
+alguns desenvolvedores acham a sintaxe de grupos nomeados feias e verbosa
+demais. Ainda, outra vantagem de grupos nomeados é a legibilidade,
+especialmente para aqueles que não são muito íntimos com expressões
+regulares ou sua aplicação Django em específico. É mais fácil ver o que
+está acontecendo, com só uma olhada, em um URLconf que usa grupos nomeados.
 
-Understanding the Matching/Grouping Algorithm
----------------------------------------------
+Entendendo o algoritmo de Casar/Agrupar
+---------------------------------------
 
-A caveat with using named groups in a URLconf is that a single URLconf pattern
-cannot contain both named and non-named groups. If you do this, Django won't
-throw any errors, but you'll probably find that your URLs aren't matching as
-you expect. Specifically, here's the algorithm the URLconf parser follows, with
-respect to named groups vs. non-named groups in a regular expression:
+Um cuidado ao usar grupos nomeados em um URLconf é que um único padrão de
+URLconf não pode conter ambos grupos nomeados e não-nomeados. Se isso for
+feito, o Django não lançará erros, mas é provável que algumas URLs não
+estão sendo casadas como esperado. Especificamente, há um algoritmo que o
+analisador de URLconf segue, respeitando grupos nomeados vs. não-nomeados
+em uma expressão regular:
 
-* If there are any named arguments, it will use those, ignoring non-named
-  arguments.
+* Se há argumentos nomeados, esses serão usados, ignorando argumentos
+  não-nomeados.
 
-* Otherwise, it will pass all non-named arguments as positional arguments.
+* Caso contrário, passará todos os não-nomeados como argumentos de
+  posição.
 
-* In both cases, it will pass any extra options as keyword arguments. See
-  the next section for more information.
+* Em ambos os casos serão passadas quaisquer opções extras como argumentos
+  keyword. Veja a próxima seção para mais informações.
 
 Passing Extra Options to View Functions
 ---------------------------------------
