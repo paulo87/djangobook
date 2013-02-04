@@ -1,28 +1,28 @@
 ======================================
-Chapter 8: Advanced Views and URLconfs
+Capítulo 8: Views e URLconfs avançados
 ======================================
 
 .. SL Note: as the code examples in this chapter are expository, and
 .. SL are not complete runnable examples, I'm proof-reading by eye
 .. SL and running an automated syntax check on them to test them.
 
-In `Chapter 3`_, we explained the basics of Django view functions and URLconfs.
-This chapter goes into more detail about advanced functionality in those two
-pieces of the framework.
+No `Chapter 3`_ foi explicado o básico sobre funções views e URLconfs.
+Este capítulo explicaá mais a fundo funcionalidades avançadas nessas duas
+partes do framework.
 
 .. _Chapter 3: ../chapter03/
 
-URLconf Tricks
-==============
+Truques do URLconf
+==================
 
-There's nothing "special" about URLconfs -- like anything else in Django,
-they're just Python code. You can take advantage of this in several ways, as
-described in the sections that follow.
+Não há nada "especial" sobre os URLconfs. Como tudo em Django são somente
+código Python. Você pode tomar proveito disso de vários modos, como
+descrito nas seções seguintes.
 
-Streamlining Function Imports
------------------------------
+Racionalizando importações de funções
+-------------------------------------
 
-Consider this URLconf, which builds on the example in Chapter 3::
+Considere este URLconf, baseado em um exemplo do Capítulo 3::
 
     from django.conf.urls.defaults import *
     from mysite.views import hello, current_datetime, hours_ahead
@@ -33,16 +33,16 @@ Consider this URLconf, which builds on the example in Chapter 3::
         (r'^time/plus/(\d{1,2})/$', hours_ahead),
     )
 
-As explained in Chapter 3, each entry in the URLconf includes its associated
-view function, passed directly as a function object. This means it's necessary
-to import the view functions at the top of the module.
+Como explicado no capítulo 3, cada entrada no URLconf contém a função view
+associada, que é passada diretamenet como um objeto de função. Isso
+significa que é necessário importar as funções view no topo do módulo.
 
-But as a Django application grows in complexity, its URLconf grows, too, and
-keeping those imports can be tedious to manage. (For each new view function,
-you have to remember to import it, and the import statement tends to get
-overly long if you use this approach.) It's possible to avoid that tedium by
-importing the ``views`` module itself. This example URLconf is equivalent to
-the previous one:
+Mas conforme a aplicação Django cresce em complexidade seu URLconf também
+cresce. Isso faz com que as importações se tornem tediosas para se gerenciar.
+(Para cada nova função view é preciso lembrar de importá-la, e a instrução
+de importação acaba ficando grande demais utilizando essa abordagem).
+É possível evitar esse tédio importando o próprio módulo ``views``, o exemplo
+a seguir é equivalente ao anterior:
 
 .. parsed-literal::
 
@@ -55,10 +55,9 @@ the previous one:
         (r'^time/plus/(\d{1,2})/$', **views.hours_ahead**),
     )
 
-Django offers another way of specifying the view function for a particular
-pattern in the URLconf: you can pass a string containing the module name and
-function name rather than the function object itself. Continuing the ongoing
-example:
+Django oferece outra maneira de especificar a função view para um padrão
+particular no URLconf: você pode passar a string contendo o nome do módulo
+e da função ao invés do próprio objeto. Continuando o exemplo em andamento:
 
 .. parsed-literal::
 
@@ -70,20 +69,19 @@ example:
         (r'^time/plus/(\d{1,2})/$', **'mysite.views.hours_ahead'**),
     )
 
-(Note the quotes around the view names. We're using
-``'mysite.views.current_datetime'`` -- with quotes -- instead of
+(Preste atenção nas aspas em volta dos nomes das views. Estamos usando
+``'mysite.views.current_datetime'`` -- com aspas -- ao invés de
 ``mysite.views.current_datetime``.)
 
-Using this technique, it's no longer necessary to import the view functions;
-Django automatically imports the appropriate view function the first time it's
-needed, according to the string describing the name and path of the view
-function.
+Usando esta técnica não é mais necessário importar as funções view. O Django
+automaticamente importa a view correta da primeira vez que for necessário,
+de acordo com a string que descreve o nome e o caminho da função view.
 
-A further shortcut you can take when using the string technique is to factor
-out a common "view prefix." In our URLconf example, each of the view strings
-starts with ``'mysite.views'``, which is redundant to type. We can factor out
-that common prefix and pass it as the first argument to ``patterns()``, like
-this:
+Um outro atalho que é possível utilizando a técnica da string é fatorar um
+"prefixo de view" comum. No URLconf de exemplo, cada string de view começa
+com ``'mysite.views'``, que não precisa ser digitado para cada linha.
+Podemos fatorar o prefixo comum e passá-lo como primeiro arumento para
+``patterns()``, assim:
 
 .. parsed-literal::
 
@@ -95,41 +93,41 @@ this:
         (r'^time/plus/(\d{1,2})/$', **'hours_ahead'**),
     )
 
-Note that you don't put a trailing dot (``"."``) in the prefix, nor do you put
-a leading dot in the view strings. Django puts those in automatically.
+Note que não é posto um ponto (``"."``) no fim do prefixo, nem no começo da
+string da view. O Django coloca os pontos automaticamente.
 
-With these two approaches in mind, which is better? It really depends on your
-personal coding style and needs.
+Com essas duas abordagens em mente, qual é a melhor? Isso depende do seu
+estilo e necessidades de programação.
 
-Advantages of the string approach are as follows:
+As vantagens da abordagem de string são:
 
-* It's more compact, because it doesn't require you to import the view
-  functions.
 
-* It results in more readable and manageable URLconfs if your view
-  functions are spread across several different Python modules.
+* É mais compacta, pois não exige a importação das funções view.
 
-Advantages of the function object approach are as follows:
+* Resulta em URLconfs mais legíveis e melhor configuráveis se suas
+  funções views estão espalhadas em diferentes módulos Python.
+
+As vantages da abordagem de objeto de função são:
 
 * It allows for easy "wrapping" of view functions. See the section "Wrapping View
   Functions" later in this chapter.
 
-* It's more "Pythonic" -- that is, it's more in line with Python
-  traditions, such as passing functions as objects.
+* É mais "Pythonica", ou seja, está alinhada com as tradições do Python,
+  como passar funções como objetos.
 
-Both approaches are valid, and you can even mix them within the same URLconf.
-The choice is yours.
+Ambas abordagens são válidas, sendo possível até combiná-las em um mesmo
+URLconf. A escolha é sua.
 
-Using Multiple View Prefixes
-----------------------------
+Usando múltiplos prefixos de views
+----------------------------------
 
-In practice, if you use the string technique, you'll probably end up mixing
-views to the point where the views in your URLconf won't have a common prefix.
-However, you can still take advantage of the view prefix shortcut to
-remove duplication. Just add multiple ``patterns()`` objects together, like
-this:
+Na prática, se você usa a técnica de string, acabará misturando views até
+o ponto que as views no URLconf não possuam um prefixo em comum. Entretanto,
+é possível tomar proveito do atalho de prefixo de views para remover
+repetições. Para isso é só adicionar múltiplos objetos ``patterns()``,
+assim:
 
-Old::
+Antigo::
 
     from django.conf.urls.defaults import *
 
@@ -140,7 +138,7 @@ Old::
         (r'^tag/(\w+)/$', 'weblog.views.tag'),
     )
 
-New::
+Novo::
 
     from django.conf.urls.defaults import *
 
@@ -154,19 +152,18 @@ New::
         (r'^tag/(\w+)/$', 'tag'),
     )
 
-All the framework cares about is that there's a module-level variable called
-``urlpatterns``. This variable can be constructed dynamically, as we do in this
-example. We should specifically point out that the objects returned by
-``patterns()`` can be added together, which is something you might not have
-expected.
+Tudo o que o framework se importa é que haja uma variável a nível de módulo
+chamada ``urlpatterns``. Essa variável pode ser construída dinamicamente,
+como é feito nesse exemplo. Devemos ressaltar que objetos retornados pelo
+``patterns()`` podem ser somados, pois é algo não intuitivo.
 
-Special-Casing URLs in Debug Mode
----------------------------------
+URLs acessáveis somente no modo Debug
+-------------------------------------
 
-Speaking of constructing ``urlpatterns`` dynamically, you might want to take
-advantage of this technique to alter your URLconf's behavior while in Django's
-debug mode. To do this, just check the value of the ``DEBUG`` setting at
-runtime, like so::
+Falando sobre construir ``urlpatterns`` dinamicamente, pode ser de sua
+vontade tomar proveito dessa técnica para alterar o comportamente de seu
+URLconf enquanto o Django está no modo Debug. Para fazer isso só mude o valor
+de ``DEBUG`` tem tempo de execução, como a seguir::
 
     from django.conf import settings
     from django.conf.urls.defaults import *
@@ -182,40 +179,41 @@ runtime, like so::
             (r'^debuginfo/$', views.debug),
         )
 
-In this example, the URL ``/debuginfo/`` will only be available if your
-``DEBUG`` setting is set to ``True``.
+Neste exemplo, a URL ``/debuginfo`` só estará disponível se sua
+configuração ``DEBUG`` estiver como ``True``.
 
 Using Named Groups
 ------------------
 
-In all of our URLconf examples so far, we've used simple, *non-named*
-regular expression groups -- that is, we put parentheses around parts of the URL
-we wanted to capture, and Django passes that captured text to the view
-function as a positional argument. In more advanced usage, it's possible to use
-*named* regular expression groups to capture URL bits and pass them as
-*keyword* arguments to a view.
+Em todos os exemplos de URLconf, foram usadas simples, *não nomeados* grupos
+de expressão regular, ou seja, ao por parêntesis em volta de partes da URL que
+queremos capturar, o Django passa o texto capturado para a função view como um
+argumento posicional. Em um uso mais avançado é possível usar grupos de
+expressão regular *nomeados* para captuar partes de URL e passá-los como
+argumentos de *keyword* para a view.
 
-.. admonition:: Keyword Arguments vs. Positional Arguments
+.. admonition:: Argumentos de Keyword vs. Argumentos de posição
 
-    A Python function can be called using keyword arguments or positional
-    arguments -- and, in some cases, both at the same time. In a keyword
-    argument call, you specify the names of the arguments along with the values
-    you're passing. In a positional argument call, you simply pass the
-    arguments without explicitly specifying which argument matches which value;
-    the association is implicit in the arguments' order.
+    Uma função Python pode ser chamada utilizando argumentos de keyword
+    ou de posição e, em alguns casos, ambos ao mesmo tempo. Em uma
+    chamada de argumento por keyword, são especificados os nomes dos
+    argumentos em conjunto com os valores que estão sendo passados. Em uma
+    chamada de argumento por posição só são passados os argumentos sem
+    espeficicar explicitamente quais argumentos vão com quais valores. A
+    associação fica implicita na ordem dos argumentos.
 
-    For example, consider this simple function::
+    Por exemplo, considere essa função simples::
 
         def sell(item, price, quantity):
             print "Selling %s unit(s) of %s at %s" % (quantity, item, price)
 
-    To call it with positional arguments, you specify the arguments in the
-    order in which they're listed in the function definition::
+    Para chamá-la com argumentos posicionais, os argumentos são especificados
+    na ordem em que são listados na definição da função::
 
         sell('Socks', '$2.50', 6)
 
-    To call it with keyword arguments, you specify the names of the arguments
-    along with the values. The following statements are equivalent::
+    Para chamá-lo com argumentos kewwor, é especificado os nomes dos argumentos
+    em conjunto com os valores. As seguintes instruções são equivalentes::
 
         sell(item='Socks', price='$2.50', quantity=6)
         sell(item='Socks', quantity=6, price='$2.50')
@@ -224,19 +222,19 @@ function as a positional argument. In more advanced usage, it's possible to use
         sell(quantity=6, item='Socks', price='$2.50')
         sell(quantity=6, price='$2.50', item='Socks')
 
-    Finally, you can mix keyword and positional arguments, as long as all
-    positional arguments are listed before keyword arguments. The following
-    statements are equivalent to the previous examples::
+    Por fim, é possível misturar argumentos posicionais e kewyword, contanto
+    que todos os argumentos posicionais apareçam antes dos argumentos keyword.
+    As seguintes instruções são equivalentes aos exemplos anteriores::
 
         sell('Socks', '$2.50', quantity=6)
         sell('Socks', price='$2.50', quantity=6)
         sell('Socks', quantity=6, price='$2.50')
 
-In Python regular expressions, the syntax for named regular expression groups
-is ``(?P<name>pattern)``, where ``name`` is the name of the group and
-``pattern`` is some pattern to match.
+A sintaxe para grupos de expressões regulares, nas expressões regulares do
+Python, é ``(?P<name>pattern)``, aonde ``name`` é o nome do grupo e
+``pattern`` o padrão para casar.
 
-Here's an example URLconf that uses non-named groups::
+Segue um exemplo de URLconf que usa grupos não-nomeados::
 
     from django.conf.urls.defaults import *
     from mysite import views
@@ -246,7 +244,7 @@ Here's an example URLconf that uses non-named groups::
         (r'^articles/(\d{4})/(\d{2})/$', views.month_archive),
     )
 
-Here's the same URLconf, rewritten to use named groups::
+Aqui está o mesmo URLconf, reescrito para usar grupos nomeados::
 
     from django.conf.urls.defaults import *
     from mysite import views
@@ -256,50 +254,54 @@ Here's the same URLconf, rewritten to use named groups::
         (r'^articles/(?P<year>\d{4})/(?P<month>\d{2})/$', views.month_archive),
     )
 
-This accomplishes exactly the same thing as the previous example, with one
-subtle difference: the captured values are passed to view functions as keyword
-arguments rather than positional arguments.
+Isso faz exatamente o mesmo que o exemplo anterior, com uma pequena diferença:
+os valores capturados são passados para as funções view como argumentos keyword
+ao invés de argumentos posicionais.
 
-For example, with non-named groups, a request to ``/articles/2006/03/`` would
-result in a function call equivalent to this::
+Por exemplo, com grupos não nomeados, uma requisição a ``/articles/2006/03/``
+resultaria em uma invocoção de função equivalente a isso::
 
     month_archive(request, '2006', '03')
 
-With named groups, though, the same request would result in this function call::
+Com grupos nomeados a mesma requisição resultaria na seguinte invocação de
+função::
 
     month_archive(request, year='2006', month='03')
 
-In practice, using named groups makes your URLconfs slightly more explicit and
-less prone to argument-order bugs -- and you can reorder the arguments in your
-views' function definitions. Following the preceding example, if we wanted to
-change the URLs to include the month *before* the year, and we were using
-non-named groups, we'd have to remember to change the order of arguments in the
-``month_archive`` view. If we were using named groups, changing the order of
-the captured parameters in the URL would have no effect on the view.
+Na prática, usar grupos nomeados faz com que seus URLconfs sejam mais
+explícitos e menos inclinados a bugs relacionados a ordem dos argumentos,
+além de ser possível reordenar os arumentos nas definições das funções view.
+Seguindo o exemplo anterior, se quiséssemos mudar as URLs para incluir o mês
+*antes* do ano, e estivéssemos usando grupos não-nomeados, seria necessário
+mudar a ordem dos argumentos da view ``month_archive``. Já, se fossem usados
+grupos nomeados, mudar a ordem dos parametros capturados pela view na URL
+não teria efeito na view.
 
-Of course, the benefits of named groups come at the cost of brevity; some
-developers find the named-group syntax ugly and too verbose. Still, another
-advantage of named groups is readability, especially by those who aren't
-intimately familiar with regular expressions or your particular Django
-application. It's easier to see what's happening, at a glance, in a
-URLconf that uses named groups.
+É claro que os benefícios de grupos nomeados vem ao preço da brevidade,
+alguns desenvolvedores acham a sintaxe de grupos nomeados feias e verbosa
+demais. Ainda, outra vantagem de grupos nomeados é a legibilidade,
+especialmente para aqueles que não são muito íntimos com expressões
+regulares ou sua aplicação Django em específico. É mais fácil ver o que
+está acontecendo, com só uma olhada, em um URLconf que usa grupos nomeados.
 
-Understanding the Matching/Grouping Algorithm
----------------------------------------------
+Entendendo o algoritmo de Casar/Agrupar
+---------------------------------------
 
-A caveat with using named groups in a URLconf is that a single URLconf pattern
-cannot contain both named and non-named groups. If you do this, Django won't
-throw any errors, but you'll probably find that your URLs aren't matching as
-you expect. Specifically, here's the algorithm the URLconf parser follows, with
-respect to named groups vs. non-named groups in a regular expression:
+Um cuidado ao usar grupos nomeados em um URLconf é que um único padrão de
+URLconf não pode conter ambos grupos nomeados e não-nomeados. Se isso for
+feito, o Django não lançará erros, mas é provável que algumas URLs não
+estão sendo casadas como esperado. Especificamente, há um algoritmo que o
+analisador de URLconf segue, respeitando grupos nomeados vs. não-nomeados
+em uma expressão regular:
 
-* If there are any named arguments, it will use those, ignoring non-named
-  arguments.
+* Se há argumentos nomeados, esses serão usados, ignorando argumentos
+  não-nomeados.
 
-* Otherwise, it will pass all non-named arguments as positional arguments.
+* Caso contrário, passará todos os não-nomeados como argumentos de
+  posição.
 
-* In both cases, it will pass any extra options as keyword arguments. See
-  the next section for more information.
+* Em ambos os casos serão passadas quaisquer opções extras como argumentos
+  keyword. Veja a próxima seção para mais informações.
 
 Passing Extra Options to View Functions
 ---------------------------------------
