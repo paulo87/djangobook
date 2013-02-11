@@ -1,105 +1,62 @@
 ================================
-Chapter 19: Internationalization
+Capítulo 19: Internationalização
 ================================
 
 Django foi originalmente desenvolvido bem no meio dos Estados Unidos -- mais precisamente, em Lawrence, Kansas, sendo menos do que 64km do centro geográfico do continente norte americano. E como a maioria dos projetos de código aberto, a comunidade também cresceu e incluiu pessoas de todo o globo. Como a comunidade do Django esta cada vez mais diversificada, a "internacionalização" e a "localização" se tornou cada vez mais relevante. Como muitos desenvolvedores tem um conhecimento impreciso desses termos, nós iremos introduzi-los rapidamente.
 
 "Internacionalização" se refere ao processo de designação de programas para o uso em potencial em qualquer lugar. Isso inclui trechos de textos destacados (como elementos UI e mensagens de erro) para futuras traduções, dando a a idéia de data e hora para que as diferenças entre os padrões locais possam ser observadas, providenciando assim suporte para diferentes fuso horários, e geralmente dando certeza de que o codigo não contenha nenhuma afirmação sobre a localização do usuário. Você frequentemente verá "internacionalição" abreiviada como "I18N" (O "18" se refere ao numero de letras omitidos entre a primeira letra, "I", e a última, "N"). 
 
-Django was originally developed right in the middle of the United States --
-quite literally, as Lawrence, Kansas, is less than 40 miles from the
-geographic center of the continental United States. Like most open source
-projects, though, Django's community grew to include people from all over the
-globe. As Django's community became increasingly diverse,
-*internationalization* and *localization* became increasingly important.
-Because many developers have at best a fuzzy understanding of these terms,
-we'll define them briefly.
 
-*Internationalization* refers to the process of designing programs for the
-potential use of any locale. This includes marking text (such as UI elements and
-error messages) for future translation, abstracting the display of dates and
-times so that different local standards may be observed, providing support for
-differing time zones, and generally making sure that the code contains no
-assumptions about the location of its users. You'll often see
-"internationalization" abbreviated *I18N*. (The "18" refers to the number
-of letters omitted between the initial "I" and the terminal "N.")
+“Localização” (Localization) se refere ao real processo de tradução de um programa internacionalizado para um determinado lugar. As vezes você verá o termo “Localização” abreviado como L10N.
 
-*Localization* refers to the process of actually translating an
-internationalized program for use in a particular locale. You'll sometimes see
-"localization" abbreviated as *L10N*.
+O Django já é completamente internacionalizado; todas as strings são marcadas para tradução, e com configuração de controle do campo de valor “locale-dependent” com data e hora. Django também conta com mais de 50 arquivos de diferentes localizações. Então se você não é falante de inglês nativo, há uma boa chance do Django já uma tradução disponível para sua língua materna.
 
-Django itself is fully internationalized; all strings are marked for
-translation, and settings control the display of locale-dependent values like
-dates and times. Django also ships with more than 50 different localization
-files. If you're not a native English speaker, there's a good chance that
-Django is already translated into your primary language.
+O mesmo framework utilizado para estas localizações estão disponíveis para você usar em seu próprio código e template.
 
-The same internationalization framework used for these localizations is
-available for you to use in your own code and templates.
+Para usar esse framework, você precisará adicional um número mínimo de ganchos (hooks) para o seu código python e template. Esses ganchos são chamadas de “translation strings” (strings de tradução). Falam ao Django, “Esse texto deveria ser traduzido para a língua do usuário final, se uma tradução para este texto estiver disponível para língua dele.”
 
-To use this framework, you'll need to add a minimal number of hooks to your
-Python code and templates. These hooks are called *translation strings*. They
-tell Django, "This text should be translated into the end user's language, if a
-translation for this text is available in that language."
+Então Django cuida disso usando esses ganhos para traduzir aplicações web, em tempo-real, de acordos com as preferências de língua dos usuários.
 
-Django takes care of using these hooks to translate Web applications, on the
-fly, according to users' language preferences.
+Essencialmente Django faz duas coisas:
 
-Essentially, Django does two things:
+* Ele deixa os desenvolvedores e autores de templates especificarem quais partes de suas aplicações serão traduzidas.
 
-* It lets developers and template authors specify which parts of their
-  applications should be translatable.
+* Ele usa aquela informação para traduzir uma aplicação Web para usuários específicos de acordo com suas preferências linguísticas.
 
-* It uses that information to translate Web applications for particular
-  users according to their language preferences.
+.. nota::
 
-.. note::
+O maquinário de tradução do Django usa GNU gettext (http://www.gnu.org/software/gettext/) através do módulo gettext padrão que vem com o Python.
 
-    Django's translation machinery uses GNU ``gettext``
-    (http://www.gnu.org/software/gettext/) via the standard ``gettext`` module
-    that comes with Python.
+.. admonition:: Se você não precisar de Internacionalização::
 
-.. admonition:: If You Don't Need Internationalization:
+    Os ganchos de internacionalização do Django já vem ativados por padrão, o que provoca uma pequena sobrecarga. Se você não quiser usar a internacionalização, você deverá colocar USE_I18N = False em seus arquivos de configurações. Se USE_I18N for ajustado para False, então o Django fará algumas otimizações, como o não carregamento do maquinário de internacionalização. 
+Você provavelmente também irá querer remover “django.core.context_processors.i18n” da configuração do seu TEMPLATE_CONTEXT_PROCESSOR.
 
-    Django's internationalization hooks are enabled by default, which incurs a
-    small bit of overhead. If you don't use internationalization, you should
-    set ``USE_I18N = False`` in your settings file. If ``USE_I18N`` is set to
-    ``False``, then Django will make some optimizations so as not to load the
-    internationalization machinery.
 
-    You'll probably also want to remove
-    ``'django.core.context_processors.i18n'`` from your
-    ``TEMPLATE_CONTEXT_PROCESSORS`` setting.
+Os três passos para internacionalizar a sua plicação Django são:
 
-The three steps for internationalizing your Django application are:
+1. Incorporar as sequências (Strings) de tradução em seu código Python e templates.
 
-1. Embed translation strings in your Python code and templates.
+2. Faça as traduções para essas sequências, em qual for a língua que você queira suportar.
 
-2. Get translations for those strings, in whichever languages you want to
-   support.
+3. Ative o middleware de localização nas configurações de seu Django.
 
-3. Activate the locale middleware in your Django settings.
+Nós trataremos cada um desses passos em detalhes.
 
-We'll cover each one of these steps in detail.
-
-1. How to Specify Translation Strings
+1. Como especificar as Strings de tradução
 =====================================
 
-Translation strings specify "This text should be translated." These strings can
-appear in your Python code and templates. It's your responsibility to mark
-translatable strings; the system can only translate strings it knows about.
+Strings de tradução indica que “Esse texto deveria ser traduzido”. Estas Strings podem aparecer em seu código Python e templates. Eles são responsáveis por marcar as strings traduzíveis; o sistema pode traduzir strings que ele conhece.
 
-In Python Code
---------------
+Em código Python
+----------------
 
-Standard Translation
-~~~~~~~~~~~~~~~~~~~~
+Tradução Padrão
+~~~~~~~~~~~~~~~
 
-Specify a translation string by using the function ``ugettext()``. It's
-convention to import this as a shorter alias, ``_``, to save typing.
+Specificar um string de tradução através do uso da função ugettext(). É convenção importá-la como um alias (apelido) abreviado, _, para poupar digitação.
 
-In this example, the text ``"Welcome to my site."`` is marked as a translation
-string::
+Nesse exemplo, o texto “Welcome to my site.” está marcado como uma string de tradução::
 
     from django.utils.translation import ugettext as _
 
@@ -107,8 +64,7 @@ string::
         output = _("Welcome to my site.")
         return HttpResponse(output)
 
-Obviously, you could code this without using the alias. This example is
-identical to the previous one::
+Obviamente, você poderia fazer este código sem utilizar alias. Esse exemplo é idêntico ao anterior::
 
     from django.utils.translation import ugettext
 
@@ -116,80 +72,50 @@ identical to the previous one::
         output = ugettext("Welcome to my site.")
         return HttpResponse(output)
 
-Translation works on computed values. This example is identical to the previous
-two::
+Tradução funciona em valores computados. Este exemplo é idêntico aos dois anteriores::
 
     def my_view(request):
         words = ['Welcome', 'to', 'my', 'site.']
         output = _(' '.join(words))
         return HttpResponse(output)
 
-Translation works on variables. Again, here's an identical example::
+Tradução funciona em variáveis. Mais uma vez, aqui está um exemplo idêntico aos anteriores::
 
     def my_view(request):
         sentence = 'Welcome to my site.'
         output = _(sentence)
         return HttpResponse(output)
 
-(The caveat with using variables or computed values, as in the previous two
-examples, is that Django's translation-string-detecting utility,
-``django-admin.py makemessages``, won't be able to find these strings. More on
-``makemessages`` later.)
+(A limitação em usar variáveis ou valores computados, como nos dois exemplos anteriores, é que o utilitário de detecção de string de tradução (translation-string-detecting), django-admin.py makemessages, não conseguirá encontrar essas strings. Mais em breve em makemessages.)
 
-The strings you pass to ``_()`` or ``ugettext()`` can take placeholders,
-specified with Python's standard named-string interpolation syntax. Example::
+As strings que você passar para _() ou ugettext() podem ter marcadores, especificados com a sintaxe de interpolação string-nomeado (named-string) padrão do Python. Exemplo::
 
     def my_view(request, m, d):
         output = _('Today is %(month)s %(day)s.') % {'month': m, 'day': d}
         return HttpResponse(output)
 
-This technique lets language-specific translations reorder the placeholder
-text. For example, an English translation may be ``"Today is November 26."``,
-while a Spanish translation may be ``"Hoy es 26 de Noviembre."`` -- with the
-placeholders (the month and the day) with their positions swapped.
+Essa técnica permite que tradução de línguas específicas que necessitam reordenar o texto de um local. Por exemplo, uma tradução em inglês pode ser “Today is November 26.”, enquanto que uma tradução em espanhol pode ser “Hoy es 26 de Noviembre” – com os dados (o mês e o dia) com suas posições trocadas. Por essa razão, você usaria a interpolação named-string (por exemplo %(day)s) ao invés da interpolação posicional (por exemplo %s ou %d) sempre que você tem mais do que um único parâmetro. Se você usou interpolação posicional, traduções futuras não poderão ser capaz de reordenar o texto de um espaço reservado.
 
-For this reason, you should use named-string interpolation (e.g., ``%(day)s``)
-instead of positional interpolation (e.g., ``%s`` or ``%d``) whenever you
-have more than a single parameter. If you used positional interpolation,
-translations wouldn't be able to reorder placeholder text.
+Marcando uma String como No-Op
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Marking Strings as No-Op
-~~~~~~~~~~~~~~~~~~~~~~~~
+Use a função django.utils.translation.igettext_noop() para marcar uma string com uma string de tradução sem que ela seja traduzida. O string será traduzida depois de uma outra disponível.
 
-Use the function ``django.utils.translation.ugettext_noop()`` to mark a string
-as a translation string without translating it. The string is later translated
-from a variable.
+Use isso se você tem strings constantes que devem ser armazenadas no código fonte, mas elas são trocadas pelo sistema ou usuários - tais como as strings em um banco de dados - porém deve ser traduzida no último instante, como quando a string é apresentada ao usuário.
 
-Use this if you have constant strings that should be stored in the source
-language because they are exchanged over systems or users -- such as strings in
-a database -- but should be translated at the last possible point in time, such
-as when the string is presented to the user.
+Tradução Preguiçosa
+~~~~~~~~~~~~~~~~~~~
 
-Lazy Translation
-~~~~~~~~~~~~~~~~
-
-Use the function ``django.utils.translation.ugettext_lazy()`` to translate
-strings lazily -- when the value is accessed rather than when the
-``ugettext_lazy()`` function is called.
-
-For example, to translate a model's ``help_text``, do the following::
+Use a função django.utils.translation.ugettext_lazy() para traduzir strings de forma preguiçosa – de forma diferente quando o valor é acessado a função ugettext_lazy() é chamada. Por exemplo, para traduzir um help_text de um modelo, faça o seguinte::
 
     from django.utils.translation import ugettext_lazy
 
     class MyThing(models.Model):
         name = models.CharField(help_text=ugettext_lazy('This is the help text'))
 
-In this example, ``ugettext_lazy()`` stores a lazy reference to the string --
-not the actual translation. The translation itself will be done when the string
-is used in a string context, such as template rendering on the Django admin
-site.
+Nesse exemplo, ugettext_lazy() armazena uma referência preguiçosa em uma string – não uma real tradução. A tradução em si será feita quando a string for utilizada em uma string contextualizada, como   em uma renderização de um template de site de administração do Django.
 
-The result of a ``ugettext_lazy()`` call can be used wherever you would use a
-unicode string (an object with type ``unicode``) in Python. If you try to use
-it where a bytestring (a ``str`` object) is expected, things will not work as
-expected, since a ``ugettext_lazy()`` object doesn't know how to convert
-itself to a bytestring.  You can't use a unicode string inside a bytestring,
-either, so this is consistent with normal Python behavior. For example::
+O resultado de uma chamada ugettext_lazy() pode ser usado sempre que você usar uma string de caracteres Unicode (um objeto com o tipo unicode) em Python. Se você tentar usá-lo onde um bytestring (um objeto str) é esperado, as coisas não funcionam como o esperado, uma vez que um objeto ugettext_lazy() não sabe como converter-se a um bytestring sozinho. Você não pode usar uma string de caracteres Unicode dentro de um bytestring, mostranto que, então, isso é consistente com o comportamento normal do Python. Por exemplo::
 
     # This is fine: putting a unicode proxy into a unicode string.
     u"Hello %s" % ugettext_lazy("people")
@@ -198,24 +124,16 @@ either, so this is consistent with normal Python behavior. For example::
     # into a bytestring (nor can you insert our unicode proxy there)
     "Hello %s" % ugettext_lazy("people")
 
-If you ever see output that looks like ``"hello
-<django.utils.functional...>"``, you have tried to insert the result of
-``ugettext_lazy()`` into a bytestring. That's a bug in your code.
+Se você já viu uma saída que se parece como "Olá <django.utils.functional...>", você já tentou inserir o resultado de ugettext_lazy() em um bytestring. Isso é um bug em seu código.
 
-If you don't like the verbose name ``ugettext_lazy``, you can just alias it as
-``_`` (underscore), like so::
+Se você não gosta do nome ugettext_lazy em específico, você pode usar somente o alias _ (sublinhado), assim::
 
     from django.utils.translation import ugettext_lazy as _
 
     class MyThing(models.Model):
         name = models.CharField(help_text=_('This is the help text'))
 
-Always use lazy translations in Django models. Field names and table names
-should be marked for translation (otherwise, they won't be translated in the
-admin interface). This means writing explicit ``verbose_name`` and
-``verbose_name_plural`` options in the ``Meta`` class, though, rather than
-relying on Django's default determination of ``verbose_name`` and
-``verbose_name_plural`` by looking at the model's class name::
+Sempre use traduções preguiçosas em modelos Django. Os nomes dos campos e nomes de tabela deve ser marcados para tradução (caso contrário, eles não serão traduzidos na interface da administração). Isso significa escrever explicitamente as opções de verbose_name e a verbose_name_plural na classe Meta, em vez de confiar no padrão do Django determinado para verbose_name e verbose_name_plural e apenas olhar para o nome da classe do modelo::
 
     from django.utils.translation import ugettext_lazy as _
 
@@ -225,11 +143,10 @@ relying on Django's default determination of ``verbose_name`` and
             verbose_name = _('my thing')
             verbose_name_plural = _('mythings')
 
-Pluralization
-~~~~~~~~~~~~~
+Pluralização (Pluralization)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Use the function ``django.utils.translation.ungettext()`` to specify pluralized
-messages. Example::
+Use a função django.utils.translation.ungettext() para especificar mensagens de pluralizadas, por exemplo::
 
     from django.utils.translation import ungettext
 
@@ -240,9 +157,7 @@ messages. Example::
             }
         return HttpResponse(page)
 
-``ungettext`` takes three arguments: the singular translation string, the plural
-translation string and the number of objects (which is passed to the
-translation languages as the ``count`` variable).
+ungettext recebe três argumentos: a string de tradução no singular, a string de tradução no plural e o número de objetos (os quais importam serem dados para tradução de algumas línguas, como a variável count).
 
 In Template Code
 ----------------
